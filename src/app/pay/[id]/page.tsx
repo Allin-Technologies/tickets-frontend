@@ -8,17 +8,18 @@ export default async function Page(props: { params: { id: string } }) {
   const request = await api(eventSchema, {
     method: "get",
     url: `/event/${props.params.id}`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
   });
 
   if (request.response_code !== 200 || !request.data) {
     notFound();
   }
 
-  console.log(request.data);
-
   return (
-    <main className='w-screen min-h-dvh'>
-      <section className='w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:p-8 xl:px-12 2xl:px-0 2xl:py-16 space-y-16'>
+    <main className='w-screen lg:min-h-dvh'>
+      <section className='w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0 py-8 lg:py-12 2xl:py-16 space-y-8 2xl:space-y-16'>
         <div>
           <Link
             className='flex items-center gap-2 font-semibold text-[hsla(218,_15%,_59%,_1)]'
@@ -48,9 +49,3 @@ export default async function Page(props: { params: { id: string } }) {
     </main>
   );
 }
-
-// <NumberField className='w-40'>
-//   <NumberFieldDecrement />
-//   <NumberFieldInput placeholder='Type in your age' />
-//   <NumberFieldIncrement />
-// </NumberField>

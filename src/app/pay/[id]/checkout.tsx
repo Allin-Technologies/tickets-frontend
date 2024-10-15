@@ -51,6 +51,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
     60 * 1000 * 10
   );
+
   const router = useRouter();
   const [preview] = useAutoAnimate<HTMLDivElement>();
   const [container] = useAutoAnimate<HTMLDivElement>();
@@ -108,7 +109,12 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
     pause();
 
     if (props.event_type !== "Free") {
-      setStep("method");
+      // setStep("method");
+      toast.warning("Oops feature unavailable", {
+        description:
+          "Sorry for the inconvenience, but this feature is not available on the current event type at the moment!",
+        closeButton: true,
+      });
       return;
     }
 
@@ -121,7 +127,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
       if (res?.status === true) {
         toast.success("Congrats 🎉", {
-          description: "Your ticket reservation was sucessful",
+          description: "Your ticket reservation was successful",
           closeButton: true,
         });
 
@@ -158,7 +164,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   return (
     <>
       <Breadcrumb>
-        <BreadcrumbList className='text-2xl font-medium'>
+        <BreadcrumbList className='text-xl lg:text-2xl font-medium'>
           <BreadcrumbItem
             className={cn(
               "cursor-pointer select-none transition ease-linear duration-100",
@@ -209,15 +215,15 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div ref={container} className='grid grid-cols-5 gap-4'>
+      <div ref={container} className='grid lg:grid-cols-5 gap-8'>
         {step === "ticket_types" && (
           <Form {...step1}>
             <form
               onSubmit={step1.handleSubmit(onSubmitStep1)}
-              className='col-span-2 space-y-12'
+              className='lg:col-span-2 space-y-4 lg:space-y-6 xl:space-y-8 2xl:space-y-12'
             >
               <div>
-                <h3 className='text-[44px] text-dark-blue font-bold'>
+                <h3 className='text-2xl lg:text-3xl xl:text-4xl 2xl:text-[44px] text-dark-blue font-bold'>
                   Choose tickets
                 </h3>
               </div>
@@ -300,7 +306,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           <Form {...step2}>
             <form
               onSubmit={step2.handleSubmit(onSubmitStep2)}
-              className='col-span-2 space-y-12'
+              className='lg:col-span-2 space-y-12'
             >
               <div>
                 <h3 className='text-[44px] text-dark-blue font-bold'>
@@ -368,12 +374,12 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                           <SelectContent>
                             <SelectItem value='male'>Male</SelectItem>
                             <SelectItem value='female'>Female</SelectItem>
-                            <SelectItem value='Non Binary'>
+                            {/* <SelectItem value='Non Binary'>
                               Non Binary
                             </SelectItem>
                             <SelectItem value='Rather not say'>
                               Rather not say
-                            </SelectItem>
+                            </SelectItem> */}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -440,10 +446,10 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           </Form>
         )}
 
-        <div className='col-start-4 col-span-2'>
+        <div className='lg:col-start-4 lg:col-span-2'>
           <div
             ref={preview}
-            className='w-full max-w-96 xl:max-w-md mx-auto bg-white border border-border rounded-lg p-8 space-y-6'
+            className='w-full lg:max-w-96 xl:max-w-md mx-auto bg-white border border-border rounded-lg p-8 space-y-6'
           >
             <h3 className='text-2xl font-bold'>{props.title}</h3>
 

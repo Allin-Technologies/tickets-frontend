@@ -32,13 +32,13 @@ export function Discover(props: { initailData: Array<any> }) {
 
   return (
     <>
-      <div className='flex justify-between items-start'>
+      <div className='flex flex-col lg:flex-row justify-between items-start gap-4'>
         <h2 className='text-[40px] font-semibold text-dark-blue'>
           Upcoming Events
         </h2>
-        <div className='flex items-center gap-4'>
+        <div className='grid grid-cols-2 sm:flex items-center gap-2'>
           <Select defaultValue='all'>
-            <SelectTrigger className='min-w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+            <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
               <SelectValue placeholder='Select a Category' />
             </SelectTrigger>
             <SelectContent>
@@ -53,7 +53,7 @@ export function Discover(props: { initailData: Array<any> }) {
             </SelectContent>
           </Select>
           <Select>
-            <SelectTrigger className='min-w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+            <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
               <SelectValue placeholder='Price' />
             </SelectTrigger>
             <SelectContent>
@@ -62,14 +62,14 @@ export function Discover(props: { initailData: Array<any> }) {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div className='grid gap-2'>
+          <div className='grid gap-2 col-span-2'>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   id='date'
                   variant='secondary'
                   className={cn(
-                    "w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
+                    "sm:w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
                     !date && "text-muted-foreground"
                   )}
                 >
@@ -104,7 +104,7 @@ export function Discover(props: { initailData: Array<any> }) {
       </div>
 
       <div className='flex flex-col items-center space-y-14 w-full'>
-        <div className='w-full grid grid-cols-3 gap-6'>
+        <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
           {props.initailData.map((event, index) => {
             // Parse the date string into a Date object
             const date = parse(

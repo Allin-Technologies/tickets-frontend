@@ -32,6 +32,15 @@ export const navLinks: Link[] = [
   },
 ];
 
+export const mobile_links: Link[] = [
+  {
+    title: "Home",
+    url: "/",
+    display: "link",
+  },
+  ...navLinks,
+];
+
 export const footer: {
   links: Link[];
   socials: { url: string; icon: string }[];
@@ -40,7 +49,7 @@ export const footer: {
   links: [
     {
       title: "Home",
-      url: "/discover",
+      url: "/",
       display: "link",
     },
     ...navLinks,

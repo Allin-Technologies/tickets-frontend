@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { navLinks } from "../constants";
+import { mobile_links, navLinks } from "../constants";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
+  SheetClose,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -21,7 +21,7 @@ interface HeaderProps {
 
 export function Header(props: HeaderProps) {
   return (
-    <nav className='z-50 fixed backdrop-blur-sm top-0 left-0 right-0 w-full max-w-screen px-4 pb-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0 pt-6 md:pt-8 lg:pt-12 xl:pt-14 2xl:pt-16'>
+    <nav className='z-50 fixed backdrop-blur-sm top-0 left-0 right-0 w-screen px-4 pb-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0 pt-6 md:pt-8 lg:pt-12 xl:pt-14 2xl:pt-16'>
       <div className='w-full max-w-screen-2xl mx-auto flex justify-between items-center'>
         <Link href='/'>
           <Image
@@ -31,9 +31,10 @@ export function Header(props: HeaderProps) {
                 : "/tickets-by-All-In-logo.png"
             }
             alt='logo'
-            width={114}
-            height={45}
+            width={300}
+            height={100}
             quality={100}
+            className='h-11 w-auto object-contain object-left'
           />
         </Link>
 
@@ -79,12 +80,18 @@ export function Header(props: HeaderProps) {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Are you absolutely sure?</SheetTitle>
-                <SheetDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </SheetDescription>
+                <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
+
+              <div className='flex flex-col items-center space-y-6 pt-10'>
+                {mobile_links.map((link, index) => (
+                  <SheetClose asChild key={index}>
+                    <Link className='text-2xl' href={link.url ?? "#"}>
+                      {link.title}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </div>
             </SheetContent>
           </Sheet>
         </div>

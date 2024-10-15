@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer>
       <div className='relative lg:after:absolute lg:after:left-0 lg:after:top-0 lg:after:bottom-0 lg:after:h-full lg:after:w-1/2 lg:after:z-[1] lg:after:bg-primary/20 lg:before:absolute lg:before:right-0 lg:before:top-0 lg:before:bottom-0 lg:before:h-full lg:before:w-1/2 lg:before:z-[1] lg:before:bg-secondary/10'>
-        <div className='w-full max-w-screen-2xl mx-auto lg:gap-6 lg:px-8 xl:px-12 2xl:px-0 grid lg:grid-cols-2'>
+        <div className='w-full max-w-screen-2xl mx-auto lg:gap-6 lg:px-8 xl:px-12 2xl:px-0 flex flex-col-reverse lg:grid grid-cols-2'>
           <div className='z-[2] space-y-10 p-8 pt-16 lg:px-0 w-full bg-primary/20 lg:bg-transparent'>
             <div className='text-2xl space-y-4'>
               <h3 className='font-bold'>Contact us</h3>

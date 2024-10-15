@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  differenceInSeconds,
-  differenceInMinutes,
-  differenceInHours,
-  differenceInDays,
-} from "date-fns";
-import { useEffect, useState } from "react";
+import * as React from "react";
+import { useCountDown } from "@/hooks/use-countdown";
 
 interface CountProps {
   date: string;
@@ -24,37 +19,29 @@ export function Count({ date, time }: CountProps) {
 
   const targetDate = createTargetDate(date, time);
 
-  const calculateTimeLeft = () => {
-    const now = new Date();
+  const timeToCount = Math.max(targetDate.getTime() - new Date().getTime(), 0);
 
-    const days = Math.abs(differenceInDays(targetDate, now));
-    const hours = Math.abs(differenceInHours(targetDate, now)) % 24;
-    const minutes = Math.abs(differenceInMinutes(targetDate, now)) % 60;
-    const seconds = Math.abs(differenceInSeconds(targetDate, now)) % 60;
+  const [timeLeft, { start }] = useCountDown(timeToCount);
 
-    return { days, hours, minutes, seconds };
-  };
-
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer); // Cleanup on unmount
+  React.useEffect(() => {
+    start(timeToCount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [targetDate]);
+
+  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+  const seconds = Math.floor((timeLeft / 1000) % 60);
 
   return (
     <div className='relative'>
-      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-6 rounded-xl bg-primary text-primary-foreground flex items-center space-x-4'>
+      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-6 md:px-8 py-4 md:py-6 rounded-xl bg-primary text-primary-foreground flex items-center space-x-4'>
         <div className='flex flex-col items-center space-y-1'>
           <p
             className='text-[32px] font-medium leading-none'
             suppressHydrationWarning
           >
-            {timeLeft.days > 9 ? timeLeft.days : `0${timeLeft.days}`}
+            {days > 9 ? days : `0${days}`}
           </p>
           <p className='text-sm leading-none'>Days</p>
         </div>
@@ -63,7 +50,7 @@ export function Count({ date, time }: CountProps) {
             className='text-[32px] font-medium leading-none'
             suppressHydrationWarning
           >
-            {timeLeft.hours > 9 ? timeLeft.hours : `0${timeLeft.hours}`}
+            {hours > 9 ? hours : `0${hours}`}
           </p>
           <p className='text-sm leading-none'>Hours</p>
         </div>
@@ -72,7 +59,7 @@ export function Count({ date, time }: CountProps) {
             className='text-[32px] font-medium leading-none'
             suppressHydrationWarning
           >
-            {timeLeft.minutes > 9 ? timeLeft.minutes : `0${timeLeft.minutes}`}
+            {minutes > 9 ? minutes : `0${minutes}`}
           </p>
           <p className='text-sm leading-none'>Minutes</p>
         </div>
@@ -81,7 +68,7 @@ export function Count({ date, time }: CountProps) {
             className='text-[32px] font-medium leading-none'
             suppressHydrationWarning
           >
-            {timeLeft.seconds > 9 ? timeLeft.seconds : `0${timeLeft.seconds}`}
+            {seconds > 9 ? seconds : `0${seconds}`}
           </p>
           <p className='text-sm leading-none'>Seconds</p>
         </div>

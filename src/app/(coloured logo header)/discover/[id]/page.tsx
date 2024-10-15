@@ -18,6 +18,9 @@ export default async function Page(props: { params: { id: string } }) {
   const request = await api(eventSchema, {
     method: "get",
     url: `/event/${props.params.id}`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
   });
 
   if (request.response_code !== 200 || !request.data) {
@@ -27,6 +30,9 @@ export default async function Page(props: { params: { id: string } }) {
   const more_request = await api(validator, {
     method: "get",
     url: `/event/getall`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
   });
 
   if (request.response_code !== 200) {
@@ -35,8 +41,8 @@ export default async function Page(props: { params: { id: string } }) {
 
   return (
     <main className='w-screen min-h-dvh'>
-      <section className='w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:p-8 xl:px-12 2xl:px-0 2xl:py-56 space-y-24'>
-        <div className='grid grid-cols-2 gap-4'>
+      <section className='w-full max-w-screen-2xl mx-auto px-4 pb-8 pt-36 md:px-6 md:pb-8 lg:px-8 xl:px-12 xl:pb-12 2xl:px-0 md:pt-40 lg:pt-44 xl:pt-48 space-y-12 xl:space-y-16 2xl:space-y-24'>
+        <div className='lg:grid grid-cols-2 gap-4 space-y-6 lg:space-y-0'>
           <div className='space-y-8 max-w-lg mx-auto w-full'>
             <div className='aspect-[9/11]'>
               <Count date={request.data?.date} time={request.data?.time} />
@@ -49,13 +55,13 @@ export default async function Page(props: { params: { id: string } }) {
               />
             </div>
 
-            <Button>
+            <Button className='hidden lg:block w-full sm:w-fit' asChild>
               <Link href={`/pay/${props.params.id}`}>Get Ticket now</Link>
             </Button>
           </div>
           <div className='space-y-12'>
-            <div className='text-dark-blue space-y-6'>
-              <h2 className='text-5xl font-bold leading-normal'>
+            <div className='text-dark-blue space-y-3 lg:space-y-6'>
+              <h2 className='text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold leading-normal'>
                 {request.data.title}
               </h2>
 
@@ -100,15 +106,19 @@ export default async function Page(props: { params: { id: string } }) {
               </div>
             </div>
           </div>
+
+          <Button className='lg:hidden w-full sm:w-auto' asChild>
+            <Link href={`/pay/${props.params.id}`}>Get Ticket now</Link>
+          </Button>
         </div>
 
-        <div className='space-y-8'>
-          <h1 className='text-5xl font-bold leading-normal'>
+        <div className='space-y-4 xl:space-y-8'>
+          <h1 className='text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold leading-normal'>
             Other Events You May Like
           </h1>
 
           <div className='flex flex-col items-center space-y-14 w-full'>
-            <div className='w-full grid grid-cols-3 gap-6'>
+            <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
               {more_request?.data
                 ?.filter((event) => event._id !== request.data?._id)
                 ?.map((event, index) => {

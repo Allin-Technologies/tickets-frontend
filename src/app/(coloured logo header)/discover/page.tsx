@@ -6,7 +6,13 @@ import { z } from "zod";
 const validator = z.array(z.any());
 
 export default async function Page() {
-  const request = await api(validator, { method: "get", url: `/event/getall` });
+  const request = await api(validator, {
+    method: "get",
+    url: `/event/getall`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
+  });
 
   if (request.response_code !== 200) {
     notFound();
@@ -14,7 +20,7 @@ export default async function Page() {
 
   return (
     <main className='w-screen min-h-dvh'>
-      <section className='w-full max-w-screen-2xl mx-auto p-4 md:p-6 lg:p-8 xl:p-12 2xl:px-0 2xl:pt-40 space-y-16'>
+      <section className='w-full max-w-screen-2xl mx-auto px-4 pb-8 pt-24 md:px-6 md:pb-8 lg:px-8 xl:px-12 xl:pb-12 2xl:px-0 md:pt-26 lg:pt-32 xl:pt-36 2xl:pt-40 space-y-8 xl:space-y-16'>
         <Discover initailData={request.data ?? []} />
       </section>
     </main>
