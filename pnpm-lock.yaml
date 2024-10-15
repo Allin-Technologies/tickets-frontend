@@ -71,6 +71,12 @@ dependencies:
   dayjs:
     specifier: ^1.11.13
     version: 1.11.13
+  embla-carousel-auto-scroll:
+    specifier: ^8.3.0
+    version: 8.3.0(embla-carousel@8.3.0)
+  embla-carousel-autoplay:
+    specifier: ^8.3.0
+    version: 8.3.0(embla-carousel@8.3.0)
   embla-carousel-react:
     specifier: ^8.3.0
     version: 8.3.0(react@18.3.1)
@@ -1890,6 +1896,22 @@ packages:
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  /embla-carousel-auto-scroll@8.3.0(embla-carousel@8.3.0):
+    resolution: {integrity: sha512-ybXWqCTWvl+DeGwtGw0tUU1bOKglS/Ov8F5fueMkiwySKrSFAHizdqSrlMR1SQEXNZHMPH9LqCz7MajNYkdeAQ==}
+    peerDependencies:
+      embla-carousel: 8.3.0
+    dependencies:
+      embla-carousel: 8.3.0
+    dev: false
+
+  /embla-carousel-autoplay@8.3.0(embla-carousel@8.3.0):
+    resolution: {integrity: sha512-h7DFJLf9uQD+XDxr1NwA3/oFIjsnj/iED2RjET5u6/svMec46IbF1CYPhmB5Q/1Fc0WkcvhPpsEsrtVXQLxNzA==}
+    peerDependencies:
+      embla-carousel: 8.3.0
+    dependencies:
+      embla-carousel: 8.3.0
+    dev: false
 
   /embla-carousel-react@8.3.0(react@18.3.1):
     resolution: {integrity: sha512-P1FlinFDcIvggcErRjNuVqnUR8anyo8vLMIH8Rthgofw7Nj8qTguCa2QjFAbzxAUTQTPNNjNL7yt0BGGinVdFw==}
