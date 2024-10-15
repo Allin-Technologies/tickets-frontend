@@ -1,22 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { api } from "@/lib/api";
-import { eventSchema } from "@/lib/zod";
+// import { notFound } from "next/navigation";
+// import { api } from "@/lib/api";
+// import { eventSchema } from "@/lib/zod";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-export default async function Page(props: { params: { id: string } }) {
-  // const request = await api(eventSchema, {
-  //   method: "get",
-  //   url: `/event/${props.params.id}`,
-  // });
-
-  // if (request.response_code !== 200 || !request.data) {
-  //   notFound();
-  // }
-
-  // console.log(request.data);
-
+export default async function Page() {
   return (
     <main className='w-screen min-h-dvh'>
       <section className='w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:p-8 xl:px-12 2xl:px-0 2xl:py-16 space-y-16'>

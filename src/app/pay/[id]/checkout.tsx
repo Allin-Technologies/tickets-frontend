@@ -91,8 +91,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
     resolver: zodResolver(contact_step),
     defaultValues: {
       contact: {
-        firstname: "",
-        lastname: "",
+        first_name: "",
+        last_name: "",
         gender: "",
         email: "",
         confirmemail: "",
@@ -124,7 +124,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           closeButton: true,
         });
 
-        router.push("/ticket/8739832892");
+        router.push("/pay/success");
       } else {
         toast.warning("Oops", {
           description:
@@ -319,7 +319,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                 <div className='space-y-3'>
                   <FormField
                     control={step2.control}
-                    name='contact.firstname'
+                    name='contact.first_name'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
@@ -334,7 +334,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                   />
                   <FormField
                     control={step2.control}
-                    name='contact.lastname'
+                    name='contact.last_name'
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
@@ -365,8 +365,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value='Male'>Male</SelectItem>
-                            <SelectItem value='Female'>Female</SelectItem>
+                            <SelectItem value='male'>Male</SelectItem>
+                            <SelectItem value='female'>Female</SelectItem>
                             <SelectItem value='Non Binary'>
                               Non Binary
                             </SelectItem>

@@ -38,8 +38,8 @@ export const ticket_types_step = z.object({
 export const contact_step = z.object({
   contact: z
     .object({
-      firstname: z.string().min(2, { message: "Your first name is required" }),
-      lastname: z.string().min(2, { message: "Your last name is required" }),
+      first_name: z.string().min(2, { message: "Your first name is required" }),
+      last_name: z.string().min(2, { message: "Your last name is required" }),
       gender: z.string().min(2, { message: "This field is required" }),
       email: z.string().email(),
       confirmemail: z.string().email(),
