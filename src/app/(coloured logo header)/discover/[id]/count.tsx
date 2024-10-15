@@ -43,6 +43,7 @@ export function Count({ date, time }: CountProps) {
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
