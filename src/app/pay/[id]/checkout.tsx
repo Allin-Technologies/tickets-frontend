@@ -70,6 +70,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       reset();
       setStep("ticket_types");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   const step1 = useForm<z.infer<typeof ticket_types_step>>({
