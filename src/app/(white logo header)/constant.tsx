@@ -118,3 +118,12 @@ export const features = [
     ),
   },
 ];
+
+export const partners = [
+  "/partners/abitto.png",
+  "/partners/cci.png",
+  "/partners/ted_x.png",
+  "/partners/abitto.png",
+  "/partners/cci.png",
+  "/partners/ted_x.png",
+];
