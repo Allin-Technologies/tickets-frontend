@@ -23,8 +23,7 @@ import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-const dateString = "2024-10-13";
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Discover(props: { initailData: Array<any> }) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(2022, 0, 20),

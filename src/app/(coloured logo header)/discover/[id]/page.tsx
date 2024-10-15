@@ -10,8 +10,9 @@ import { getEventTimeRange, formatEventDate } from "@/lib/utils";
 import { api } from "@/lib/api";
 import { eventSchema } from "@/lib/zod";
 import { Count } from "./count";
+import { z } from "zod";
 
-const dateString = "2024-10-13";
+const validator = z.array(z.any());
 
 export default async function Page(props: { params: { id: string } }) {
   const request = await api(eventSchema, {
@@ -20,6 +21,15 @@ export default async function Page(props: { params: { id: string } }) {
   });
 
   if (request.response_code !== 200 || !request.data) {
+    notFound();
+  }
+
+  const more_request = await api(validator, {
+    method: "get",
+    url: `/event/getall`,
+  });
+
+  if (request.response_code !== 200) {
     notFound();
   }
 
@@ -99,47 +109,52 @@ export default async function Page(props: { params: { id: string } }) {
 
           <div className='flex flex-col items-center space-y-14 w-full'>
             <div className='w-full grid grid-cols-3 gap-6'>
-              {Array.from({ length: 6 }).map((_, index) => {
-                // Parse the date string into a Date object
-                const date = parse(dateString, "yyyy-MM-dd", new Date());
+              {more_request?.data
+                ?.filter((event) => event._id !== request.data?._id)
+                ?.map((event, index) => {
+                  // Parse the date string into a Date object
+                  const date = parse(
+                    event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+                    "d MMMM, yyyy",
+                    new Date()
+                  );
 
-                // Get the abbreviated month and day
-                const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
-                const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
+                  // Get the abbreviated month and day
+                  const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
+                  const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
 
-                return (
-                  <Link
-                    href='/discover/a32ds983'
-                    key={index}
-                    className='bg-white rounded-2xl overflow-clip'
-                  >
-                    <Image
-                      className='aspect-video w-full object-cover'
-                      src='/9a491f339e53f3d5854e1302f0b089b1.png'
-                      alt='demo'
-                      width={342}
-                      height={196}
-                    />
-                    <div className='flex space-x-6 p-6'>
-                      <div className='flex flex-col items-center'>
-                        <p className='text-sm font-bold text-primary uppercase'>
-                          {month}
-                        </p>
-                        <p className='text-2xl font-bold'>{day}</p>
+                  return (
+                    <Link
+                      href={`/discover/${event?.slug}`}
+                      key={index}
+                      className='bg-white rounded-2xl overflow-clip'
+                    >
+                      <Image
+                        className='aspect-video w-full object-cover'
+                        src={event?.imgsrc}
+                        alt={event?.title}
+                        width={342}
+                        height={196}
+                      />
+                      <div className='flex space-x-6 p-6'>
+                        <div className='flex flex-col items-center'>
+                          <p className='text-sm font-bold text-primary uppercase'>
+                            {month}
+                          </p>
+                          <p className='text-2xl font-bold'>{day}</p>
+                        </div>
+                        <div className='space-y-2'>
+                          <p className='font-bold line-clamp-2 text-ellipsis'>
+                            {event?.title}
+                          </p>
+                          <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
+                            {event?.about}
+                          </p>
+                        </div>
                       </div>
-                      <div className='space-y-2'>
-                        <p className='font-bold line-clamp-2 text-ellipsis'>
-                          TEDx MambillaStreet
-                        </p>
-                        <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
-                          We’ll get you directly seated and inside for you to
-                          enjoy the show.
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+                    </Link>
+                  );
+                })}
             </div>
 
             <Button
