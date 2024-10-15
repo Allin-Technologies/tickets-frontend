@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useControllableState } from "@/hooks/use-controllable-state";
-import { Minus, Plus } from "lucide-react";
 import { inputVariants } from "./input";
 import { cn } from "@/lib/utils";
 
@@ -97,7 +96,9 @@ interface NumberFieldInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     "value" | "onChange"
-  > {}
+  > {
+  empty?: undefined;
+}
 
 const NumberFieldInput = React.forwardRef<
   HTMLInputElement,

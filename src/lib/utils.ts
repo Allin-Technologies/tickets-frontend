@@ -88,7 +88,6 @@ export function calculateSubtotal(
 
 export function calculateTotal(
   tickets: calculateSubtotalTicket[],
-  fees: number = 0,
   coupon?: { discount_percentage: number }
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
