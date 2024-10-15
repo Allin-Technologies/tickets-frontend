@@ -6,9 +6,9 @@ import { ContactForm } from "./form";
 export function Footer() {
   return (
     <footer>
-      <div className='relative after:absolute after:left-0 after:top-0 after:bottom-0 after:h-full after:w-1/2 after:z-[1] after:bg-primary/20 before:absolute before:right-0 before:top-0 before:bottom-0 before:h-full before:w-1/2 before:z-[1] before:bg-secondary/10'>
-        <div className='w-full max-w-screen-2xl mx-auto gap-6 py-8 px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0 grid grid-cols-2'>
-          <div className='z-[2] space-y-10 pt-16 pb-8'>
+      <div className='relative lg:after:absolute lg:after:left-0 lg:after:top-0 lg:after:bottom-0 lg:after:h-full lg:after:w-1/2 lg:after:z-[1] lg:after:bg-primary/20 lg:before:absolute lg:before:right-0 lg:before:top-0 lg:before:bottom-0 lg:before:h-full lg:before:w-1/2 lg:before:z-[1] lg:before:bg-secondary/10'>
+        <div className='w-full max-w-screen-2xl mx-auto lg:gap-6 lg:px-8 xl:px-12 2xl:px-0 grid lg:grid-cols-2'>
+          <div className='z-[2] space-y-10 p-8 pt-16 lg:px-0 w-full bg-primary/20 lg:bg-transparent'>
             <div className='text-2xl space-y-4'>
               <h3 className='font-bold'>Contact us</h3>
               <p className='text-secondary-foreground'>
@@ -36,7 +36,7 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <div className='z-[2] pt-16 pb-8 px-16 w-full'>
+          <div className='z-[2] pt-16 p-8 pb-8 lg:px-16 w-full bg-secondary/10 lg:bg-transparent'>
             <div className='text-2xl space-y-4 w-full'>
               <h3 className='font-bold'>Fill in your details</h3>
               <ContactForm />
@@ -45,17 +45,18 @@ export function Footer() {
         </div>
       </div>
       <div className='bg-primary-foreground'>
-        <div className='grid w-full max-w-screen-2xl mx-auto gap-6 py-8 px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0'>
+        <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
           <div>
             <Image
               src='/tickets-by-All-In-icon-logo-white.png'
               alt='Icon logo'
               width={40}
               height={52}
+              className='size-6'
             />
           </div>
-          <div className='text-white grid grid-cols-2'>
-            <div className='flex item-center gap-5 my-auto'>
+          <div className='text-white grid lg:grid-cols-2 gap-8'>
+            <div className='flex item-center flex-wrap gap-x-5 gap-y-2 my-auto'>
               {footer.links.map((link, index) => (
                 <Link
                   key={index}
