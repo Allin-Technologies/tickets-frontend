@@ -5,7 +5,7 @@ import "./globals.css";
 import { Footer } from "@/components/navigation/footer";
 import { Toaster } from "@/components/ui/sonner";
 
-export const plusJakartaSans = localFont({
+const plusJakartaSans = localFont({
   src: [
     {
       path: "./fonts/PlusJakartaSans[wght].ttf",
