@@ -38,7 +38,26 @@ export const mobile_links: Link[] = [
     url: "/",
     display: "link",
   },
-  ...navLinks,
+  {
+    title: "Discover Events",
+    url: "/discover",
+    display: "link",
+  },
+  {
+    title: "Pricing",
+    url: "/pricing",
+    display: "link",
+  },
+  {
+    title: "About",
+    url: "/about",
+    display: "link",
+  },
+  {
+    title: "Book a demo",
+    url: "/book-a-demo",
+    display: "button",
+  },
 ];
 
 export const footer: {

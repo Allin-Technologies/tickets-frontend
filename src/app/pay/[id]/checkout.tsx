@@ -128,13 +128,13 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         props
       );
 
-      if (res?.status === true) {
+      if (res?.status === true && res?.data) {
         toast.success("Congrats 🎉", {
           description: "Your ticket reservation was successful",
           closeButton: true,
         });
 
-        router.push("/pay/success");
+        router.push(`/pay/success?id=${res.data.ticket._id}`);
       } else {
         toast.warning("Oops", {
           description:

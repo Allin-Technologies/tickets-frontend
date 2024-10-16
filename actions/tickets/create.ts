@@ -50,14 +50,15 @@ export async function createTicket(
       trxRef: null,
     };
 
+    const url =
+      event.event_type === "Free" ? "/ticket/create-free" : "/ticket/create";
+
     // create a ticket
     const ticket_request = await api(ticket_req_res, {
       method: "post",
-      url: `/ticket/create`,
+      url: url,
       data: data,
     });
-
-    console.log(data, ticket_request);
 
     return {
       status: ticket_request.response_code === 201,

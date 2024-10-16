@@ -102,7 +102,13 @@ export default function Home() {
         </Carousel>
       </section>
 
-      <section className='w-full px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12'>
+      <section className='w-full px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12 2xl:space-y-16'>
+        <div className='max-w-screen-2xl mx-auto w-full'>
+          <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold text-center'>
+            Our Users
+          </h1>
+        </div>
+
         <Carousel
           opts={{
             loop: true,

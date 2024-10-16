@@ -1,6 +1,6 @@
 export const features = [
   {
-    title: "Entertainment",
+    title: "Events",
     desc: "Sell and manage tickets for entertainment events, ensuring real-time tracking access for attendees.",
     icon: (
       <svg
