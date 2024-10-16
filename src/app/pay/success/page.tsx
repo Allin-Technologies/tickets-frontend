@@ -10,6 +10,11 @@ import { z } from "zod";
 
 const validator = z.object({
   _id: z.string(),
+  event_info: z.array(
+    z.object({
+      price: z.number(),
+    })
+  ),
 });
 
 export default async function Page(props: { searchParams: { id?: string } }) {
@@ -64,7 +69,19 @@ export default async function Page(props: { searchParams: { id?: string } }) {
               <div className='flex-1 flex flex-col justify-between space-y-12'>
                 <div className='text-center'>
                   <p>Total Payment</p>
-                  <h3 className='font-bold text-4xl'>₦0.00</h3>
+                  <h3 className='font-bold text-4xl'>
+                    ₦
+                    {parseFloat(
+                      String(
+                        request.data.event_info.reduce(
+                          (accumulator, ticket) => accumulator + ticket.price,
+                          0
+                        )
+                      )
+                    )
+                      ?.toFixed(2)
+                      ?.toLocaleString()}
+                  </h3>
                 </div>
 
                 <div className='py-8 border-t border-dashed'>

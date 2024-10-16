@@ -31,24 +31,33 @@ export async function createTicket(
       return { status: false, message: "Error creating ticket", data: null };
     }
 
+    const data = {
+      userID: request.data?._id,
+      event_info: props.tickets.map((ticket) => ({
+        name: event.title,
+        type: event.category,
+        numberOfTickets: ticket.quantity,
+        date: event.date,
+        time: event.time,
+        price: ticket.cost,
+        total_cost: ticket.cost * ticket.quantity,
+      })),
+      payment_status: "Pending",
+      total_cost: props.tickets.reduce((accumulator, ticket) => {
+        const total = ticket.cost * ticket.quantity;
+        return accumulator + total;
+      }, 0),
+      trxRef: null,
+    };
+
     // create a ticket
     const ticket_request = await api(ticket_req_res, {
       method: "post",
       url: `/ticket/create`,
-      data: {
-        userID: request.data?._id,
-        event_info: props.tickets.map((ticket) => ({
-          name: event.title,
-          type: event.category,
-          numberOfTickets: ticket.quantity,
-          date: event.date,
-          time: event.time,
-          price: ticket.cost,
-        })),
-        payment_status: "Succesful",
-        trxRef: "",
-      },
+      data: data,
     });
+
+    console.log(data, ticket_request);
 
     return {
       status: ticket_request.response_code === 201,

@@ -137,7 +137,7 @@ const NumberFieldInput = React.forwardRef<
     <input
       type='text'
       ref={ref}
-      defaultValue={value}
+      // defaultValue={value}
       value={value}
       onWheel={handleWheel}
       onKeyDown={handleKeyDown}
