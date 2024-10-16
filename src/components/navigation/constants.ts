@@ -11,11 +11,6 @@ export const navLinks: Link[] = [
     display: "link",
   },
   {
-    title: "How Tickets work",
-    url: "/faq#how-tickets-work",
-    display: "link",
-  },
-  {
     title: "Pricing",
     url: "/pricing",
     display: "link",
@@ -38,26 +33,7 @@ export const mobile_links: Link[] = [
     url: "/",
     display: "link",
   },
-  {
-    title: "Discover Events",
-    url: "/discover",
-    display: "link",
-  },
-  {
-    title: "Pricing",
-    url: "/pricing",
-    display: "link",
-  },
-  {
-    title: "About",
-    url: "/about",
-    display: "link",
-  },
-  {
-    title: "Book a demo",
-    url: "/book-a-demo",
-    display: "button",
-  },
+  ...navLinks,
 ];
 
 export const footer: {

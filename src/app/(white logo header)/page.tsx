@@ -48,7 +48,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className='p-12'></div>
+      <div className='lg:p-12'></div>
 
       <section className='w-full px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12'>
         <div className='max-w-screen-2xl mx-auto w-full space-y-4'>
@@ -102,10 +102,55 @@ export default function Home() {
         </Carousel>
       </section>
 
-      <section className='w-full px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12 2xl:space-y-16'>
+      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-6'>
+        <Image
+          src='/unique-operation.png'
+          alt=''
+          className='w-full'
+          width={800}
+          height={900}
+        />
+        <div className='my-auto space-y-16'>
+          <div className='space-y-4'>
+            <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
+              <span className='text-primary'>Set up for your</span> unique
+              operation in seconds
+            </h1>
+            <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
+              Monitor sales in real-time and see which tickets perform best.
+            </p>
+          </div>
+
+          <Button
+            className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
+            variant='outline'
+            asChild
+          >
+            <Link href='/discover'>
+              <span>Load more events</span>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={2.5}
+                stroke='currentColor'
+                className='size-4'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
+                />
+              </svg>
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      <section className='w-full px-4 py-32 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12 2xl:space-y-16'>
         <div className='max-w-screen-2xl mx-auto w-full'>
           <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold text-center'>
-            Our Users
+            <span className='text-primary'>Our</span> Users
           </h1>
         </div>
 
@@ -142,6 +187,51 @@ export default function Home() {
             ))}
           </CarouselContent>
         </Carousel>
+      </section>
+
+      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-6'>
+        <div className='my-auto space-y-16'>
+          <div className='space-y-4'>
+            <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
+              <span className='text-primary'>Real-Time</span> Data Dashboard
+            </h1>
+            <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
+              Access a central hub for sales, ticket scans, and vendor
+              performance data.
+            </p>
+          </div>
+
+          <Button
+            className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
+            variant='outline'
+            asChild
+          >
+            <Link href='/discover'>
+              <span>Load more events</span>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={2.5}
+                stroke='currentColor'
+                className='size-4'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
+                />
+              </svg>
+            </Link>
+          </Button>
+        </div>
+        <Image
+          src='/real-time.png'
+          alt=''
+          className='w-full'
+          width={800}
+          height={900}
+        />
       </section>
 
       <section className='w-full'>

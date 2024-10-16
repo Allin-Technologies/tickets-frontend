@@ -83,10 +83,10 @@ export function Header(props: HeaderProps) {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle className='text-left'>Menu</SheetTitle>
               </SheetHeader>
 
-              <div className='flex flex-col items-center space-y-6 pt-10'>
+              <div className='flex flex-col items-left space-y-6 pt-10'>
                 {mobile_links.map((link, index) => (
                   <SheetClose asChild key={index}>
                     <Link className='text-2xl' href={link.url ?? "#"}>

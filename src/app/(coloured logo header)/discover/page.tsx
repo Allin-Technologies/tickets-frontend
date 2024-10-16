@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
-import { api } from "../../../lib/api";
-import { Discover } from "./client-side";
 import { z } from "zod";
+import { notFound } from "next/navigation";
+import { api } from "@/lib/api";
+import { Discover } from "./client-side";
 
 const validator = z.array(z.any());
 

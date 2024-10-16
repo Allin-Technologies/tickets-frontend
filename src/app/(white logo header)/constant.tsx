@@ -123,7 +123,9 @@ export const partners = [
   "/partners/abitto.png",
   "/partners/cci.png",
   "/partners/ted_x.png",
+  "/partners/web3-conf.png",
   "/partners/abitto.png",
   "/partners/cci.png",
   "/partners/ted_x.png",
+  "/partners/web3-conf.png",
 ];

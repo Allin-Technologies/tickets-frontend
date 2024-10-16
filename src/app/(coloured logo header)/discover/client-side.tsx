@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { format, parse } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -17,18 +20,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addDays, format, parse } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import {
+  useQuery,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { getAllEvents } from "../../../../actions/events";
+
+// Create a client
+const queryClient = new QueryClient();
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Discover(props: { initailData: Array<any> }) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+  return (
+    // Provide the client to your App
+    <QueryClientProvider client={queryClient}>
+      <Events {...props} />
+    </QueryClientProvider>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function Events(props: { initailData: Array<any> }) {
+  const [date, setDate] = React.useState<Date>();
+
+  const [category, setCategory] = React.useState("all");
+  const [price, setPrice] = React.useState("all");
+
+  // Queries
+  const query = useQuery({
+    queryKey: ["events", category, price, date],
+    queryFn: async () => {
+      return await getAllEvents(category, price, date);
+    },
+    initialData: props.initailData,
   });
+
+  if (query.isLoading) {
+    return <div>Loading...</div>; // Display loading state
+  }
+
+  if (query.error) {
+    return <div>Error fetching data</div>; // Display error state
+  }
 
   return (
     <>
@@ -37,25 +72,53 @@ export function Discover(props: { initailData: Array<any> }) {
           Upcoming Events
         </h2>
         <div className='grid grid-cols-2 sm:flex items-center gap-2'>
-          <Select defaultValue='all'>
+          <Select onValueChange={setCategory} defaultValue={category}>
             <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
               <SelectValue placeholder='Select a Category' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectItem value='all'>All Categories</SelectItem>
-                <SelectItem value='apple'>Tech</SelectItem>
-                <SelectItem value='pineapple'>Conference</SelectItem>
+                <SelectItem value='⁠Conferences & Seminars'>
+                  ⁠Conferences & Seminars
+                </SelectItem>
+                <SelectItem value='⁠Concerts & Music Festivals'>
+                  ⁠Concerts & Music Festivals
+                </SelectItem>
+                <SelectItem value='⁠Sports Events'>⁠Sports Events</SelectItem>
+                <SelectItem value='⁠Theatre & Performing Arts'>
+                  ⁠Theatre & Performing Arts
+                </SelectItem>
+                <SelectItem value='⁠Parties & Social Events'>
+                  ⁠Parties & Social Events
+                </SelectItem>
+                <SelectItem value='Exhibitions & Trade Shows'>
+                  Exhibitions & Trade Shows
+                </SelectItem>
+                <SelectItem value='⁠Cultural & Heritage Events'>
+                  ⁠Cultural & Heritage Events
+                </SelectItem>
+                <SelectItem value='⁠Workshops & Training'>
+                  ⁠Workshops & Training
+                </SelectItem>
+                <SelectItem value='⁠Charity & Fundraising Events'>
+                  ⁠Charity & Fundraising Events
+                </SelectItem>
+                <SelectItem value='ood & Drink Festivals'>
+                  ⁠Food & Drink Festivals
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select>
+          <Select onValueChange={setPrice} defaultValue={price}>
             <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
               <SelectValue placeholder='Price' />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
+                <SelectItem value='all'>All</SelectItem>
                 <SelectItem value='free'>Free</SelectItem>
+                <SelectItem value='paid'>Paid</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -67,32 +130,19 @@ export function Discover(props: { initailData: Array<any> }) {
                   variant='secondary'
                   className={cn(
                     "sm:w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
-                    !date && "text-muted-foreground"
+                    !date && "text-dark-blue/50"
                   )}
                 >
                   <CalendarIcon className='mr-2 h-4 w-4' />
-                  {date?.from ? (
-                    date.to ? (
-                      <>
-                        {format(date.from, "LLL dd, y")} -{" "}
-                        {format(date.to, "LLL dd, y")}
-                      </>
-                    ) : (
-                      format(date.from, "LLL dd, y")
-                    )
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className='w-auto p-0' align='end'>
                 <Calendar
-                  initialFocus
-                  mode='range'
-                  defaultMonth={date?.from}
+                  mode='single'
                   selected={date}
                   onSelect={setDate}
-                  numberOfMonths={2}
+                  initialFocus
                 />
               </PopoverContent>
             </Popover>
@@ -102,19 +152,30 @@ export function Discover(props: { initailData: Array<any> }) {
 
       <div className='flex flex-col items-center space-y-14 w-full'>
         <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {props.initailData.map((event, index) => {
-            // Parse the date string into a Date object
-            const date = parse(
-              event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
-              "d MMMM, yyyy",
-              new Date()
-            );
+          {query.data
+            ?.map((event) => {
+              // Parse the date string into a Date object
+              const date = parse(
+                event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+                "d MMMM, yyyy",
+                new Date()
+              );
 
-            // Get the abbreviated month and day
-            const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
-            const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
+              // Get the abbreviated month and day
+              const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
+              const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
 
-            return (
+              return {
+                ...event,
+                month,
+                day,
+                parsedDate: date,
+              };
+            })
+            .sort((a, b) => {
+              return a.parsedDate - b.parsedDate;
+            })
+            .map((event, index) => (
               <Link
                 href={`/discover/${event?.slug}`}
                 key={index}
@@ -130,9 +191,9 @@ export function Discover(props: { initailData: Array<any> }) {
                 <div className='flex space-x-6 p-6'>
                   <div className='flex flex-col items-center'>
                     <p className='text-sm font-bold text-primary uppercase'>
-                      {month}
+                      {event.month}
                     </p>
-                    <p className='text-2xl font-bold'>{day}</p>
+                    <p className='text-2xl font-bold'>{event.day}</p>
                   </div>
                   <div className='space-y-2'>
                     <p className='font-bold line-clamp-2 text-ellipsis'>
@@ -144,11 +205,10 @@ export function Discover(props: { initailData: Array<any> }) {
                   </div>
                 </div>
               </Link>
-            );
-          })}
+            ))}
         </div>
 
-        <Button
+        {/* <Button
           className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
           variant='outline'
         >
@@ -167,7 +227,7 @@ export function Discover(props: { initailData: Array<any> }) {
               d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
             />
           </svg>
-        </Button>
+        </Button> */}
       </div>
     </>
   );
