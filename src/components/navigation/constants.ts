@@ -81,13 +81,13 @@ export const footer: {
   ],
   contacts: [
     {
-      title: "+234 333 6527",
-      url: "tel:+234 333 6527",
+      title: "+2349057024772",
+      url: "tel:+234 905 702 4772",
       icon: "/icons/Phone.svg",
     },
     {
-      title: "Tickets@all-in.com",
-      url: "mailto:tickets@all-in.com",
+      title: "Tickets@lifewithallin.com",
+      url: "mailto:tickets@lifewithallin.com",
       icon: "/icons/Email.svg",
     },
     {
