@@ -1,7 +1,7 @@
 "use server";
 
 import { api } from "@/lib/api";
-import { ticketFormSchema } from "@/lib/zod";
+import { eventSchema, ticketFormSchema } from "@/lib/zod";
 import { z } from "zod";
 
 const user_req_res = z.object({
@@ -14,7 +14,10 @@ const ticket_req_res = z.object({
   }),
 });
 
-export async function createTicket(props: z.infer<typeof ticketFormSchema>) {
+export async function createTicket(
+  props: z.infer<typeof ticketFormSchema>,
+  event: z.infer<typeof eventSchema>
+) {
   try {
     // create a user
     const request = await api(user_req_res, {
@@ -34,18 +37,16 @@ export async function createTicket(props: z.infer<typeof ticketFormSchema>) {
       url: `/ticket/create`,
       data: {
         userID: request.data?._id,
-        event_info: [
-          {
-            name: "Tech Conference 2024",
-            type: "Conference",
-            numberOfTickets: props.tickets.length,
-            date: "2024-11-05",
-            time: "10:00 AM",
-            price: 150.0,
-          },
-        ],
+        event_info: props.tickets.map((ticket) => ({
+          name: event.title,
+          type: event.category,
+          numberOfTickets: ticket.quantity,
+          date: event.date,
+          time: event.time,
+          price: ticket.cost,
+        })),
         payment_status: "Succesful",
-        trxRef: "56565546",
+        trxRef: "",
       },
     });
 

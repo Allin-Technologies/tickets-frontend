@@ -71,7 +71,10 @@ export function Header(props: HeaderProps) {
           <Sheet>
             <SheetTrigger asChild>
               <Button
-                className='text-primary-foreground'
+                className={cn(
+                  "text-primary-foreground",
+                  props.variant === "white" && "text-white"
+                )}
                 variant='link'
                 size='icon'
               >

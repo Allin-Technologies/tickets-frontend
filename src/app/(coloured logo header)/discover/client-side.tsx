@@ -44,11 +44,8 @@ export function Discover(props: { initailData: Array<any> }) {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value='all'>All Categories</SelectItem>
-                <SelectItem value='apple'>Apple</SelectItem>
-                <SelectItem value='banana'>Banana</SelectItem>
-                <SelectItem value='blueberry'>Blueberry</SelectItem>
-                <SelectItem value='grapes'>Grapes</SelectItem>
-                <SelectItem value='pineapple'>Pineapple</SelectItem>
+                <SelectItem value='apple'>Tech</SelectItem>
+                <SelectItem value='pineapple'>Conference</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

@@ -33,7 +33,7 @@ export default function Home() {
         <div className='absolute top-0 left-0 right-0 bottom-0 z-[2] bg-gradient-to-b from-[hsla(248,_76%,_49%,_1)] to-[40%] to-black/20'></div>
 
         <div className='z-[3] p-4 md:p-6 lg:p-8 xl:p-12 2xl:px-0 max-w-[970px] mx-auto text-white text-center space-y-4 2xl:space-y-10'>
-          <h1 className='text-3xl lg:text-4xl xl:text-6xl 2xl:text-8xl font-bold'>
+          <h1 className='text-4xl lg:text-5xl xl:text-6xl 2xl:text-8xl font-bold'>
             Ticket  experience made easy{" "}
           </h1>
           <div className='space-y-3 2xl:space-y-6'>

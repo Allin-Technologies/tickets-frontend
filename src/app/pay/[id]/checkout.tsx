@@ -119,11 +119,14 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
     }
 
     try {
-      const res = await createTicket({
-        contact: values.contact,
-        tickets: tickets,
-        payment_method: "Free",
-      });
+      const res = await createTicket(
+        {
+          contact: values.contact,
+          tickets: tickets,
+          payment_method: "Free",
+        },
+        props
+      );
 
       if (res?.status === true) {
         toast.success("Congrats 🎉", {
