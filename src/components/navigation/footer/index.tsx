@@ -36,7 +36,10 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <div className='z-[2] pt-16 p-8 pb-8 lg:px-16 w-full bg-secondary/10 lg:bg-transparent'>
+          <div
+            id='contact'
+            className='z-[2] pt-16 p-8 pb-8 lg:px-16 w-full bg-secondary/10 lg:bg-transparent'
+          >
             <div className='text-2xl space-y-4 w-full'>
               <h3 className='font-bold'>Fill in your details</h3>
               <ContactForm />

@@ -22,7 +22,7 @@ export const navLinks: Link[] = [
   },
   {
     title: "Book a demo",
-    url: "/book-a-demo",
+    url: "#contact",
     display: "button",
   },
 ];
