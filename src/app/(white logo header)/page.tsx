@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import AutoPlay from "embla-carousel-autoplay";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { features, partners } from "./constant";
+import { features, partners, reviews } from "./constant";
 
 export default function Home() {
   return (
@@ -258,7 +258,7 @@ export default function Home() {
             className='w-full'
           >
             <CarouselContent containerClassName='overflow-visible'>
-              {Array.from({ length: 5 }).map((_, index) => (
+              {reviews.map((review, index) => (
                 <CarouselItem
                   key={index}
                   className='basis-full lg:basis-[66%] xl:basis-[50%]'
@@ -272,7 +272,7 @@ export default function Home() {
                           xmlns='http://www.w3.org/2000/svg'
                           className='size-7 self-start'
                         >
-                          <g clip-path='url(#clip0_5_23)'>
+                          <g clipPath='url(#clip0_5_23)'>
                             <path
                               d='M5.72875 21.6513C4.44125 20.2838 3.75 18.7501 3.75 16.2638C3.75 11.8888 6.82125 7.96756 11.2875 6.02881L12.4038 7.75131C8.235 10.0063 7.42 12.9326 7.095 14.7776C7.76625 14.4301 8.645 14.3088 9.50625 14.3888C11.7613 14.5976 13.5388 16.4488 13.5388 18.7501C13.5388 19.9104 13.0778 21.0232 12.2573 21.8437C11.4369 22.6641 10.3241 23.1251 9.16375 23.1251C7.8225 23.1251 6.54 22.5126 5.72875 21.6513ZM18.2288 21.6513C16.9412 20.2838 16.25 18.7501 16.25 16.2638C16.25 11.8888 19.3213 7.96756 23.7875 6.02881L24.9038 7.75131C20.735 10.0063 19.92 12.9326 19.595 14.7776C20.2662 14.4301 21.145 14.3088 22.0062 14.3888C24.2612 14.5976 26.0387 16.4488 26.0387 18.7501C26.0387 19.9104 25.5778 21.0232 24.7573 21.8437C23.9369 22.6641 22.8241 23.1251 21.6637 23.1251C20.3225 23.1251 19.04 22.5126 18.2288 21.6513Z'
                               fill='#381DDB'
@@ -286,11 +286,7 @@ export default function Home() {
                         </svg>
 
                         <p className='text-center max-w-[90%] mx-auto'>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry. Lorem Ipsum has been the
-                          industry&apos;s standard dummy text ever since the
-                          1500s, when an unknown printer took a galley of type
-                          and scrambled it to make a type specimen book.
+                          {review.review}
                         </p>
 
                         <svg
@@ -299,7 +295,7 @@ export default function Home() {
                           xmlns='http://www.w3.org/2000/svg'
                           className='size-7 rotate-180 self-end'
                         >
-                          <g clip-path='url(#clip0_5_23)'>
+                          <g clipPath='url(#clip0_5_23)'>
                             <path
                               d='M5.72875 21.6513C4.44125 20.2838 3.75 18.7501 3.75 16.2638C3.75 11.8888 6.82125 7.96756 11.2875 6.02881L12.4038 7.75131C8.235 10.0063 7.42 12.9326 7.095 14.7776C7.76625 14.4301 8.645 14.3088 9.50625 14.3888C11.7613 14.5976 13.5388 16.4488 13.5388 18.7501C13.5388 19.9104 13.0778 21.0232 12.2573 21.8437C11.4369 22.6641 10.3241 23.1251 9.16375 23.1251C7.8225 23.1251 6.54 22.5126 5.72875 21.6513ZM18.2288 21.6513C16.9412 20.2838 16.25 18.7501 16.25 16.2638C16.25 11.8888 19.3213 7.96756 23.7875 6.02881L24.9038 7.75131C20.735 10.0063 19.92 12.9326 19.595 14.7776C20.2662 14.4301 21.145 14.3088 22.0062 14.3888C24.2612 14.5976 26.0387 16.4488 26.0387 18.7501C26.0387 19.9104 25.5778 21.0232 24.7573 21.8437C23.9369 22.6641 22.8241 23.1251 21.6637 23.1251C20.3225 23.1251 19.04 22.5126 18.2288 21.6513Z'
                               fill='#381DDB'
@@ -315,14 +311,14 @@ export default function Home() {
 
                       <div className='flex items-center space-x-3'>
                         <Image
-                          src='/demo-person.jpeg'
-                          alt='demo-person'
+                          src={review.img}
+                          alt={review.name}
                           width={240}
                           height={240}
                           className='size-12 aspect-square rounded-full object-cover'
                         />
 
-                        <p className='font-bold'>Precious Micah</p>
+                        <p className='font-bold'>{review.name}</p>
                       </div>
                     </div>
                   </div>

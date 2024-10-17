@@ -10,11 +10,8 @@ import { z } from "zod";
 
 const validator = z.object({
   _id: z.string(),
-  event_info: z.array(
-    z.object({
-      price: z.number(),
-    })
-  ),
+  event_info: z.array(z.any()),
+  total_cost: z.number(),
 });
 
 export default async function Page(props: { searchParams: { id?: string } }) {
@@ -71,14 +68,7 @@ export default async function Page(props: { searchParams: { id?: string } }) {
                   <p>Total Payment</p>
                   <h3 className='font-bold text-4xl'>
                     ₦
-                    {parseFloat(
-                      String(
-                        request.data.event_info.reduce(
-                          (accumulator, ticket) => accumulator + ticket.price,
-                          0
-                        )
-                      )
-                    )
+                    {parseFloat(String(request.data.total_cost))
                       ?.toFixed(2)
                       ?.toLocaleString()}
                   </h3>

@@ -81,7 +81,7 @@ export function Header(props: HeaderProps) {
                 <TextAlignJustifyIcon className='size-6' />
               </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side='top'>
               <SheetHeader>
                 <SheetTitle className='text-left'>Menu</SheetTitle>
               </SheetHeader>
@@ -89,9 +89,17 @@ export function Header(props: HeaderProps) {
               <div className='flex flex-col items-left space-y-6 pt-10'>
                 {mobile_links.map((link, index) => (
                   <SheetClose asChild key={index}>
-                    <Link className='text-2xl' href={link.url ?? "#"}>
-                      {link.title}
-                    </Link>
+                    <Button
+                      key={index}
+                      className={cn(
+                        link.display !== "button" &&
+                          "text-black text-2xl py-1 px-0 justify-start w-full font-normal"
+                      )}
+                      variant={link.display === "link" ? "link" : "default"}
+                      asChild
+                    >
+                      <Link href={link.url ?? "#"}>{link.title}</Link>
+                    </Button>
                   </SheetClose>
                 ))}
               </div>

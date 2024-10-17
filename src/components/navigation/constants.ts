@@ -50,10 +50,15 @@ export const footer: {
     ...navLinks,
   ],
   socials: [
-    { url: "#", icon: "/icons/Facebook.svg" },
-    { url: "#", icon: "/icons/Twitter.svg" },
-    { url: "#", icon: "/icons/Instagram.svg" },
-    { url: "#", icon: "/icons/LinkedIn.svg" },
+    {
+      url: "https://www.tiktok.com/@tickets.byallin?_t=8qahBvqiWEY&_r=1",
+      icon: "/icons/Tiktok.svg",
+    },
+    { url: "https://x.com/ticketsbyallin?s=21", icon: "/icons/Twitter.svg" },
+    {
+      url: "https://www.instagram.com/ticketsbyall.in?igsh=dDNzc3hhd3NhaGo5",
+      icon: "/icons/Instagram.svg",
+    },
   ],
   contacts: [
     {

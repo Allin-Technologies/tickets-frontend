@@ -57,10 +57,6 @@ function Events(props: { initailData: Array<any> }) {
     initialData: props.initailData,
   });
 
-  if (query.isLoading) {
-    return <div>Loading...</div>; // Display loading state
-  }
-
   if (query.error) {
     return <div>Error fetching data</div>; // Display error state
   }
@@ -150,85 +146,100 @@ function Events(props: { initailData: Array<any> }) {
         </div>
       </div>
 
-      <div className='flex flex-col items-center space-y-14 w-full'>
-        <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {query.data
-            ?.map((event) => {
-              // Parse the date string into a Date object
-              const date = parse(
-                event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
-                "d MMMM, yyyy",
-                new Date()
-              );
-
-              // Get the abbreviated month and day
-              const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
-              const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
-
-              return {
-                ...event,
-                month,
-                day,
-                parsedDate: date,
-              };
-            })
-            .sort((a, b) => {
-              return a.parsedDate - b.parsedDate;
-            })
-            .map((event, index) => (
-              <Link
-                href={`/discover/${event?.slug}`}
-                key={index}
-                className='bg-white rounded-2xl overflow-clip'
-              >
-                <Image
-                  className='aspect-video w-full object-cover'
-                  src={event?.imgsrc}
-                  alt={event?.title}
-                  width={342}
-                  height={196}
-                />
-                <div className='flex space-x-6 p-6'>
-                  <div className='flex flex-col items-center'>
-                    <p className='text-sm font-bold text-primary uppercase'>
-                      {event.month}
-                    </p>
-                    <p className='text-2xl font-bold'>{event.day}</p>
-                  </div>
-                  <div className='space-y-2'>
-                    <p className='font-bold line-clamp-2 text-ellipsis'>
-                      {event?.title}
-                    </p>
-                    <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
-                      {event?.about}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-        </div>
-
-        {/* <Button
-          className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
-          variant='outline'
-        >
-          <span>Load more events</span>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={2.5}
-            stroke='currentColor'
-            className='size-4'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
+      {query?.isLoading && (
+        <div className='flex flex-col items-center space-y-14 w-full flex-1'>
+          <div className='h-full w-full grid place-content-center'>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src='/loading.gif'
+              alt='loading gif'
+              className='size-28 rounded-full'
             />
-          </svg>
-        </Button> */}
-      </div>
+          </div>
+        </div>
+      )}
+
+      {query?.data && !query?.isLoading && (
+        <div className='flex flex-col items-center space-y-14 w-full'>
+          <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+            {query.data
+              ?.map((event) => {
+                // Parse the date string into a Date object
+                const date = parse(
+                  event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+                  "d MMMM, yyyy",
+                  new Date()
+                );
+
+                // Get the abbreviated month and day
+                const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
+                const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
+
+                return {
+                  ...event,
+                  month,
+                  day,
+                  parsedDate: date,
+                };
+              })
+              .sort((a, b) => {
+                return a.parsedDate - b.parsedDate;
+              })
+              .map((event, index) => (
+                <Link
+                  href={`/discover/${event?.slug}`}
+                  key={index}
+                  className='bg-white rounded-2xl overflow-clip'
+                >
+                  <Image
+                    className='aspect-video w-full object-cover'
+                    src={event?.imgsrc}
+                    alt={event?.title}
+                    width={342}
+                    height={196}
+                  />
+                  <div className='flex space-x-6 p-6'>
+                    <div className='flex flex-col items-center'>
+                      <p className='text-sm font-bold text-primary uppercase'>
+                        {event.month}
+                      </p>
+                      <p className='text-2xl font-bold'>{event.day}</p>
+                    </div>
+                    <div className='space-y-2'>
+                      <p className='font-bold line-clamp-2 text-ellipsis'>
+                        {event?.title}
+                      </p>
+                      <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
+                        {event?.about}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+
+          {/* <Button
+    className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
+    variant='outline'
+  >
+    <span>Load more events</span>
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      fill='none'
+      viewBox='0 0 24 24'
+      strokeWidth={2.5}
+      stroke='currentColor'
+      className='size-4'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
+      />
+    </svg>
+  </Button> */}
+        </div>
+      )}
     </>
   );
 }

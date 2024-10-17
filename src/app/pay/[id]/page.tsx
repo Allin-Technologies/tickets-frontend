@@ -10,6 +10,7 @@ export default async function Page(props: { params: { id: string } }) {
     url: `/event/${props.params.id}`,
     headers: {
       next: { revalidate: 3600 },
+      cache: "no-store",
     },
   });
 

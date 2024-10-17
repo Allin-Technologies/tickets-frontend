@@ -63,7 +63,7 @@ export const features = [
         xmlns='http://www.w3.org/2000/svg'
         className='size-10'
       >
-        <g clip-path='url(#clip0_3_95)'>
+        <g clipPath='url(#clip0_3_95)'>
           <path
             d='M37.6557 14.141H25.8592C24.5647 14.141 23.5155 15.1903 23.5155 16.4847C23.5155 17.779 24.5648 18.8283 25.8592 18.8283H37.6557C38.9502 18.8283 39.9994 17.7789 39.9994 16.4847C39.9994 15.1903 38.9502 14.141 37.6557 14.141Z'
             fill='currentColor'
@@ -91,7 +91,7 @@ export const features = [
         xmlns='http://www.w3.org/2000/svg'
         className='size-10'
       >
-        <g clip-path='url(#clip0_3_98)'>
+        <g clipPath='url(#clip0_3_98)'>
           <path
             d='M23.8837 12.7817L25.5208 11.1446L28.9021 14.5259L27.265 16.163L23.8837 12.7817Z'
             fill='currentColor'
@@ -128,4 +128,29 @@ export const partners = [
   "/partners/cci.png",
   "/partners/ted_x.png",
   "/partners/web3-conf.png",
+];
+
+export const reviews = [
+  {
+    name: "Stephen",
+    review: "The ticket purchase process is pretty seamless",
+    img: "/reviews/1.png",
+  },
+  {
+    name: "David",
+    review:
+      "this is a really detailed system, particularly the analysis on the ticket details I must say it’s helping me know my target audience",
+    img: "/reviews/2.png",
+  },
+  {
+    name: "Cynthia",
+    review:
+      "Got my ticket fast and I was anticipating to see a long queue at the event but  surprisingly the check in process was fast kudos guys",
+    img: "/reviews/3.png",
+  },
+  {
+    name: "Howells",
+    review: "the user interface is clean and so easy to navigate",
+    img: "/reviews/4.png",
+  },
 ];

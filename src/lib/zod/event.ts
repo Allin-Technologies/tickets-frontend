@@ -1,6 +1,18 @@
 import { z } from "zod";
 import { ticket } from "./ticket";
 
+const question = z.object({
+  title: z.string(),
+  field: z.enum(["textField", "selectField", "multiSelectField"]),
+  options: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    })
+  ),
+  required: z.boolean(),
+});
+
 export const eventSchema = z.object({
   _id: z.string().length(24),
   title: z.string(),
@@ -15,6 +27,7 @@ export const eventSchema = z.object({
   about: z.string(),
   category: z.string(),
   ticket_type: z.array(ticket),
+  questions: z.array(question),
   createdAt: z.string().datetime(), // ISO datetime format for createdAt
   updatedAt: z.string().datetime(), // ISO datetime format for updatedAt
   __v: z.number(), // Assuming __v is a version key and always a number

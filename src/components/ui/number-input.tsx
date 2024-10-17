@@ -151,7 +151,10 @@ const NumberFieldInput = React.forwardRef<
 
 NumberFieldInput.displayName = "NumberFieldInput";
 
-const NumberFieldIncrement: React.FC = () => {
+const NumberFieldIncrement = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ onClick, ...props }, ref) => {
   const context = React.useContext(NumberFieldContext);
   if (!context) {
     throw new Error(
@@ -163,10 +166,15 @@ const NumberFieldIncrement: React.FC = () => {
 
   return (
     <button
+      ref={ref}
       className='focus:outline-none'
       type='button'
-      onClick={() => handleIncrease()}
+      onClick={(e) => {
+        handleIncrease();
+        if (onClick) onClick(e);
+      }}
       disabled={disabled}
+      {...props}
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
@@ -184,9 +192,14 @@ const NumberFieldIncrement: React.FC = () => {
       </svg>
     </button>
   );
-};
+});
 
-const NumberFieldDecrement: React.FC = () => {
+NumberFieldIncrement.displayName = "NumberFieldIncrement";
+
+const NumberFieldDecrement = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>((props, ref) => {
   const context = React.useContext(NumberFieldContext);
   if (!context) {
     throw new Error(
@@ -198,10 +211,12 @@ const NumberFieldDecrement: React.FC = () => {
 
   return (
     <button
+      ref={ref}
       className='focus:outline-none'
       type='button'
       onClick={() => handleDecrease()}
       disabled={disabled}
+      {...props}
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
@@ -215,7 +230,9 @@ const NumberFieldDecrement: React.FC = () => {
       </svg>
     </button>
   );
-};
+});
+
+NumberFieldDecrement.displayName = "NumberFieldDecrement";
 
 export {
   NumberField,

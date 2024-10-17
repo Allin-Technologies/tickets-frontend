@@ -51,6 +51,28 @@ export const contact_step = z.object({
       message: "Email must match",
       path: ["confirmemail"],
     }),
+  attendees: z
+    .array(
+      z.object({
+        first_name: z
+          .string()
+          .min(2, { message: "Your first name is required" }),
+        last_name: z.string().min(2, { message: "Your last name is required" }),
+        gender: z.string().min(2, { message: "This field is required" }),
+        email: z.string().email(),
+        confirmemail: z.string().email(),
+        phone_number: z
+          .string()
+          .min(2, { message: "Your phone number is required" }),
+        questions: z.array(
+          z.object({
+            title: z.string(),
+            answer: z.string(), //.or(z.array(z.string())),
+          })
+        ),
+      })
+    )
+    .min(1, { message: "Requires at least one attendee" }),
 });
 
 export const payment_method_step = z.object({
@@ -60,5 +82,6 @@ export const payment_method_step = z.object({
 export const ticketFormSchema = z.object({
   tickets: ticket_types_step.shape.tickets,
   contact: contact_step.shape.contact,
+  attendees: contact_step.shape.attendees,
   payment_method: payment_method_step.shape.payment_method,
 });

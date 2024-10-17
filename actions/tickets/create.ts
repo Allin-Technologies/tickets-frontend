@@ -4,11 +4,11 @@ import { api } from "@/lib/api";
 import { eventSchema, ticketFormSchema } from "@/lib/zod";
 import { z } from "zod";
 
-const user_req_res = z.object({
+const userReqRes = z.object({
   _id: z.string(),
 });
 
-const ticket_req_res = z.object({
+const ticketReqRes = z.object({
   ticket: z.object({
     _id: z.string(),
   }),
@@ -19,54 +19,75 @@ export async function createTicket(
   event: z.infer<typeof eventSchema>
 ) {
   try {
-    // create a user
-    const request = await api(user_req_res, {
-      method: "post",
-      url: `/user/create`,
-      data: props.contact,
-    });
-
-    if (!request.status || !request.data) {
-      console.log("request failed:", request);
-      return { status: false, message: "Error creating ticket", data: null };
-    }
-
-    const data = {
-      userID: request.data?._id,
-      event_info: props.tickets.map((ticket) => ({
-        name: event.title,
-        type: event.category,
-        numberOfTickets: ticket.quantity,
-        date: event.date,
-        time: event.time,
-        price: ticket.cost,
-        total_cost: ticket.cost * ticket.quantity,
-      })),
-      payment_status: "Pending",
-      total_cost: props.tickets.reduce((accumulator, ticket) => {
-        const total = ticket.cost * ticket.quantity;
-        return accumulator + total;
-      }, 0),
-      trxRef: null,
-    };
-
     const url =
       event.event_type === "Free" ? "/ticket/create-free" : "/ticket/create";
 
-    // create a ticket
-    const ticket_request = await api(ticket_req_res, {
+    if (event.event_type !== "Free") {
+      return {
+        status: false,
+        message: "Paid ticket purchase coming soon.",
+        data: null,
+      };
+    }
+
+    const userCred = props.attendees[0];
+
+    // Create a user
+    const userResponse = await api(userReqRes, {
+      method: "post",
+      url: `/user/create`,
+      data: userCred,
+    });
+
+    if (!userResponse.status || !userResponse.data) {
+      return { status: false, message: "Error creating user", data: null };
+    }
+
+    const userID = userResponse.data?._id;
+
+    // Prepare ticket data
+    const data = {
+      userID,
+      event_info: props.tickets
+        .filter((t) => t.quantity >= 1)
+        .map((ticket) => ({
+          id: event._id,
+          ticket_type: ticket.name,
+        })),
+      payment_status: event.event_type === "Free" ? "Free" : "Pending",
+      total_cost: props.tickets.reduce(
+        (acc, ticket) => acc + ticket.cost * ticket.quantity,
+        0
+      ),
+      trxRef: null,
+      questions: userCred.questions.map((question) => ({
+        title: question.title,
+        answer: question.answer,
+      })),
+    };
+
+    // Create a ticket
+    const ticketResponse = await api(ticketReqRes, {
       method: "post",
       url: url,
       data: data,
     });
 
+    if (ticketResponse.response_code !== 201) {
+      return {
+        status: false,
+        message: ticketResponse.message ?? "Error creating ticket",
+        data: null,
+      };
+    }
+
     return {
-      status: ticket_request.response_code === 201,
-      message: ticket_request.message ?? "Error creating ticket",
-      data: ticket_request.data,
+      status: true,
+      message: "Ticket created successfully",
+      data: ticketResponse.data,
     };
-  } catch (e) {
-    console.error("error:", e);
+  } catch (error) {
+    console.error("Error creating ticket:", error);
     return { status: false, message: "Error creating ticket", data: null };
   }
 }

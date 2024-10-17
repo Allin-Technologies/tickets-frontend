@@ -30,6 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -56,6 +58,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   const [preview] = useAutoAnimate<HTMLDivElement>();
   const [container] = useAutoAnimate<HTMLDivElement>();
   const [pending, setPending] = React.useState(false);
+  const [sendToSame, setSendToSame] = React.useState<string>("no"); // "yes" |"no"
 
   const step1Ref = React.useRef<HTMLButtonElement>(null);
   const step2Ref = React.useRef<HTMLButtonElement>(null);
@@ -100,6 +103,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         confirmemail: "",
         phone_number: "",
       },
+      attendees: [],
     },
   });
 
@@ -122,6 +126,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       const res = await createTicket(
         {
           contact: values.contact,
+          attendees: values.attendees,
           tickets: tickets,
           payment_method: "Free",
         },
@@ -163,6 +168,32 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       step2Ref?.current?.click();
     }
   }
+
+  step2.watch(({ contact, attendees }, { name }) => {
+    if (
+      sendToSame === "yes" &&
+      tickets.filter((t) => t.quantity >= 1)?.length === 1 &&
+      name?.includes("contact")
+    ) {
+      step2.setValue("attendees.0", {
+        first_name: "",
+        last_name: "",
+        gender: "",
+        email: "",
+        confirmemail: "",
+        phone_number: "",
+        ...contact,
+        questions: (
+          (attendees &&
+            attendees[0]?.questions?.filter((q) => q && q.title && q.answer)) ??
+          []
+        ).map((q) => ({
+          title: q?.title ?? "",
+          answer: q?.answer ?? "",
+        })),
+      });
+    }
+  });
 
   return (
     <>
@@ -287,7 +318,24 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 >
                                   <NumberFieldDecrement />
                                   <NumberFieldInput placeholder='' />
-                                  <NumberFieldIncrement />
+                                  <NumberFieldIncrement
+                                    onClick={() => {
+                                      const prev = field.value[index].quantity;
+                                      const limit =
+                                        props.event_type === "Free" ? 1 : 3;
+
+                                      if (prev === limit) {
+                                        toast.warning(`Maximum limit reached`, {
+                                          description: `You can only select up to ${limit} ${
+                                            props.event_type === "Free"
+                                              ? "free"
+                                              : "paid"
+                                          } ticket type.`,
+                                          closeButton: true,
+                                        });
+                                      }
+                                    }}
+                                  />
                                 </NumberField>
                               </FormControl>
                             </div>
@@ -305,6 +353,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
             </form>
           </Form>
         )}
+
         {step === "contact" && (
           <Form {...step2}>
             <form
@@ -441,6 +490,251 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                       </FormItem>
                     )}
                   />
+                </div>
+              </div>
+
+              <div className='space-y-12 py-6'>
+                <div className='space-y-6'>
+                  <h3 className='text-2xl font-bold'>
+                    Send ticket to different email addresses?
+                  </h3>
+
+                  <div className='space-y-4'>
+                    <div className='border border-[#2C2B30] p-3 px-4 rounded-lg flex space-x-3'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-6'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z'
+                        />
+                      </svg>
+
+                      <p>
+                        Tickets will only be sent to the email address you
+                        provide here.
+                      </p>
+                    </div>
+
+                    <RadioGroup
+                      value={sendToSame}
+                      onValueChange={(value) => {
+                        setSendToSame(value);
+                        if (value === "yes") {
+                          const contact = step2.getValues().contact;
+                          const attendees = step2.getValues().attendees[0];
+                          step2.setValue("attendees.0", {
+                            ...contact,
+                            questions: attendees?.questions ?? [],
+                          });
+                        }
+                      }}
+                      className='flex'
+                    >
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='yes' id='option-one' />
+                        <Label htmlFor='option-one'>Yes</Label>
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <RadioGroupItem value='no' id='option-two' />
+                        <Label htmlFor='option-two'>No</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                </div>
+
+                <div className='space-y-5'>
+                  {tickets
+                    .filter((t) => t.quantity >= 1)
+                    .map((ticket, i) => (
+                      <div key={i} className='space-y-3'>
+                        <h3 className='text-2xl font-bold'>
+                          Ticket {i + 1} - {ticket.name}
+                        </h3>
+                        {sendToSame === "no" && (
+                          <>
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.first_name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>First
+                                    name
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input placeholder='Esther' {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.last_name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>Last
+                                    name
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input placeholder='Ekpo' {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.gender`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>
+                                    Gender
+                                  </FormLabel>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder='Your Gender' />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value='male'>Male</SelectItem>
+                                      <SelectItem value='female'>
+                                        Female
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.email`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>Email
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder='esther.ekpo@mail.com'
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.confirmemail`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>
+                                    Confirm email address
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder='esther.ekpo@mail.com'
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={step2.control}
+                              name={`attendees.${i}.phone_number`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    <span className='text-primary'>*</span>Phone
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder='+2340000000000'
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </>
+                        )}
+                        {props.questions.map((question, k) => {
+                          if (question.field === "selectField") {
+                            return (
+                              <FormField
+                                key={k}
+                                control={step2.control}
+                                name={`attendees.${i}.questions.${k}`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>
+                                      {question.required && (
+                                        <span className='text-primary'>*</span>
+                                      )}
+                                      {question.title}
+                                    </FormLabel>
+                                    <Select
+                                      onValueChange={(value) => {
+                                        field.onChange({
+                                          answer: value,
+                                          title: question.title,
+                                        });
+
+                                        console.log(step2.formState.errors);
+                                        console.log(step2.getValues());
+                                      }}
+                                      defaultValue={field?.value?.answer ?? ""}
+                                      // defaultValue={
+                                      //   field?.value?.answer &&
+                                      //   typeof field.value.answer === "string"
+                                      //     ? field.value.answer
+                                      //     : undefined
+                                      // }
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder='Select' />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        {question.options.map((option, i) => (
+                                          <SelectItem
+                                            key={i}
+                                            value={option.value}
+                                          >
+                                            {option.label}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            );
+                          }
+                        })}
+                      </div>
+                    ))}
                 </div>
               </div>
 

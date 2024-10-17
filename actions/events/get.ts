@@ -15,7 +15,8 @@ export async function getAllEvents(
       method: "get",
       url: `/event/getall`,
       headers: {
-        next: { revalidate: 3600 },
+        // next: { revalidate: 3600 },
+        cache: "no-store",
       },
     });
     return request?.data ?? [];
@@ -25,7 +26,8 @@ export async function getAllEvents(
     method: "post",
     url: `/event/filter`,
     headers: {
-      next: { revalidate: 3600 },
+      // next: { revalidate: 3600 },
+      cache: "no-store",
     },
     data: {
       category: category !== "all" ? category : "",
