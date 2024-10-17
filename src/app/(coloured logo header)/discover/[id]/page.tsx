@@ -78,7 +78,9 @@ export default async function Page(props: { params: { id: string } }) {
                 </p>
               )}
 
-              <p>{request.data?.location}</p>
+              <Link href={request.data?.location_url ?? "#"}>
+                {request.data?.location}
+              </Link>
             </div>
 
             <Separator />

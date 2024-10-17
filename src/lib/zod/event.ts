@@ -25,6 +25,7 @@ export const eventSchema = z.object({
   event_type: z.enum(["Paid", "Free"]),
   description: z.string(),
   about: z.string(),
+  location_url: z.string().optional(),
   category: z.string(),
   ticket_type: z.array(ticket),
   questions: z.array(question),
