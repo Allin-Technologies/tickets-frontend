@@ -9,7 +9,7 @@ export default async function Page(props: { params: { id: string } }) {
     method: "get",
     url: `/event/${props.params.id}`,
     headers: {
-      next: { revalidate: 3600 },
+      // next: { revalidate: 3600 },
       cache: "no-store",
     },
   });
