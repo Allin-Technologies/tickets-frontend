@@ -187,7 +187,7 @@ function Events(props: { initailData: Array<any> }) {
               })
               .map((event, index) => (
                 <Link
-                  href={`/discover/${event?.slug}`}
+                  href={`/${event?.slug}`}
                   key={index}
                   className='bg-white rounded-2xl overflow-clip'
                 >

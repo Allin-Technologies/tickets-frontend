@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Footer } from "@/components/navigation/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { keywords } from "./constants";
 
 const plusJakartaSans = localFont({
   src: [
@@ -24,7 +25,11 @@ const plusJakartaSans = localFont({
 
 export const metadata: Metadata = {
   title: "Tickets by All-in",
-  description: "Ticket  experience made easy",
+  description: "Ticket experience made easy",
+  keywords,
+  authors: [{ name: "All-in Technologies", url: "lifewithallin.com" }],
+  creator: "All-in Technologies",
+  publisher: "All-in Technologies",
 };
 
 export default function RootLayout({

@@ -24,7 +24,7 @@ export default async function Page(props: { params: { id: string } }) {
         <div>
           <Link
             className='flex items-center gap-2 font-semibold text-[hsla(218,_15%,_59%,_1)]'
-            href={`/discover/${props.params.id}`}
+            href={`/${props.params.id}`}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'

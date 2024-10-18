@@ -11,10 +11,46 @@ import { api } from "@/lib/api";
 import { eventSchema } from "@/lib/zod";
 import { Count } from "./count";
 import { z } from "zod";
+import { Metadata } from "next";
 
 const validator = z.array(z.any());
 
-export default async function Page(props: { params: { id: string } }) {
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const request = await api(eventSchema, {
+    method: "get",
+    url: `/event/${props.params.id}`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
+  });
+
+  return {
+    title: request?.data?.title,
+    description: request?.data?.about,
+    openGraph: {
+      title: request?.data?.title,
+      description: request?.data?.about,
+      url: `https://www.ticketsbyallin.com/${request?.data?.slug}`,
+      images: request?.data?.imgsrc
+        ? [
+            {
+              url: request?.data?.imgsrc,
+              width: 800,
+              height: 600,
+            },
+          ]
+        : undefined,
+      type: "website",
+    },
+  };
+}
+
+export default async function Page(props: Props) {
   const request = await api(eventSchema, {
     method: "get",
     url: `/event/${props.params.id}`,
@@ -137,7 +173,7 @@ export default async function Page(props: { params: { id: string } }) {
 
                   return (
                     <Link
-                      href={`/discover/${event?.slug}`}
+                      href={`/${event?.slug}`}
                       key={index}
                       className='bg-white rounded-2xl overflow-clip'
                     >
