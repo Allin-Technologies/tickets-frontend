@@ -75,32 +75,32 @@ function Events(props: { initailData: Array<any> }) {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value='all'>All Categories</SelectItem>
-                <SelectItem value='⁠Conferences & Seminars'>
+                <SelectItem value='Conferences & Seminars'>
                   ⁠Conferences & Seminars
                 </SelectItem>
-                <SelectItem value='⁠Concerts & Music Festivals'>
+                <SelectItem value='Concerts & Music Festivals'>
                   ⁠Concerts & Music Festivals
                 </SelectItem>
-                <SelectItem value='⁠Sports Events'>⁠Sports Events</SelectItem>
-                <SelectItem value='⁠Theatre & Performing Arts'>
+                <SelectItem value='Sports Events'>⁠Sports Events</SelectItem>
+                <SelectItem value='Theatre & Performing Arts'>
                   ⁠Theatre & Performing Arts
                 </SelectItem>
-                <SelectItem value='⁠Parties & Social Events'>
+                <SelectItem value='Parties & Social Events'>
                   ⁠Parties & Social Events
                 </SelectItem>
                 <SelectItem value='Exhibitions & Trade Shows'>
                   Exhibitions & Trade Shows
                 </SelectItem>
-                <SelectItem value='⁠Cultural & Heritage Events'>
+                <SelectItem value='Cultural & Heritage Events'>
                   ⁠Cultural & Heritage Events
                 </SelectItem>
-                <SelectItem value='⁠Workshops & Training'>
+                <SelectItem value='Workshops & Training'>
                   ⁠Workshops & Training
                 </SelectItem>
-                <SelectItem value='⁠Charity & Fundraising Events'>
+                <SelectItem value='Charity & Fundraising Events'>
                   ⁠Charity & Fundraising Events
                 </SelectItem>
-                <SelectItem value='ood & Drink Festivals'>
+                <SelectItem value='Food & Drink Festivals'>
                   ⁠Food & Drink Festivals
                 </SelectItem>
               </SelectGroup>
