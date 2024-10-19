@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Typewriter from "typewriter-effect";
 import bg from "../../../../public/hero-bg.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -50,8 +51,21 @@ export default function Home() {
         <div className='absolute top-0 left-0 right-0 bottom-0 z-[2] bg-gradient-to-b from-[hsla(248,_76%,_49%,_1)] to-[40%] to-black/20'></div>
 
         <div className='z-[3] p-4 md:p-6 lg:p-8 xl:p-12 2xl:px-0 max-w-[970px] mx-auto text-white text-center space-y-4 2xl:space-y-10'>
-          <h1 className='text-4xl lg:text-5xl xl:text-6xl 2xl:text-8xl font-bold'>
-            Ticket  experience made easy{" "}
+          <h1
+            id='typewriter'
+            className='text-4xl lg:text-5xl xl:text-6xl 2xl:text-8xl font-bold'
+          >
+            <Typewriter
+              options={{
+                strings: [
+                  "Ticket experience made easy",
+                  "Buy tickets with ease",
+                  "Sell tickets effortlessly",
+                ],
+                autoStart: true,
+                loop: true,
+              }}
+            />
           </h1>
           <div className='space-y-3 2xl:space-y-6'>
             <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
@@ -72,10 +86,10 @@ export default function Home() {
           <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
             <span className='text-primary'>Built</span> for
           </h1>
-          <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
+          {/* <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
             Find events and make memories that last a lifetime. Your passport to
             unforgettable experiences
-          </p>
+          </p> */}
         </div>
         <Carousel
           opts={{
