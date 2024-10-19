@@ -26,7 +26,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { getAllEvents } from "../../../../actions/events";
+import { getAllEvents } from "../../../../../actions/events";
 
 // Create a client
 const queryClient = new QueryClient();

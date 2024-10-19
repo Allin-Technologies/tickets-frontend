@@ -46,7 +46,7 @@ import {
 } from "@/lib/utils";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRouter } from "next/navigation";
-import { createTicket } from "../../../../actions/tickets";
+import { createTicket } from "../../../../../actions/tickets";
 import { useCountDown } from "@/hooks/use-countdown";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {

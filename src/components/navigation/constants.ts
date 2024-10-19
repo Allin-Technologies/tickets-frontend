@@ -17,7 +17,7 @@ export const navLinks: Link[] = [
   },
   {
     title: "About",
-    url: "/about",
+    url: "/about-us",
     display: "link",
   },
   {

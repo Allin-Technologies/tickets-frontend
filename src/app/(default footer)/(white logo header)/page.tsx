@@ -1,19 +1,36 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
-import bg from "../../../public/hero-bg.png";
+import bg from "../../../../public/hero-bg.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  type CarouselApi,
 } from "@/components/ui/carousel";
 import AutoPlay from "embla-carousel-autoplay";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { features, partners, reviews } from "./constant";
 
 export default function Home() {
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
+
+  React.useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
   return (
     <main className='w-screen min-h-dvh bg-background text-[hsla(252,_5%,_18%,_1)]'>
       <section className='relative w-full min-h-dvh flex justify-center items-center'>
@@ -53,7 +70,7 @@ export default function Home() {
       <section className='w-full px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12'>
         <div className='max-w-screen-2xl mx-auto w-full space-y-4'>
           <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
-            <span className='text-primary'>Explore</span> our features
+            <span className='text-primary'>Built</span> for
           </h1>
           <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
             Find events and make memories that last a lifetime. Your passport to
@@ -69,7 +86,7 @@ export default function Home() {
             AutoPlay({
               playOnInit: true,
               stopOnInteraction: false,
-              delay: 5000,
+              delay: 3000,
             }),
           ]}
           className='w-full'
@@ -252,19 +269,23 @@ export default function Home() {
               AutoPlay({
                 playOnInit: true,
                 stopOnInteraction: false,
-                delay: 5000,
+                delay: 3000,
               }),
             ]}
-            className='w-full'
+            // className='w-full'
+            setApi={setApi}
           >
             <CarouselContent containerClassName='overflow-visible'>
               {reviews.map((review, index) => (
                 <CarouselItem
                   key={index}
-                  className='basis-full lg:basis-[66%] xl:basis-[50%]'
+                  className='basis-full lg:basis-[66%] xl:basis-[50%] flex-shrink-0'
                 >
-                  <div className='p-1'>
-                    <div className='p-10 bg-secondary/10 hover:bg-primary space-y-3'>
+                  <div className='p-1 h-full'>
+                    <div
+                      data-select={current === index + 1}
+                      className='flex flex-col justify-between p-10 bg-secondary/10 hover:bg-primary transition ease-in duration-200 space-y-3 h-full'
+                    >
                       <div className='flex flex-col items-center justify-center lg:p-6 space-y-3'>
                         <svg
                           viewBox='0 0 30 30'

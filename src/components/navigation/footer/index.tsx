@@ -88,3 +88,60 @@ export function Footer() {
     </footer>
   );
 }
+
+export function SecondaryFooter() {
+  return (
+    <footer>
+      <div className='bg-primary-foreground'>
+        <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
+          <div>
+            <Image
+              src='/tickets-by-All-In-icon-logo-white.png'
+              alt='Icon logo'
+              width={40}
+              height={52}
+              className='size-6'
+            />
+          </div>
+          <div className='text-white grid lg:grid-cols-2 gap-8'>
+            <div className='flex item-center flex-wrap gap-x-5 gap-y-2 my-auto'>
+              {footer.links.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.url ?? "#"}
+                  className='font-medium text-sm'
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+
+            <div className='flex justify-center item-center gap-5'>
+              {footer.socials.map((social, index) => (
+                <Link
+                  key={index}
+                  href={social.url ?? "#"}
+                  className='hover:opacity-80 size-8 transition-opacity ease-linear duration-200'
+                >
+                  <Image src={social.icon} alt='' width={60} height={60} />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='flex items-center justify-center p-8 xl:px-12 bg-black text-white'>
+        <span>Built with ❤️ by</span>
+        <Link href='www.lifewithallin.com'>
+          <Image
+            src='/all-in-logo.png'
+            alt=''
+            height={80}
+            width={252}
+            className='h-6 object-contain object-left'
+          />
+        </Link>
+      </div>
+    </footer>
+  );
+}

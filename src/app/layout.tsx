@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import { Footer } from "@/components/navigation/footer";
-import { Toaster } from "@/components/ui/sonner";
 import { keywords } from "./constants";
 
 const plusJakartaSans = localFont({
@@ -46,7 +45,6 @@ export default function RootLayout({
         )}
       >
         {children}
-        <Footer />
         <Toaster />
       </body>
     </html>
