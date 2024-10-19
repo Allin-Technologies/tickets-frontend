@@ -62,8 +62,8 @@ export const footer: {
   ],
   contacts: [
     {
-      title: "+2349057024772",
-      url: "tel:+234 905 702 4772",
+      title: "+234 905 155 5542",
+      url: "tel:+2349051555542",
       icon: "/icons/Phone.svg",
     },
     {
