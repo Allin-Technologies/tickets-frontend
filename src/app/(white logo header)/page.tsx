@@ -81,7 +81,7 @@ export default function Home() {
                 className='basis-full md:basis-[33%] 2xl:basis-[23%]'
               >
                 <div className='p-1'>
-                  <div className='p-10 bg-secondary/10 rounded-2xl group'>
+                  <div className='p-10 bg-secondary/10 hover:bg-primary transition ease-in duration-200 rounded-2xl group'>
                     <div className='flex flex-col aspect-square items-start justify-end gap-8'>
                       {feature.icon}
 
@@ -102,7 +102,7 @@ export default function Home() {
         </Carousel>
       </section>
 
-      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-6'>
+      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-3 lg:gap-6'>
         <Image
           src='/unique-operation.png'
           alt=''
@@ -110,7 +110,7 @@ export default function Home() {
           width={800}
           height={900}
         />
-        <div className='my-auto space-y-16'>
+        <div className='my-auto space-y-8 lg:space-y-16'>
           <div className='space-y-4'>
             <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
               <span className='text-primary'>Set up for your</span> unique
@@ -147,8 +147,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-6'>
-        <div className='my-auto space-y-16'>
+      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-3 lg:gap-6 pt-12 lg:pt-0'>
+        <div className='my-auto space-y-8 lg:space-y-16 row-start-2 lg:row-start-1'>
           <div className='space-y-4'>
             <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold'>
               <span className='text-primary'>Real-Time</span> Data Dashboard
@@ -186,7 +186,7 @@ export default function Home() {
         <Image
           src='/real-time.png'
           alt=''
-          className='w-full'
+          className='w-full '
           width={800}
           height={900}
         />
@@ -235,7 +235,7 @@ export default function Home() {
       </section>
 
       <section className='w-full'>
-        <div className='w-full overflow-clip px-4 py-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12'>
+        <div className='w-full overflow-clip px-4 pb-16 lg:pt-16 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12'>
           <div className='max-w-screen-2xl mx-auto w-full'>
             <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold text-center'>
               <span className='text-primary'>Real people,</span>{" "}
@@ -264,7 +264,7 @@ export default function Home() {
                   className='basis-full lg:basis-[66%] xl:basis-[50%]'
                 >
                   <div className='p-1'>
-                    <div className='p-10 bg-secondary/10 space-y-3'>
+                    <div className='p-10 bg-secondary/10 hover:bg-primary space-y-3'>
                       <div className='flex flex-col items-center justify-center lg:p-6 space-y-3'>
                         <svg
                           viewBox='0 0 30 30'

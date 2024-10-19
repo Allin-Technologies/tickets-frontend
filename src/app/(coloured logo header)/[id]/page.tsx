@@ -109,37 +109,7 @@ export default async function Page(props: Props) {
                     viewBox='0 0 24 24'
                     fill='none'
                     xmlns='http://www.w3.org/2000/svg'
-                    className='size-6'
-                  >
-                    <path
-                      d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                    <path
-                      d='M9.5 9.5L13 13M16 8L11 13'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-
-                  <p>{formatEventDate(request.data?.date)}</p>
-                </div>
-              )}
-
-              {request.data?.time && (
-                <div className='flex space-x-3 items-center'>
-                  <svg
-                    width='24'
-                    height='24'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='size-6'
+                    className='size-6 flex-shrink-0'
                   >
                     <path
                       d='M2 12C2 8.229 2 6.343 3.172 5.172C4.344 4.001 6.229 4 10 4H14C17.771 4 19.657 4 20.828 5.172C21.999 6.344 22 8.229 22 12V14C22 17.771 22 19.657 20.828 20.828C19.656 21.999 17.771 22 14 22H10C6.229 22 4.343 22 3.172 20.828C2.001 19.656 2 17.771 2 14V12Z'
@@ -158,7 +128,37 @@ export default async function Page(props: Props) {
                     />
                   </svg>
 
-                  <p>
+                  <p>{formatEventDate(request.data?.date)}</p>
+                </div>
+              )}
+
+              {request.data?.time && (
+                <div className='flex space-x-3 items-center'>
+                  <svg
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='size-6 flex-shrink-0'
+                  >
+                    <path
+                      d='M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                    <path
+                      d='M9.5 9.5L13 13M16 8L11 13'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    />
+                  </svg>
+
+                  <p className='break-words'>
                     {getEventTimeRange(
                       request.data?.time,
                       request.data?.duration
@@ -167,36 +167,33 @@ export default async function Page(props: Props) {
                 </div>
               )}
 
-              <div className='flex space-x-3 items-center hover:text-dark-blue/60 transition ease-linear duration-200 cursor-pointer'>
+              <div className='flex gap-3 items-start hover:text-dark-blue/60 transition ease-linear duration-200 cursor-pointer'>
                 <svg
-                  width='25'
-                  height='24'
-                  viewBox='0 0 25 24'
-                  fill='none'
                   xmlns='http://www.w3.org/2000/svg'
-                  className='size-6'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='size-6 flex-shrink-0'
                 >
                   <path
-                    d='M13.06 20.82C12.8968 20.9372 12.701 21.0003 12.5 21.0003C12.2991 21.0003 12.1032 20.9372 11.94 20.82C7.11102 17.378 1.98602 10.298 7.16702 5.182C8.58937 3.78285 10.5049 2.99912 12.5 3C14.5 3 16.419 3.785 17.833 5.181C23.014 10.297 17.889 17.376 13.06 20.82Z'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
                     strokeLinecap='round'
                     strokeLinejoin='round'
+                    d='M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
                   />
                   <path
-                    d='M12.5 12C13.0304 12 13.5391 11.7893 13.9142 11.4142C14.2893 11.0391 14.5 10.5304 14.5 10C14.5 9.46957 14.2893 8.96086 13.9142 8.58579C13.5391 8.21071 13.0304 8 12.5 8C11.9696 8 11.4609 8.21071 11.0858 8.58579C10.7107 8.96086 10.5 9.46957 10.5 10C10.5 10.5304 10.7107 11.0391 11.0858 11.4142C11.4609 11.7893 11.9696 12 12.5 12Z'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
                     strokeLinecap='round'
                     strokeLinejoin='round'
+                    d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z'
                   />
                 </svg>
 
-                <p>
-                  <Link href={request.data?.location_url ?? "#"}>
-                    {request.data?.location}
-                  </Link>
-                </p>
+                <Link
+                  className='block'
+                  href={request.data?.location_url ?? "#"}
+                >
+                  {request.data?.location}
+                </Link>
               </div>
             </div>
 
