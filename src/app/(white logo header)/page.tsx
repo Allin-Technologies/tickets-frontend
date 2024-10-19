@@ -147,48 +147,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='w-full px-4 py-32 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12 2xl:space-y-16'>
-        <div className='max-w-screen-2xl mx-auto w-full'>
-          <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold text-center'>
-            <span className='text-primary'>Our</span> Users
-          </h1>
-        </div>
-
-        <Carousel
-          opts={{
-            loop: true,
-            align: "center",
-          }}
-          plugins={[
-            AutoScroll({
-              playOnInit: true,
-              stopOnInteraction: false,
-            }),
-          ]}
-          className='w-full'
-        >
-          <CarouselContent>
-            {partners.map((partner, index) => (
-              <CarouselItem key={index} className='basis-[33%]'>
-                <div className='p-1'>
-                  <div className=''>
-                    <div className='flex items-center justify-center'>
-                      <Image
-                        src={partner}
-                        alt='icon'
-                        width={500}
-                        height={140}
-                        className='w-64 object-contain'
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </section>
-
       <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-6'>
         <div className='my-auto space-y-16'>
           <div className='space-y-4'>
@@ -232,6 +190,48 @@ export default function Home() {
           width={800}
           height={900}
         />
+      </section>
+
+      <section className='w-full px-4 py-32 md:px-6 lg:px-16 xl:px-20 space-y-7 xl:space-y-12 2xl:space-y-16'>
+        <div className='max-w-screen-2xl mx-auto w-full'>
+          <h1 className='text-3xl md:text-4xl lg:text-5xl 2xl:text-7xl font-bold text-center'>
+            <span className='text-primary'>Our</span> Users
+          </h1>
+        </div>
+
+        <Carousel
+          opts={{
+            loop: true,
+            align: "center",
+          }}
+          plugins={[
+            AutoScroll({
+              playOnInit: true,
+              stopOnInteraction: false,
+            }),
+          ]}
+          className='w-full'
+        >
+          <CarouselContent>
+            {partners.map((partner, index) => (
+              <CarouselItem key={index} className='basis-[33%]'>
+                <div className='p-1'>
+                  <div className=''>
+                    <div className='flex items-center justify-center'>
+                      <Image
+                        src={partner}
+                        alt='icon'
+                        width={500}
+                        height={140}
+                        className='w-64 object-contain'
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
       </section>
 
       <section className='w-full'>
