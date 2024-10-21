@@ -18,6 +18,8 @@ export default async function Page(props: { params: { id: string } }) {
     notFound();
   }
 
+  // console.log(request?.data);
+
   return (
     <main className='w-screen lg:min-h-dvh'>
       <section className='w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0 py-8 lg:py-12 2xl:py-16 space-y-8 2xl:space-y-16'>

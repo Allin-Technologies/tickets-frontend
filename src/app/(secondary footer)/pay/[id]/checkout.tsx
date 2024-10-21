@@ -48,6 +48,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRouter } from "next/navigation";
 import { createTicket } from "../../../../../actions/tickets";
 import { useCountDown } from "@/hooks/use-countdown";
+import { PhoneInput } from "@/components/ui/phone-number";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
@@ -289,7 +290,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                       </p>
                                     </div>
                                   ) : (
-                                    <p>{t.cost.toLocaleString()}</p>
+                                    <p>₦{t.cost.toLocaleString()}</p>
                                   )
                                 ) : (
                                   <p className='text-primary'>Free</p>
@@ -338,6 +339,10 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                   />
                                 </NumberField>
                               </FormControl>
+
+                              {/* <div>
+                                Benefits: {}
+                              </div> */}
                             </div>
                             {index + 1 !== tickets.length && <Separator />}
                           </React.Fragment>
@@ -484,7 +489,12 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                           <span className='text-primary'>*</span>Phone
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder='+2340000000000' {...field} />
+                          <PhoneInput
+                            international={false}
+                            placeholder='2340000000000'
+                            defaultCountry='NG'
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -496,7 +506,10 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               <div className='space-y-12 py-6'>
                 <div className='space-y-6'>
                   <h3 className='text-2xl font-bold'>
-                    Send ticket to different email addresses?
+                    Send ticket to
+                    {tickets.filter((t) => t.quantity >= 1)?.length === 1 &&
+                      " different"}{" "}
+                    email addresses?
                   </h3>
 
                   <div className='space-y-4'>
@@ -522,30 +535,33 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                       </p>
                     </div>
 
-                    <RadioGroup
-                      value={sendToSame}
-                      onValueChange={(value) => {
-                        setSendToSame(value);
-                        if (value === "yes") {
-                          const contact = step2.getValues().contact;
-                          const attendees = step2.getValues().attendees[0];
-                          step2.setValue("attendees.0", {
-                            ...contact,
-                            questions: attendees?.questions ?? [],
-                          });
-                        }
-                      }}
-                      className='flex'
-                    >
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='yes' id='option-one' />
-                        <Label htmlFor='option-one'>Yes</Label>
-                      </div>
-                      <div className='flex items-center space-x-2'>
-                        <RadioGroupItem value='no' id='option-two' />
-                        <Label htmlFor='option-two'>No</Label>
-                      </div>
-                    </RadioGroup>
+                    {tickets.filter((t) => t.quantity >= 1)?.length === 1 && (
+                      <RadioGroup
+                        value={sendToSame}
+                        onValueChange={(value) => {
+                          setSendToSame(value);
+                          if (value === "yes") {
+                            const contact = step2.getValues().contact;
+                            const attendees = step2.getValues().attendees[0];
+                            step2.setValue("attendees.0", {
+                              ...contact,
+                              questions: attendees?.questions ?? [],
+                            });
+                          }
+                        }}
+                        className='flex'
+                      >
+                        {/* Yes is no and no is yes */}
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem value='no' id='option-two' />
+                          <Label htmlFor='option-two'>Yes</Label>
+                        </div>
+                        <div className='flex items-center space-x-2'>
+                          <RadioGroupItem value='yes' id='option-one' />
+                          <Label htmlFor='option-one'>No</Label>
+                        </div>
+                      </RadioGroup>
+                    )}
                   </div>
                 </div>
 
@@ -666,8 +682,10 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                     <span className='text-primary'>*</span>Phone
                                   </FormLabel>
                                   <FormControl>
-                                    <Input
-                                      placeholder='+2340000000000'
+                                    <PhoneInput
+                                      international={false}
+                                      placeholder='2340000000000'
+                                      defaultCountry='NG'
                                       {...field}
                                     />
                                   </FormControl>

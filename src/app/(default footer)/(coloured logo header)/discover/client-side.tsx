@@ -195,8 +195,8 @@ function Events(props: { initailData: Array<any> }) {
                     className='aspect-video w-full object-cover'
                     src={event?.imgsrc}
                     alt={event?.title}
-                    width={342}
-                    height={196}
+                    width={800}
+                    height={450}
                   />
                   <div className='flex space-x-6 p-6'>
                     <div className='flex flex-col items-center'>

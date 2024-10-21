@@ -85,9 +85,9 @@ export default async function Page(props: Props) {
               <Image
                 className='w-full object-cover h-full rounded-3xl'
                 src={request.data?.imgsrc}
-                alt='demo'
-                width={342}
-                height={196}
+                alt={request?.data?.title ?? ""}
+                width={1000}
+                height={600}
               />
             </div>
 
@@ -259,8 +259,8 @@ export default async function Page(props: Props) {
                         className='aspect-video w-full object-cover'
                         src={event?.imgsrc}
                         alt={event?.title}
-                        width={342}
-                        height={196}
+                        width={800}
+                        height={450}
                       />
                       <div className='flex space-x-6 p-6'>
                         <div className='flex flex-col items-center'>
