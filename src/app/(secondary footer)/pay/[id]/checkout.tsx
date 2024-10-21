@@ -174,7 +174,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   function onSubmit() {
     if (step === "ticket_types") {
-      if (step1.formState.isValid) step1Ref?.current?.click();
+      if (tickets.some((ticket) => ticket.quantity >= 1))
+        step1Ref?.current?.click();
       else
         toast.warning("Oops", {
           description:

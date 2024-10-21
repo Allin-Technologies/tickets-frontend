@@ -20,8 +20,6 @@ export const ticket_types_step = z.object({
     )
     .refine(
       (props) => {
-        console.log(props.some((ticket) => ticket.quantity >= 1));
-
         return props.some((ticket) => ticket.quantity >= 1);
       },
       {
