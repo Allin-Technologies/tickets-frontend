@@ -16,7 +16,6 @@ interface BaseResponse<T> {
   response_code: number;
   data: T | null;
 }
-
 interface ApiRequestConfig extends AxiosRequestConfig {
   method: Method;
   url: string;

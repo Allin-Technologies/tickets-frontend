@@ -7,18 +7,14 @@ export const ticket = z.object({
   discount: z.boolean(),
   discount_name: z.string().optional(),
   discount_percent: z.number().optional(),
+  info: z.string().optional(),
+  benefits: z.string().optional(),
 });
 
 export const ticket_types_step = z.object({
   tickets: z
     .array(
-      z.object({
-        name: z.string(),
-        cost: z.number(),
-        available_tickets: z.number(),
-        discount: z.boolean(),
-        discount_name: z.string(),
-        discount_percent: z.number(),
+      ticket.extend({
         quantity: z.number(),
       })
     )

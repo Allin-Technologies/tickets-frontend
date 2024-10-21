@@ -24,7 +24,6 @@ export const eventSchema = z.object({
   imgsrc: z.string().url(),
   event_type: z.enum(["Paid", "Free"]),
   description: z.string(),
-  // benefits: z.string().optional(),
   about: z.string(),
   location_url: z.string().optional(),
   category: z.string(),

@@ -41,8 +41,8 @@ export function Discover(props: { initailData: Array<any> }) {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Events(props: { initailData: Array<any> }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+function Events(_props: { initailData: Array<any> }) {
   const [date, setDate] = React.useState<Date>();
 
   const [category, setCategory] = React.useState("all");
@@ -54,7 +54,7 @@ function Events(props: { initailData: Array<any> }) {
     queryFn: async () => {
       return await getAllEvents(category, price, date);
     },
-    initialData: props.initailData,
+    // initialData: props.initailData,
   });
 
   if (query.error) {
@@ -146,7 +146,7 @@ function Events(props: { initailData: Array<any> }) {
         </div>
       </div>
 
-      {query?.isLoading && (
+      {(query?.isFetching || query?.isLoading) && (
         <div className='flex flex-col items-center space-y-14 w-full flex-1'>
           <div className='h-full w-full grid place-content-center'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -159,7 +159,7 @@ function Events(props: { initailData: Array<any> }) {
         </div>
       )}
 
-      {query?.data && !query?.isLoading && (
+      {query?.data && !query?.isLoading && !query?.isFetching && (
         <div className='flex flex-col items-center space-y-14 w-full'>
           <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
             {query.data

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +12,6 @@ import { api } from "@/lib/api";
 import { eventSchema } from "@/lib/zod";
 import { Count } from "./count";
 import { z } from "zod";
-import { Metadata } from "next";
 
 const validator = z.array(z.any());
 
@@ -25,7 +25,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     method: "get",
     url: `/event/${props.params.id}`,
     headers: {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     },
   });
 
@@ -55,9 +55,11 @@ export default async function Page(props: Props) {
     method: "get",
     url: `/event/${props.params.id}`,
     headers: {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     },
   });
+
+  console.log(request?.data?.ticket_type);
 
   if (request.response_code !== 200 || !request.data) {
     notFound();

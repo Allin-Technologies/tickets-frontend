@@ -101,7 +101,7 @@ export const reviews = [
   {
     name: "David",
     review:
-      "this is a really detailed system, particularly the analysis on the ticket details I must say it’s helping me know my target audience",
+      "This is a really detailed system, particularly the analysis on the ticket details I must say it’s helping me know my target audience",
     img: "/reviews/2.png",
   },
   {
@@ -112,12 +112,12 @@ export const reviews = [
   },
   {
     name: "Howells",
-    review: "the user interface is clean and so easy to navigate",
+    review: "The user interface is clean and so easy to navigate",
     img: "/reviews/4.png",
   },
   {
     name: "Temi",
-    review: "This is a tool is a life saver for event organizers",
+    review: "This tool is a life saver for event organizers.",
     img: "/reviews/5.png",
   },
   {

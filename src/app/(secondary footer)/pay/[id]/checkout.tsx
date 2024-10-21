@@ -49,6 +49,11 @@ import { useRouter } from "next/navigation";
 import { createTicket } from "../../../../../actions/tickets";
 import { useCountDown } from "@/hooks/use-countdown";
 import { PhoneInput } from "@/components/ui/phone-number";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
@@ -75,6 +80,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       reset();
       setStep("ticket_types");
     }
+
+    return () => {
+      pause();
+      reset();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
@@ -88,7 +98,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   const tickets = step1.watch("tickets");
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function onSubmitStep1(values: z.infer<typeof ticket_types_step>) {
+  function onSubmitStep1(_values: z.infer<typeof ticket_types_step>) {
     setStep("contact");
     start();
   }
@@ -164,7 +174,13 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   function onSubmit() {
     if (step === "ticket_types") {
-      step1Ref?.current?.click();
+      if (step1.formState.isValid) step1Ref?.current?.click();
+      else
+        toast.warning("Oops", {
+          description:
+            "At least one ticket must have a quantity of at least 1.",
+          closeButton: true,
+        });
     } else if (step === "contact") {
       step2Ref?.current?.click();
     }
@@ -340,9 +356,31 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 </NumberField>
                               </FormControl>
 
-                              {/* <div>
-                                Benefits: {}
-                              </div> */}
+                              <div className='space-y-1.5 text-sm'>
+                                {t.info && (
+                                  <p className='opacity-80'>{t.info}</p>
+                                )}
+
+                                {t.benefits && (
+                                  <Collapsible className='space-y-2'>
+                                    <CollapsibleContent className='opacity-80'>
+                                      <span className='font-bold'>
+                                        Benefits:
+                                      </span>{" "}
+                                      {t.benefits}
+                                    </CollapsibleContent>
+                                    <CollapsibleTrigger className='py-1 text-primary'>
+                                      See more
+                                    </CollapsibleTrigger>
+                                  </Collapsible>
+                                )}
+
+                                {t.available_tickets === 0 && (
+                                  <p className='text-primary text-sm'>
+                                    Out of stock
+                                  </p>
+                                )}
+                              </div>
                             </div>
                             {index + 1 !== tickets.length && <Separator />}
                           </React.Fragment>

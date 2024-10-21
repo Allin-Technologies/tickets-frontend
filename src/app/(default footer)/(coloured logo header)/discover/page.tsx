@@ -10,7 +10,7 @@ export default async function Page() {
     method: "get",
     url: `/event/getall`,
     headers: {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     },
   });
 
