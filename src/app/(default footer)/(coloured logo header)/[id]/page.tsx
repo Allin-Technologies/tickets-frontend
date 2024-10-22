@@ -276,7 +276,7 @@ export default async function Page(props: Props) {
                             {event?.title}
                           </p>
                           <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
-                            {event?.about}
+                            {event?.description ?? ""}
                           </p>
                         </div>
                       </div>
