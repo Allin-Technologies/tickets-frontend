@@ -219,9 +219,9 @@ export default async function Page(props: Props) {
                 )}
               </div>
 
-              <div>
-                <p>{request.data.about}</p>
-              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: request?.data.about ?? "" }}
+              />
             </div>
           </div>
 
