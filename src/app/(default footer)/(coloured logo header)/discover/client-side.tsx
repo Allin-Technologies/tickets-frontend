@@ -209,10 +209,9 @@ function Events(_props: { initailData: Array<any> }) {
                       <p className='font-bold line-clamp-2 text-ellipsis'>
                         {event?.title}
                       </p>
-                      <div
-                        className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'
-                        dangerouslySetInnerHTML={{ __html: event?.about ?? "" }}
-                      />
+                      <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
+                        {event?.description ?? ""}
+                      </p>
                     </div>
                   </div>
                 </Link>
