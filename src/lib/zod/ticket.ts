@@ -48,6 +48,7 @@ export const contact_step = z.object({
   attendees: z
     .array(
       z.object({
+        ticket_type: z.string(),
         first_name: z
           .string()
           .min(2, { message: "Your first name is required" }),

@@ -12,6 +12,7 @@ const ticketReqRes = z.object({
   ticket: z.object({
     _id: z.string(),
   }),
+  paystack: z.string().optional(),
 });
 
 export async function createTicket(
@@ -22,13 +23,13 @@ export async function createTicket(
     const url =
       event.event_type === "Free" ? "/ticket/create-free" : "/ticket/create";
 
-    if (event.event_type !== "Free") {
-      return {
-        status: false,
-        message: "Paid ticket purchase coming soon.",
-        data: null,
-      };
-    }
+    // if (event.event_type !== "Free") {
+    //   return {
+    //     status: false,
+    //     message: "Paid ticket purchase coming soon.",
+    //     data: null,
+    //   };
+    // }
 
     const userCred = props.attendees[0];
 
@@ -46,25 +47,48 @@ export async function createTicket(
     const userID = userResponse.data?._id;
 
     // Prepare ticket data
-    const data = {
-      userID,
-      event_info: props.tickets
-        .filter((t) => t.quantity >= 1)
-        .map((ticket) => ({
-          id: event._id,
-          ticket_type: ticket.name,
-        })),
-      payment_status: event.event_type === "Free" ? "Free" : "Pending",
-      total_cost: props.tickets.reduce(
-        (acc, ticket) => acc + ticket.cost * ticket.quantity,
-        0
-      ),
-      trxRef: null,
-      questions: userCred.questions.map((question) => ({
-        title: question.title,
-        answer: question.answer,
-      })),
-    };
+    const data =
+      event.event_type === "Free"
+        ? {
+            userID,
+            event_info: props.tickets
+              .filter((t) => t.quantity >= 1)
+              .map((ticket) => ({
+                id: event._id,
+                ticket_type: ticket.name,
+              })),
+            payment_status: event.event_type === "Free" ? "Free" : "Pending",
+            total_cost: props.tickets.reduce(
+              (acc, ticket) => acc + ticket.cost * ticket.quantity,
+              0
+            ),
+            trxRef: null,
+            questions: userCred.questions.map((question) => ({
+              title: question.title,
+              answer: question.answer,
+            })),
+          }
+        : {
+            userID,
+            total_cost: props.tickets.reduce(
+              (acc, ticket) => acc + ticket.cost * ticket.quantity,
+              0
+            ),
+            event_info: props.attendees.map((attendee) => ({
+              id: event._id,
+              ticket_type: attendee.ticket_type,
+              price: props.tickets.find(
+                (ticket) => ticket.name === attendee.ticket_type
+              )?.cost,
+              name: attendee.first_name + " " + attendee.last_name,
+              email: attendee.email,
+              check_in: false,
+              questions: attendee.questions.map((question) => ({
+                title: question.title,
+                answer: question.answer,
+              })),
+            })),
+          };
 
     // Create a ticket
     const ticketResponse = await api(ticketReqRes, {

@@ -74,17 +74,17 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   );
 
   React.useEffect(() => {
-    if (timeLeft <= 0 && !pending) {
+    if (timeLeft <= 0 && !pending && step === "contact") {
       step2.reset();
       pause();
       reset();
       setStep("ticket_types");
     }
 
-    return () => {
-      pause();
-      reset();
-    };
+    // return () => {
+    //   pause();
+    //   reset();
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
@@ -99,8 +99,23 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function onSubmitStep1(_values: z.infer<typeof ticket_types_step>) {
-    setStep("contact");
+    setPending(true);
     start();
+    const expandedTickets = _values.tickets.flatMap((ticket) =>
+      Array(ticket.quantity).fill({
+        ticket_type: ticket.name,
+        first_name: "",
+        last_name: "",
+        gender: "",
+        email: "",
+        confirmemail: "",
+        phone_number: "",
+        questions: [],
+      })
+    );
+    step2.setValue("attendees", expandedTickets);
+    setStep("contact");
+    setPending(false);
   }
 
   const step2 = useForm<z.infer<typeof contact_step>>({
@@ -118,20 +133,22 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
     },
   });
 
+  const attendees = step2.watch("attendees");
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function onSubmitStep2(values: z.infer<typeof contact_step>) {
     setPending(true);
     pause();
 
-    if (props.event_type !== "Free") {
-      // setStep("method");
-      toast.warning("Oops feature unavailable", {
-        description:
-          "Sorry for the inconvenience, but this feature is not available on the current event type at the moment!",
-        closeButton: true,
-      });
-      return;
-    }
+    // if (props.event_type !== "Free") {
+    //   // setStep("method");
+    //   toast.warning("Oops feature unavailable", {
+    //     description:
+    //       "Sorry for the inconvenience, but this feature is not available on the current event type at the moment!",
+    //     closeButton: true,
+    //   });
+    //   return;
+    // }
 
     try {
       const res = await createTicket(
@@ -145,12 +162,26 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       );
 
       if (res?.status === true && res?.data) {
-        toast.success("Congrats 🎉", {
-          description: "Your ticket reservation was successful",
-          closeButton: true,
-        });
-
-        router.push(`/pay/success?id=${res.data.ticket._id}`);
+        if (res?.data?.paystack) {
+          toast.success("Congrats 🎉", {
+            description:
+              "Your ticket reservation was successful, you will be redirected to a secure payment channel to pay.",
+            closeButton: true,
+          });
+          setTimeout(
+            () =>
+              router.push(
+                res?.data?.paystack ?? "/pay/success?id=${res.data.ticket._id}"
+              ),
+            3000
+          );
+        } else {
+          toast.success("Congrats 🎉", {
+            description: "Your ticket reservation was successful",
+            closeButton: true,
+          });
+          router.push(`/pay/success?id=${res.data.ticket._id}`);
+        }
       } else {
         toast.warning("Oops", {
           description:
@@ -174,7 +205,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   function onSubmit() {
     if (step === "ticket_types") {
-      if (tickets.some((ticket) => ticket.quantity >= 1))
+      if (tickets.filter((t) => t.quantity >= 1)?.length >= 1)
         step1Ref?.current?.click();
       else
         toast.warning("Oops", {
@@ -194,6 +225,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       name?.includes("contact")
     ) {
       step2.setValue("attendees.0", {
+        ticket_type: tickets.filter((t) => t.quantity >= 1)[0]?.name,
         first_name: "",
         last_name: "",
         gender: "",
@@ -207,7 +239,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           []
         ).map((q) => ({
           title: q?.title ?? "",
-          answer: q?.answer ?? "",
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          answer: undefined as unknown as any,
         })),
       });
     }
@@ -585,6 +618,9 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                             step2.setValue("attendees.0", {
                               ...contact,
                               questions: attendees?.questions ?? [],
+                              ticket_type: tickets.filter(
+                                (t) => t.quantity >= 1
+                              )[0]?.name,
                             });
                           }
                         }}
@@ -605,193 +641,192 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                 </div>
 
                 <div className='space-y-5'>
-                  {tickets
-                    .filter((t) => t.quantity >= 1)
-                    .map((ticket, i) => (
-                      <div key={i} className='space-y-3'>
-                        <h3 className='text-2xl font-bold'>
-                          Ticket {i + 1} - {ticket.name}
-                        </h3>
-                        {sendToSame === "no" && (
-                          <>
-                            <FormField
-                              control={step2.control}
-                              name={`attendees.${i}.first_name`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <span className='text-primary'>*</span>First
-                                    name
-                                  </FormLabel>
+                  {attendees.map((attendees, i) => (
+                    <div key={i} className='space-y-3'>
+                      <h3 className='text-2xl font-bold'>
+                        Ticket {i + 1} - {attendees.ticket_type}
+                      </h3>
+                      {sendToSame === "no" && (
+                        <>
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.first_name`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>First
+                                  name
+                                </FormLabel>
+                                <FormControl>
+                                  <Input placeholder='Esther' {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.last_name`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>Last
+                                  name
+                                </FormLabel>
+                                <FormControl>
+                                  <Input placeholder='Ekpo' {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.gender`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>
+                                  Gender
+                                </FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
                                   <FormControl>
-                                    <Input placeholder='Esther' {...field} />
+                                    <SelectTrigger>
+                                      <SelectValue placeholder='Your Gender' />
+                                    </SelectTrigger>
                                   </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
+                                  <SelectContent>
+                                    <SelectItem value='male'>Male</SelectItem>
+                                    <SelectItem value='female'>
+                                      Female
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.email`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>Email
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder='esther.ekpo@mail.com'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.confirmemail`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>
+                                  Confirm email address
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder='esther.ekpo@mail.com'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={step2.control}
+                            name={`attendees.${i}.phone_number`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  <span className='text-primary'>*</span>Phone
+                                </FormLabel>
+                                <FormControl>
+                                  <PhoneInput
+                                    international={false}
+                                    placeholder='2340000000000'
+                                    defaultCountry='NG'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
+                      )}
+                      {props.questions.map((question, k) => {
+                        if (question.field === "selectField") {
+                          return (
                             <FormField
+                              key={k}
                               control={step2.control}
-                              name={`attendees.${i}.last_name`}
+                              name={`attendees.${i}.questions.${k}`}
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>
-                                    <span className='text-primary'>*</span>Last
-                                    name
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input placeholder='Ekpo' {...field} />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={step2.control}
-                              name={`attendees.${i}.gender`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <span className='text-primary'>*</span>
-                                    Gender
+                                    {question.required && (
+                                      <span className='text-primary'>*</span>
+                                    )}
+                                    {question.title}
                                   </FormLabel>
                                   <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
+                                    required={question.required}
+                                    onValueChange={(value) => {
+                                      field.onChange({
+                                        answer: value,
+                                        title: question.title,
+                                      });
+
+                                      console.log(step2.formState.errors);
+                                      console.log(step2.getValues());
+                                    }}
+                                    defaultValue={field?.value?.answer ?? ""}
+                                    // defaultValue={
+                                    //   field?.value?.answer &&
+                                    //   typeof field.value.answer === "string"
+                                    //     ? field.value.answer
+                                    //     : undefined
+                                    // }
                                   >
                                     <FormControl>
                                       <SelectTrigger>
-                                        <SelectValue placeholder='Your Gender' />
+                                        <SelectValue placeholder='Select' />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                      <SelectItem value='male'>Male</SelectItem>
-                                      <SelectItem value='female'>
-                                        Female
-                                      </SelectItem>
+                                      {question.options.map((option, i) => (
+                                        <SelectItem
+                                          key={i}
+                                          value={option.value}
+                                        >
+                                          {option.label}
+                                        </SelectItem>
+                                      ))}
                                     </SelectContent>
                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
-                            <FormField
-                              control={step2.control}
-                              name={`attendees.${i}.email`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <span className='text-primary'>*</span>Email
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder='esther.ekpo@mail.com'
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={step2.control}
-                              name={`attendees.${i}.confirmemail`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <span className='text-primary'>*</span>
-                                    Confirm email address
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder='esther.ekpo@mail.com'
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={step2.control}
-                              name={`attendees.${i}.phone_number`}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>
-                                    <span className='text-primary'>*</span>Phone
-                                  </FormLabel>
-                                  <FormControl>
-                                    <PhoneInput
-                                      international={false}
-                                      placeholder='2340000000000'
-                                      defaultCountry='NG'
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </>
-                        )}
-                        {props.questions.map((question, k) => {
-                          if (question.field === "selectField") {
-                            return (
-                              <FormField
-                                key={k}
-                                control={step2.control}
-                                name={`attendees.${i}.questions.${k}`}
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel>
-                                      {question.required && (
-                                        <span className='text-primary'>*</span>
-                                      )}
-                                      {question.title}
-                                    </FormLabel>
-                                    <Select
-                                      onValueChange={(value) => {
-                                        field.onChange({
-                                          answer: value,
-                                          title: question.title,
-                                        });
-
-                                        console.log(step2.formState.errors);
-                                        console.log(step2.getValues());
-                                      }}
-                                      defaultValue={field?.value?.answer ?? ""}
-                                      // defaultValue={
-                                      //   field?.value?.answer &&
-                                      //   typeof field.value.answer === "string"
-                                      //     ? field.value.answer
-                                      //     : undefined
-                                      // }
-                                    >
-                                      <FormControl>
-                                        <SelectTrigger>
-                                          <SelectValue placeholder='Select' />
-                                        </SelectTrigger>
-                                      </FormControl>
-                                      <SelectContent>
-                                        {question.options.map((option, i) => (
-                                          <SelectItem
-                                            key={i}
-                                            value={option.value}
-                                          >
-                                            {option.label}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                  </FormItem>
-                                )}
-                              />
-                            );
-                          }
-                        })}
-                      </div>
-                    ))}
+                          );
+                        }
+                      })}
+                    </div>
+                  ))}
                 </div>
               </div>
 
