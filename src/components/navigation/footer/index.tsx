@@ -132,7 +132,7 @@ export function SecondaryFooter() {
       </div>
       <div className='flex items-center justify-center p-8 xl:px-12 bg-black text-white'>
         <span>Built with ❤️ by</span>
-        <Link href='www.lifewithallin.com'>
+        <Link href='https://www.lifewithallin.com'>
           <Image
             src='/all-in-logo.png'
             alt=''
