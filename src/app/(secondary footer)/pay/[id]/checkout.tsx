@@ -578,10 +578,13 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               <div className='space-y-12 py-6'>
                 <div className='space-y-6'>
                   <h3 className='text-2xl font-bold'>
-                    Send ticket to
-                    {tickets.filter((t) => t.quantity >= 1)?.length === 1 &&
-                      " different"}{" "}
-                    email addresses?
+                    {tickets.flatMap((ticket) =>
+                      Array(ticket.quantity).fill({
+                        ticket_type: ticket.name,
+                      })
+                    )?.length === 1
+                      ? "Send ticket to a different email address?"
+                      : "Send tickets to email addresses"}
                   </h3>
 
                   <div className='space-y-4'>
@@ -607,7 +610,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                       </p>
                     </div>
 
-                    {tickets.filter((t) => t.quantity >= 1)?.length === 1 && (
+                    {tickets.flatMap((ticket) =>
+                      Array(ticket.quantity).fill({
+                        ticket_type: ticket.name,
+                      })
+                    )?.length === 1 && (
                       <RadioGroup
                         value={sendToSame}
                         onValueChange={(value) => {
