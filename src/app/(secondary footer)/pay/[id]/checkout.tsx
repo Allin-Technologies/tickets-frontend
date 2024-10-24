@@ -43,6 +43,7 @@ import {
   calculateDiscountedPrice,
   calculateSubtotal,
   calculateTotal,
+  calculateFees,
 } from "@/lib/utils";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRouter } from "next/navigation";
@@ -357,7 +358,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 <p>
                                   includes ₦
                                   {props.event_type === "Paid"
-                                    ? (0.05 * t.cost + 100).toLocaleString()
+                                    ? calculateFees(t.cost, t.discount_percent)
                                     : "0"}{" "}
                                   fee
                                 </p>
@@ -419,15 +420,16 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 )}
 
                                 {t.benefits && (
-                                  <Collapsible className='space-y-2'>
+                                  <Collapsible className='space-y-2 group'>
                                     <CollapsibleContent className='opacity-80'>
                                       <span className='font-bold'>
                                         Benefits:
                                       </span>{" "}
                                       {t.benefits}
                                     </CollapsibleContent>
-                                    <CollapsibleTrigger className='py-1 text-primary'>
-                                      See more
+                                    <CollapsibleTrigger className='py-1 text-primary group-data-[state=open]:[&_span.open]:hidden group-data-[state=closed]:[&_span.close]:hidden'>
+                                      <span className='open'>See more</span>
+                                      <span className='close'>See less</span>
                                     </CollapsibleTrigger>
                                   </Collapsible>
                                 )}

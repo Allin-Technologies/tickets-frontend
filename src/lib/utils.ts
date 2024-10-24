@@ -66,9 +66,10 @@ interface calculateSubtotalTicket extends z.infer<typeof ticket> {
   quantity: number;
 }
 
-export function calculateFees(amount: number): number {
-  const extra = amount * 0.05 + 100;
-  return Number(extra.toFixed(2));
+export function calculateFees(amount: number, discount?: number): number {
+  const cost = calculateDiscountedPrice(amount, discount ?? 0);
+  const extra = cost * 0.05;
+  return Number((extra + 100).toFixed(2));
 }
 
 export function calculateSubtotal(
@@ -89,9 +90,9 @@ export function calculateSubtotal(
 
   const fees = event_type === "Paid" ? calculateFees(subtotal) : 0;
 
-  return { 
+  return {
     subtotal: Number((subtotal + fees).toFixed(2)),
-    fees: Number(fees.toFixed(2))
+    fees: Number(fees.toFixed(2)),
   };
 }
 
