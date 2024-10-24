@@ -9,7 +9,7 @@ export const features = [
         xmlns='http://www.w3.org/2000/svg'
         className='size-10'
       >
-        <g clip-path='url(#clip0_984_278)'>
+        <g clipPath='url(#clip0_984_278)'>
           <path
             fillRule='evenodd'
             clipRule='evenodd'

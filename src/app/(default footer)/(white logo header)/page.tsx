@@ -42,10 +42,7 @@ export default function Home() {
           quality={100}
           fill
           sizes='100vw'
-          style={{
-            objectFit: "cover",
-          }}
-          className='z-[1]'
+          className='z-[1] object-cover'
         />
 
         <div className='absolute top-0 left-0 right-0 bottom-0 z-[2] bg-gradient-to-b from-[hsla(248,_76%,_49%,_1)] to-[40%] to-black/20'></div>

@@ -34,7 +34,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     description: request?.data?.about,
     openGraph: {
       title: request?.data?.title,
-      description: request?.data?.about,
+      description: request?.data?.description,
       url: `https://www.ticketsbyallin.com/${request?.data?.slug}`,
       images: request?.data?.imgsrc
         ? [
@@ -59,7 +59,7 @@ export default async function Page(props: Props) {
     },
   });
 
-  console.log(request?.data?.ticket_type);
+  // console.log(request?.data);
 
   if (request.response_code !== 200 || !request.data) {
     notFound();

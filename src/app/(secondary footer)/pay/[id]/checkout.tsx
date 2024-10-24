@@ -354,48 +354,64 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 )}
                               </div>
                               <div className='flex items-center justify-between gap-4 text-[hsla(236,_9%,_66%,_1)]'>
-                                <p>includes ₦0 fee</p>
+                                <p>
+                                  includes ₦
+                                  {props.event_type === "Paid"
+                                    ? (0.05 * t.cost + 100).toLocaleString()
+                                    : "0"}{" "}
+                                  fee
+                                </p>
                                 <p className='capitalize'>{t.discount_name}</p>
                               </div>
 
-                              <FormControl>
-                                <NumberField
-                                  className='w-40'
-                                  disabled={t.available_tickets === 0}
-                                  value={field.value[index].quantity}
-                                  onChange={(value: number) => {
-                                    field.onChange(
-                                      field.value.map((v, i) =>
-                                        i === index
-                                          ? { ...v, quantity: value }
-                                          : v
-                                      )
-                                    );
-                                  }}
-                                  max={props.event_type === "Free" ? 1 : 3}
-                                >
-                                  <NumberFieldDecrement />
-                                  <NumberFieldInput placeholder='' />
-                                  <NumberFieldIncrement
-                                    onClick={() => {
-                                      const prev = field.value[index].quantity;
-                                      const limit =
-                                        props.event_type === "Free" ? 1 : 3;
-
-                                      if (prev === limit) {
-                                        toast.warning(`Maximum limit reached`, {
-                                          description: `You can only select up to ${limit} ${
-                                            props.event_type === "Free"
-                                              ? "free"
-                                              : "paid"
-                                          } ticket type.`,
-                                          closeButton: true,
-                                        });
-                                      }
+                              {t.available_tickets >= 1 ? (
+                                <FormControl>
+                                  <NumberField
+                                    className='w-40'
+                                    disabled={t.available_tickets === 0}
+                                    value={field.value[index].quantity}
+                                    onChange={(value: number) => {
+                                      field.onChange(
+                                        field.value.map((v, i) =>
+                                          i === index
+                                            ? { ...v, quantity: value }
+                                            : v
+                                        )
+                                      );
                                     }}
-                                  />
-                                </NumberField>
-                              </FormControl>
+                                    max={props.event_type === "Free" ? 1 : 3}
+                                  >
+                                    <NumberFieldDecrement />
+                                    <NumberFieldInput placeholder='' />
+                                    <NumberFieldIncrement
+                                      onClick={() => {
+                                        const prev =
+                                          field.value[index].quantity;
+                                        const limit =
+                                          props.event_type === "Free" ? 1 : 3;
+
+                                        if (prev === limit) {
+                                          toast.warning(
+                                            `Maximum limit reached`,
+                                            {
+                                              description: `You can only select up to ${limit} ${
+                                                props.event_type === "Free"
+                                                  ? "free"
+                                                  : "paid"
+                                              } ticket type.`,
+                                              closeButton: true,
+                                            }
+                                          );
+                                        }
+                                      }}
+                                    />
+                                  </NumberField>
+                                </FormControl>
+                              ) : (
+                                <p className='text-primary text-sm'>
+                                  Out of stock
+                                </p>
+                              )}
 
                               <div className='space-y-1.5 text-sm'>
                                 {t.info && (
@@ -414,12 +430,6 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                       See more
                                     </CollapsibleTrigger>
                                   </Collapsible>
-                                )}
-
-                                {t.available_tickets === 0 && (
-                                  <p className='text-primary text-sm'>
-                                    Out of stock
-                                  </p>
                                 )}
                               </div>
                             </div>
