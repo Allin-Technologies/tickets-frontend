@@ -48,6 +48,11 @@ export const footer: {
       display: "link",
     },
     ...navLinks,
+    {
+      title: "Join our team",
+      url: "/joinourteam",
+      display: "link",
+    },
   ],
   socials: [
     {
