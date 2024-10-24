@@ -1,6 +1,7 @@
 "use server";
 
 import { api } from "@/lib/api";
+import { calculateTotal } from "@/lib/utils";
 import { eventSchema, ticketFormSchema } from "@/lib/zod";
 import { z } from "zod";
 
@@ -22,14 +23,6 @@ export async function createTicket(
   try {
     const url =
       event.event_type === "Free" ? "/ticket/create-free" : "/ticket/create";
-
-    // if (event.event_type !== "Free") {
-    //   return {
-    //     status: false,
-    //     message: "Paid ticket purchase coming soon.",
-    //     data: null,
-    //   };
-    // }
 
     const userCred = props.attendees[0];
 
@@ -58,10 +51,7 @@ export async function createTicket(
                 ticket_type: ticket.name,
               })),
             payment_status: event.event_type === "Free" ? "Free" : "Pending",
-            total_cost: props.tickets.reduce(
-              (acc, ticket) => acc + ticket.cost * ticket.quantity,
-              0
-            ),
+            total_cost: calculateTotal(props.tickets, event.event_type),
             trxRef: null,
             questions: userCred.questions.map((question) => ({
               title: question.title,
@@ -70,10 +60,7 @@ export async function createTicket(
           }
         : {
             userID,
-            total_cost: props.tickets.reduce(
-              (acc, ticket) => acc + ticket.cost * ticket.quantity,
-              0
-            ),
+            total_cost: calculateTotal(props.tickets, event.event_type),
             event_info: props.attendees.map((attendee) => ({
               id: event._id,
               ticket_type: attendee.ticket_type,

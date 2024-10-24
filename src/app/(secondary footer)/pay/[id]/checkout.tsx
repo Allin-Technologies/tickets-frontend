@@ -97,6 +97,13 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   const tickets = step1.watch("tickets");
 
+  const ticketsGreaterThanOne =
+    tickets.flatMap((ticket) =>
+      Array(ticket.quantity).fill({
+        ticket_type: ticket.name,
+      })
+    )?.length === 1;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function onSubmitStep1(_values: z.infer<typeof ticket_types_step>) {
     setPending(true);
@@ -221,7 +228,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   step2.watch(({ contact, attendees }, { name }) => {
     if (
       sendToSame === "yes" &&
-      tickets.filter((t) => t.quantity >= 1)?.length === 1 &&
+      ticketsGreaterThanOne &&
       name?.includes("contact")
     ) {
       step2.setValue("attendees.0", {
@@ -578,11 +585,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               <div className='space-y-12 py-6'>
                 <div className='space-y-6'>
                   <h3 className='text-2xl font-bold'>
-                    {tickets.flatMap((ticket) =>
-                      Array(ticket.quantity).fill({
-                        ticket_type: ticket.name,
-                      })
-                    )?.length === 1
+                    {ticketsGreaterThanOne
                       ? "Send ticket to a different email address?"
                       : "Send tickets to email addresses"}
                   </h3>
@@ -610,11 +613,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                       </p>
                     </div>
 
-                    {tickets.flatMap((ticket) =>
-                      Array(ticket.quantity).fill({
-                        ticket_type: ticket.name,
-                      })
-                    )?.length === 1 && (
+                    {ticketsGreaterThanOne && (
                       <RadioGroup
                         value={sendToSame}
                         onValueChange={(value) => {
@@ -880,17 +879,31 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               ))}
 
             {/* fees */}
-            {/* <div className='flex items-center justify-between gap-4'>
+            <div className='flex items-center justify-between gap-4'>
               <p>Fees</p>
-              <p>₦0.00</p>
-            </div> */}
+              <p>
+                ₦
+                {props.event_type === "Free"
+                  ? "0.00"
+                  : calculateSubtotal(
+                      tickets,
+                      props.event_type
+                    )?.fees?.toLocaleString()}
+              </p>
+            </div>
 
             <div className='flex items-center justify-between gap-4'>
               <p>Subtotal</p>
-              {calculateSubtotal(tickets) === 0 ? (
+              {calculateSubtotal(tickets, props.event_type)?.subtotal === 0 ? (
                 <p className='text-primary'>Free</p>
               ) : (
-                <p>₦{calculateSubtotal(tickets)?.toLocaleString()}</p>
+                <p>
+                  ₦
+                  {calculateSubtotal(
+                    tickets,
+                    props.event_type
+                  )?.subtotal?.toLocaleString()}
+                </p>
               )}
             </div>
 
@@ -903,11 +916,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
             <div className='flex items-center justify-between gap-4'>
               <p className='uppercase'>Total</p>
-              {calculateTotal(tickets) === 0 ? (
+              {calculateTotal(tickets, props.event_type) === 0 ? (
                 <p className='font-bold'>Free</p>
               ) : (
                 <p className='font-bold'>
-                  ₦{calculateTotal(tickets)?.toLocaleString()}
+                  ₦{calculateTotal(tickets, props.event_type)?.toLocaleString()}
                 </p>
               )}
             </div>

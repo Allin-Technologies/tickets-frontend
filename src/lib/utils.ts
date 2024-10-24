@@ -66,13 +66,16 @@ interface calculateSubtotalTicket extends z.infer<typeof ticket> {
   quantity: number;
 }
 
+export function calculateFees(amount: number): number {
+  return amount * 0.05 + 100;
+}
+
 export function calculateSubtotal(
   tickets: calculateSubtotalTicket[],
-  fees: number = 0
+  event_type: "Free" | "Paid"
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
-  // Calculate the subtotal based on ticket quantity and discount
   const subtotal = validTickets.reduce((total, ticket) => {
     // If the ticket has a discount, apply it to the cost
     const ticketCost = ticket.discount
@@ -83,31 +86,32 @@ export function calculateSubtotal(
     return total + ticketCost * ticket.quantity;
   }, 0);
 
-  return subtotal + fees;
+  const fees = event_type === "Paid" ? calculateFees(subtotal) : 0;
+
+  return { subtotal: subtotal + fees, fees };
 }
 
 export function calculateTotal(
   tickets: calculateSubtotalTicket[],
+  event_type: "Free" | "Paid",
   coupon?: { discount_percentage: number }
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
-  // Calculate the subtotal based on ticket quantity and discount
   const subtotal = validTickets.reduce((total, ticket) => {
-    // If the ticket has a discount, apply it to the cost
     const ticketCost = ticket.discount
       ? ticket.cost - (ticket.cost * (ticket?.discount_percent ?? 0)) / 100
       : ticket.cost;
 
-    // Multiply by the quantity of tickets and add to the running total
     return total + ticketCost * ticket.quantity;
   }, 0);
 
-  // If there's a coupon, apply its discount to the subtotal
-  const finalSubtotal =
+  const discountedSubtotal =
     coupon && coupon.discount_percentage
       ? subtotal - (subtotal * coupon.discount_percentage) / 100
       : subtotal;
 
-  return finalSubtotal;
+  const fees = event_type === "Paid" ? calculateFees(discountedSubtotal) : 0;
+
+  return discountedSubtotal + fees;
 }
