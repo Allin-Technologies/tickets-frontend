@@ -55,7 +55,9 @@ export default function Home() {
             </div>
 
             <Button asChild>
-              <Link href='#'>Book a demo</Link>
+              <Link href='https://calendly.com/ticketsbyallin/demo'>
+                Book a demo
+              </Link>
             </Button>
           </div>
         </div>
