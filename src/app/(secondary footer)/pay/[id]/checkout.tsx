@@ -212,6 +212,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   }
 
   function onSubmit() {
+    console.error(step1?.formState.errors, step2?.formState.errors);
     if (step === "ticket_types") {
       if (tickets.filter((t) => t.quantity >= 1)?.length >= 1)
         step1Ref?.current?.click();
