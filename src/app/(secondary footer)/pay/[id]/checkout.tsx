@@ -115,6 +115,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         return;
       }
 
+      if (res?.data?.remainingUses === 0) {
+        toast.warning("Coupon code has reached its maximum usage limit!");
+        return;
+      }
+
       toast.warning("Congrats", {
         description:
           res?.message ??
