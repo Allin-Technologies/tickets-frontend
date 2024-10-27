@@ -37,7 +37,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { contact_step, eventSchema, ticket_types_step } from "@/lib/zod";
+import {
+  contact_step,
+  couponSchema,
+  couponFormSchema,
+  eventSchema,
+  ticket_types_step,
+} from "@/lib/zod";
 import {
   cn,
   calculateDiscountedPrice,
@@ -55,6 +61,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { getCouponCode } from "../../../../../actions/coupon";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
@@ -64,15 +71,66 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
   const router = useRouter();
   const [preview] = useAutoAnimate<HTMLDivElement>();
   const [container] = useAutoAnimate<HTMLDivElement>();
+  const [coupon_container] = useAutoAnimate<HTMLDivElement>();
   const [pending, setPending] = React.useState(false);
-  const [sendToSame, setSendToSame] = React.useState<string>("no"); // "yes" |"no"
+  const [sendToSame, setSendToSame] = React.useState<string>("no"); // "yes" | "no"
 
-  const step1Ref = React.useRef<HTMLButtonElement>(null);
-  const step2Ref = React.useRef<HTMLButtonElement>(null);
+  const step1Ref = React.useRef<HTMLFormElement>(null);
+  const step2Ref = React.useRef<HTMLFormElement>(null);
+
+  const step1ButtonRef = React.useRef<HTMLButtonElement>(null);
+  const step2ButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const [step, setStep] = React.useState<"ticket_types" | "contact" | "method">(
     "ticket_types"
   );
+
+  const [coupon, setCoupon] = React.useState<
+    z.infer<typeof couponSchema> | undefined
+  >();
+
+  const couponForm = useForm<z.infer<typeof couponFormSchema>>({
+    resolver: zodResolver(couponFormSchema),
+    defaultValues: {
+      couponcode: "",
+      slug: props.slug,
+    },
+  });
+
+  async function onSubmitCoupon(_values: z.infer<typeof couponFormSchema>) {
+    if (props.event_type === "Free") {
+      toast.info("Coupon code not applicable to free tickets!");
+      return;
+    }
+
+    try {
+      setCoupon(undefined);
+      const res = await getCouponCode(_values);
+
+      if (res.status !== "success" || !res?.data) {
+        toast.warning("Oops", {
+          description: res.message,
+          closeButton: true,
+        });
+        return;
+      }
+
+      toast.warning("Congrats", {
+        description:
+          res?.message ??
+          `${res?.data?.discountPercentage}% discount has been applied to your purchase`,
+        closeButton: true,
+      });
+      setCoupon(res?.data);
+    } catch (e) {
+      console.error(e);
+      toast.warning("Oops", {
+        description:
+          "Something went wrong, couldn't validate coupon code. Please try again",
+        closeButton: true,
+      });
+    }
+  }
 
   React.useEffect(() => {
     if (timeLeft <= 0 && !pending && step === "contact") {
@@ -81,11 +139,6 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       reset();
       setStep("ticket_types");
     }
-
-    // return () => {
-    //   pause();
-    //   reset();
-    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
@@ -98,7 +151,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   const tickets = step1.watch("tickets");
 
-  const ticketsGreaterThanOne =
+  const ticketsNotGreaterThanOne =
     tickets.flatMap((ticket) =>
       Array(ticket.quantity).fill({
         ticket_type: ticket.name,
@@ -118,7 +171,10 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         email: "",
         confirmemail: "",
         phone_number: "",
-        questions: [],
+        questions: props.questions?.map((question) => ({
+          title: question.title,
+          answer: null,
+        })),
       })
     );
     step2.setValue("attendees", expandedTickets);
@@ -143,20 +199,9 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   const attendees = step2.watch("attendees");
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function onSubmitStep2(values: z.infer<typeof contact_step>) {
     setPending(true);
     pause();
-
-    // if (props.event_type !== "Free") {
-    //   // setStep("method");
-    //   toast.warning("Oops feature unavailable", {
-    //     description:
-    //       "Sorry for the inconvenience, but this feature is not available on the current event type at the moment!",
-    //     closeButton: true,
-    //   });
-    //   return;
-    // }
 
     try {
       const res = await createTicket(
@@ -166,7 +211,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           tickets: tickets,
           payment_method: "Free",
         },
-        props
+        props,
+        coupon
       );
 
       if (res?.status === true && res?.data) {
@@ -215,7 +261,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
     console.error(step1?.formState.errors, step2?.formState.errors);
     if (step === "ticket_types") {
       if (tickets.filter((t) => t.quantity >= 1)?.length >= 1)
-        step1Ref?.current?.click();
+        step1ButtonRef?.current?.click();
+      if (ticketsNotGreaterThanOne) setSendToSame("yes");
       else
         toast.warning("Oops", {
           description:
@@ -223,18 +270,18 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
           closeButton: true,
         });
     } else if (step === "contact") {
-      step2Ref?.current?.click();
+      step2ButtonRef?.current?.click();
     }
   }
 
   step2.watch(({ contact, attendees }, { name }) => {
     if (
       sendToSame === "yes" &&
-      ticketsGreaterThanOne &&
+      ticketsNotGreaterThanOne &&
       name?.includes("contact")
     ) {
       step2.setValue("attendees.0", {
-        ticket_type: tickets.filter((t) => t.quantity >= 1)[0]?.name,
+        ticket_type: tickets.find((t) => t.quantity >= 1)?.name || "",
         first_name: "",
         last_name: "",
         gender: "",
@@ -242,15 +289,24 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         confirmemail: "",
         phone_number: "",
         ...contact,
-        questions: (
-          (attendees &&
-            attendees[0]?.questions?.filter((q) => q && q.title && q.answer)) ??
-          []
-        ).map((q) => ({
-          title: q?.title ?? "",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          answer: undefined as unknown as any,
-        })),
+        questions:
+          props.questions?.map((question) => {
+            // Find the question in attendees[0]?.questions with the same title
+            const matchingQuestion = attendees?.[0]?.questions?.find(
+              (q) => q?.title === question.title
+            );
+
+            // If found, use its answer; otherwise, set answer to undefined
+            return {
+              title: question.title,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              answer: matchingQuestion?.answer ?? (undefined as unknown as any),
+            };
+          }) ||
+          props.questions?.map((question) => ({
+            title: question.title,
+            answer: undefined,
+          })),
       });
     }
   });
@@ -313,6 +369,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         {step === "ticket_types" && (
           <Form {...step1}>
             <form
+              key='step1'
+              ref={step1Ref}
               onSubmit={step1.handleSubmit(onSubmitStep1)}
               className='lg:col-span-2 space-y-4 lg:space-y-6 xl:space-y-8 2xl:space-y-12'
             >
@@ -446,7 +504,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                 )}
               />
 
-              <button ref={step1Ref} type='submit' className='hidden' />
+              <button ref={step1ButtonRef} type='submit' className='hidden' />
             </form>
           </Form>
         )}
@@ -454,6 +512,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
         {step === "contact" && (
           <Form {...step2}>
             <form
+              key='step2'
+              ref={step2Ref}
               onSubmit={step2.handleSubmit(onSubmitStep2)}
               className='lg:col-span-2 space-y-12'
             >
@@ -598,7 +658,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               <div className='space-y-12 py-6'>
                 <div className='space-y-6'>
                   <h3 className='text-2xl font-bold'>
-                    {ticketsGreaterThanOne
+                    {ticketsNotGreaterThanOne
                       ? "Send ticket to a different email address?"
                       : "Send tickets to email addresses"}
                   </h3>
@@ -626,7 +686,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                       </p>
                     </div>
 
-                    {ticketsGreaterThanOne && (
+                    {ticketsNotGreaterThanOne && (
                       <RadioGroup
                         value={sendToSame}
                         onValueChange={(value) => {
@@ -813,7 +873,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                       console.log(step2.formState.errors);
                                       console.log(step2.getValues());
                                     }}
-                                    defaultValue={field?.value?.answer ?? ""}
+                                    defaultValue={field?.value?.answer}
                                     // defaultValue={
                                     //   field?.value?.answer &&
                                     //   typeof field.value.answer === "string"
@@ -849,7 +909,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                 </div>
               </div>
 
-              <button ref={step2Ref} type='submit' className='hidden' />
+              <button ref={step2ButtonRef} type='submit' className='hidden' />
             </form>
           </Form>
         )}
@@ -922,28 +982,123 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
             <div className='flex items-center justify-between gap-4'>
               <p>Coupon Applied</p>
-              <p>₦0.00</p>
+              <p>
+                {coupon && "-"} ₦
+                {coupon
+                  ? (
+                      calculateTotal(tickets, props.event_type) -
+                      calculateTotal(tickets, props.event_type, coupon)
+                    )?.toLocaleString()
+                  : "0.00"}
+              </p>
             </div>
 
             <Separator />
 
             <div className='flex items-center justify-between gap-4'>
               <p className='uppercase'>Total</p>
-              {calculateTotal(tickets, props.event_type) === 0 ? (
+              {calculateTotal(tickets, props.event_type, coupon) === 0 ? (
                 <p className='font-bold'>Free</p>
               ) : (
                 <p className='font-bold'>
-                  ₦{calculateTotal(tickets, props.event_type)?.toLocaleString()}
+                  ₦
+                  {calculateTotal(
+                    tickets,
+                    props.event_type,
+                    coupon
+                  )?.toLocaleString()}
                 </p>
               )}
             </div>
 
+            <Form {...couponForm}>
+              <form
+                key='couponForm'
+                onSubmit={couponForm.handleSubmit(onSubmitCoupon)}
+              >
+                <FormField
+                  control={couponForm.control}
+                  name='couponcode'
+                  render={({ field }) => (
+                    <FormItem className='font-medium space-y-10'>
+                      <FormControl>
+                        <div ref={coupon_container} className='space-y-2'>
+                          <div className='flex border border-[#D1D1D8] focus-within:border-[#afafb3] pr-3 items-center transition ease duration-200'>
+                            <input
+                              className='flex-1 indent-3 focus:outline-none border-transparent h-14'
+                              placeholder='Coupon Code'
+                              {...field}
+                              onChange={(e) => {
+                                couponForm.clearErrors();
+                                field.onChange(e);
+                              }}
+                            />
+                            <svg
+                              viewBox='0 0 24 24'
+                              fill='none'
+                              xmlns='http://www.w3.org/2000/svg'
+                              className='size-6 flex-shrink-0'
+                            >
+                              <path
+                                d='M20.59 13.41L13.42 20.58C13.2343 20.766 13.0137 20.9135 12.7709 21.0141C12.5281 21.1148 12.2678 21.1666 12.005 21.1666C11.7422 21.1666 11.4819 21.1148 11.2391 21.0141C10.9963 20.9135 10.7757 20.766 10.59 20.58L2 12V2H12L20.59 10.59C20.9625 10.9647 21.1716 11.4716 21.1716 12C21.1716 12.5284 20.9625 13.0353 20.59 13.41V13.41Z'
+                                stroke='currentColor'
+                                strokeWidth={2}
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                              />
+                              <path
+                                d='M7 7H7.01'
+                                stroke='currentColor'
+                                strokeWidth={2}
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                              />
+                            </svg>
+                          </div>
+
+                          {field.value && field.value?.length >= 1 && (
+                            <Button
+                              disabled={couponForm.formState.isSubmitting}
+                              className='bg-black text-white h-auto rounded-none py-2.5 w-full hover:bg-black space-x-3'
+                            >
+                              <span>Apply coupon</span>
+                              {couponForm.formState.isSubmitting && (
+                                <div role='status'>
+                                  <svg
+                                    aria-hidden='true'
+                                    className='inline size-4 text-white/50 animate-spin fill-white'
+                                    viewBox='0 0 100 101'
+                                    fill='none'
+                                    xmlns='http://www.w3.org/2000/svg'
+                                  >
+                                    <path
+                                      d='M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z'
+                                      fill='currentColor'
+                                    />
+                                    <path
+                                      d='M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z'
+                                      fill='currentFill'
+                                    />
+                                  </svg>
+                                  <span className='sr-only'>Loading...</span>
+                                </div>
+                              )}
+                            </Button>
+                          )}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
             <Button
               className='w-full space-x-3'
               onClick={onSubmit}
               disabled={pending}
             >
-              <span> Continue</span>
+              <span>Continue</span>
               {pending && (
                 <div role='status'>
                   <svg

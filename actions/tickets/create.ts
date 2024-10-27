@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/api";
 import { calculateTotal } from "@/lib/utils";
-import { eventSchema, ticketFormSchema } from "@/lib/zod";
+import { couponSchema, eventSchema, ticketFormSchema } from "@/lib/zod";
 import { z } from "zod";
 
 const userReqRes = z.object({
@@ -18,7 +18,8 @@ const ticketReqRes = z.object({
 
 export async function createTicket(
   props: z.infer<typeof ticketFormSchema>,
-  event: z.infer<typeof eventSchema>
+  event: z.infer<typeof eventSchema>,
+  discount?: z.infer<typeof couponSchema>
 ) {
   try {
     const url =
@@ -51,7 +52,11 @@ export async function createTicket(
                 ticket_type: ticket.name,
               })),
             payment_status: event.event_type === "Free" ? "Free" : "Pending",
-            total_cost: calculateTotal(props.tickets, event.event_type),
+            total_cost: calculateTotal(
+              props.tickets,
+              event.event_type,
+              discount
+            ),
             trxRef: null,
             questions: userCred.questions.map((question) => ({
               title: question.title,
@@ -60,7 +65,11 @@ export async function createTicket(
           }
         : {
             userID,
-            total_cost: calculateTotal(props.tickets, event.event_type),
+            total_cost: calculateTotal(
+              props.tickets,
+              event.event_type,
+              discount
+            ),
             event_info: props.attendees.map((attendee) => ({
               id: event._id,
               ticket_type: attendee.ticket_type,

@@ -99,7 +99,7 @@ export function calculateSubtotal(
 export function calculateTotal(
   tickets: calculateSubtotalTicket[],
   event_type: "Free" | "Paid",
-  coupon?: { discount_percentage: number }
+  coupon?: { discountPercentage: number }
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
@@ -112,8 +112,8 @@ export function calculateTotal(
   }, 0);
 
   const discountedSubtotal =
-    coupon && coupon.discount_percentage
-      ? subtotal - (subtotal * coupon.discount_percentage) / 100
+    coupon && coupon.discountPercentage
+      ? subtotal - (subtotal * coupon.discountPercentage) / 100
       : subtotal;
 
   const fees = event_type === "Paid" ? calculateFees(discountedSubtotal) : 0;

@@ -62,7 +62,7 @@ export const contact_step = z.object({
         questions: z.array(
           z.object({
             title: z.string(),
-            answer: z.string(), //.or(z.array(z.string())),
+            answer: z.string().min(1, { message: "required" }), //.or(z.array(z.string())),
           })
         ),
       })
