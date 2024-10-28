@@ -138,6 +138,7 @@ export default function Home() {
           className='w-full'
           width={800}
           height={900}
+          data-aos='fade-right'
         />
         <div className='my-auto space-y-8 lg:space-y-16'>
           <div className='space-y-4'>
@@ -218,6 +219,7 @@ export default function Home() {
           className='w-full '
           width={800}
           height={900}
+          data-aos='fade-left'
         />
       </section>
 
