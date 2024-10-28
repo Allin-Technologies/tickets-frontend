@@ -59,6 +59,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.59.15
     version: 5.59.15(react@18.3.1)
+  '@types/lodash':
+    specifier: ^4.17.12
+    version: 4.17.12
   axios:
     specifier: ^1.7.7
     version: 1.7.7
@@ -86,6 +89,9 @@ dependencies:
   embla-carousel-react:
     specifier: ^8.3.0
     version: 8.3.0(react@18.3.1)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   lucide-react:
     specifier: ^0.452.0
     version: 0.452.0(react@18.3.1)
@@ -113,6 +119,9 @@ dependencies:
   react-phone-number-input:
     specifier: ^3.4.9
     version: 3.4.9(react-dom@18.3.1)(react@18.3.1)
+  react-wrap-balancer:
+    specifier: ^1.1.1
+    version: 1.1.1(react@18.3.1)
   schema-dts:
     specifier: ^1.1.2
     version: 1.1.2(typescript@5.6.3)
@@ -1590,6 +1599,10 @@ packages:
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
+
+  /@types/lodash@4.17.12:
+    resolution: {integrity: sha512-sviUmCE8AYdaF/KIHLDJBQgeYzPBI0vf/17NaYehBJfYD1j6/L95Slh07NlyK2iNyBNaEkb3En2jRt+a8y3xZQ==}
+    dev: false
 
   /@types/node@20.16.11:
     resolution: {integrity: sha512-y+cTCACu92FyA5fgQSAI8A1H429g7aSK2HsO7K4XYUWc4dY5IUz55JSDIYT6/VsOLfGy8vmvQYC2hfb0iF16Uw==}
@@ -3343,6 +3356,10 @@ packages:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
 
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
   /loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
@@ -3871,6 +3888,14 @@ packages:
       invariant: 2.2.4
       react: 18.3.1
       tslib: 2.7.0
+    dev: false
+
+  /react-wrap-balancer@1.1.1(react@18.3.1):
+    resolution: {integrity: sha512-AB+l7FPRWl6uZ28VcJ8skkwLn2+UC62bjiw8tQUrZPlEWDVnR9MG0lghyn7EyxuJSsFEpht4G+yh2WikEqQ/5Q==}
+    peerDependencies:
+      react: '>=16.8.0 || ^17.0.0 || ^18'
+    dependencies:
+      react: 18.3.1
     dev: false
 
   /react@18.3.1:

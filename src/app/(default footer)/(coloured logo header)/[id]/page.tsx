@@ -13,6 +13,7 @@ import { eventSchema } from "@/lib/zod";
 import { Count } from "./count";
 import { z } from "zod";
 import { Event, WithContext } from "schema-dts";
+import * as _ from "lodash";
 
 const validator = z.array(z.any());
 
@@ -264,52 +265,55 @@ export default async function Page(props: Props) {
 
             <div className='flex flex-col items-center space-y-14 w-full'>
               <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                {more_request?.data
-                  ?.filter((event) => event._id !== request.data?._id)
-                  ?.map((event, index) => {
-                    // Parse the date string into a Date object
-                    const date = parse(
-                      event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
-                      "d MMMM, yyyy",
-                      new Date()
-                    );
+                {more_request?.data &&
+                  _.shuffle(more_request?.data)
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ?.filter((event: any) => event._id !== request.data?._id) // Exclude the current event
+                    // ?.sort(() => 0.5 - Math.random()) // Shuffle the array
+                    ?.slice(0, 3) // Select only the first 3 elements
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    .map((event: any, index: number) => {
+                      const date = parse(
+                        event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+                        "d MMMM, yyyy",
+                        new Date()
+                      );
 
-                    // Get the abbreviated month and day
-                    const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
-                    const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
+                      const month = format(date, "MMM");
+                      const day = format(date, "dd");
 
-                    return (
-                      <Link
-                        href={`/${event?.slug}`}
-                        key={index}
-                        className='bg-white rounded-2xl overflow-clip'
-                      >
-                        <Image
-                          className='aspect-video w-full object-cover'
-                          src={event?.imgsrc}
-                          alt={event?.title}
-                          width={800}
-                          height={450}
-                        />
-                        <div className='flex space-x-6 p-6'>
-                          <div className='flex flex-col items-center'>
-                            <p className='text-sm font-bold text-primary uppercase'>
-                              {month}
-                            </p>
-                            <p className='text-2xl font-bold'>{day}</p>
+                      return (
+                        <Link
+                          href={`/${event?.slug}`}
+                          key={index}
+                          className='bg-white rounded-2xl overflow-clip'
+                        >
+                          <Image
+                            className='aspect-video w-full object-cover'
+                            src={event?.imgsrc}
+                            alt={event?.title}
+                            width={800}
+                            height={450}
+                          />
+                          <div className='flex space-x-6 p-6'>
+                            <div className='flex flex-col items-center'>
+                              <p className='text-sm font-bold text-primary uppercase'>
+                                {month}
+                              </p>
+                              <p className='text-2xl font-bold'>{day}</p>
+                            </div>
+                            <div className='space-y-2'>
+                              <p className='font-bold line-clamp-2 text-ellipsis'>
+                                {event?.title}
+                              </p>
+                              <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
+                                {event?.description ?? ""}
+                              </p>
+                            </div>
                           </div>
-                          <div className='space-y-2'>
-                            <p className='font-bold line-clamp-2 text-ellipsis'>
-                              {event?.title}
-                            </p>
-                            <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
-                              {event?.description ?? ""}
-                            </p>
-                          </div>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                        </Link>
+                      );
+                    })}
               </div>
 
               <Button

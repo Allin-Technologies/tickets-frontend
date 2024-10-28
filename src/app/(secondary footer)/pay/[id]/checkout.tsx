@@ -99,7 +99,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
   async function onSubmitCoupon(_values: z.infer<typeof couponFormSchema>) {
     if (props.event_type === "Free") {
-      toast.info("Coupon code not applicable to free tickets!");
+      toast.info("Discount code not applicable to free tickets!");
       return;
     }
 
@@ -116,7 +116,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       }
 
       if (res?.data?.remainingUses === 0) {
-        toast.warning("Coupon code has reached its maximum usage limit!");
+        toast.warning("Discount code has reached its maximum usage limit!");
         return;
       }
 
@@ -131,7 +131,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       console.error(e);
       toast.warning("Oops", {
         description:
-          "Something went wrong, couldn't validate coupon code. Please try again",
+          "Something went wrong, couldn't validate discount code. Please try again",
         closeButton: true,
       });
     }
@@ -1031,7 +1031,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                           <div className='flex border border-[#D1D1D8] focus-within:border-[#afafb3] pr-3 items-center transition ease duration-200'>
                             <input
                               className='flex-1 indent-3 focus:outline-none border-transparent h-14'
-                              placeholder='Coupon Code'
+                              placeholder='Discount Code'
                               {...field}
                               onChange={(e) => {
                                 couponForm.clearErrors();

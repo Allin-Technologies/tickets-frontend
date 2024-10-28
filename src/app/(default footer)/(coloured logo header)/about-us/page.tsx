@@ -1,17 +1,17 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import Balancer from "react-wrap-balancer";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
     <main className='w-screen min-h-dvh bg-background text-[hsla(252,_5%,_18%,_1)] space-y-8 lg:pb-16'>
       <section className='w-full max-w-screen-2xl mx-auto xl:pb-12 md:pb-16 pt-28 md:pt-36 xl:pt-44 2xl:pt-56 space-y-8 xl:space-y-16 flex flex-col flex-1'>
         <div className='w-full max-w-5xl mx-auto space-y-3 lg:space-y-6 px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-0'>
-          <h1 className='text-4xl md:text-5xl xl:text-6xl font-bold'>
+          <Balancer className='text-4xl md:text-5xl xl:text-6xl font-bold'>
             <span className='text-primary'>We Are the Missing Ingredient</span>{" "}
-            <br className='hidden lg:block' />
             in the Soup of a Hassle-Free Ticketing Experience
-          </h1>
+          </Balancer>
           <p className='text-lg md:text-xl xl:text-2xl leading-relaxed'>
             You know how salt is essential in almost all meals? That’s how we
             ensure your ticketing experience is hassle-free. We offer easy
