@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { contact } from "../../../../actions/contact";
+import { contact } from "../../../actions/contact";
 
 const formSchema = z.object({
   fullname: z.string().min(2, { message: "Your name is required" }),

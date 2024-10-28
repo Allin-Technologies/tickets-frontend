@@ -1,3 +1,4 @@
+import { couponSchema } from "@/lib/zod";
 import { clsx, type ClassValue } from "clsx";
 import { addMinutes, format, parse } from "date-fns";
 import { twMerge } from "tailwind-merge";
@@ -99,10 +100,11 @@ export function calculateSubtotal(
 export function calculateTotal(
   tickets: calculateSubtotalTicket[],
   event_type: "Free" | "Paid",
-  coupon?: { discountPercentage: number }
+  coupon?: z.infer<typeof couponSchema>
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
+  // Step 1: Calculate subtotal, applying ticket-level discounts as needed
   const subtotal = validTickets.reduce((total, ticket) => {
     const ticketCost = ticket.discount
       ? ticket.cost - (ticket.cost * (ticket?.discount_percent ?? 0)) / 100
@@ -111,9 +113,23 @@ export function calculateTotal(
     return total + ticketCost * ticket.quantity;
   }, 0);
 
+  // Step 2: Calculate eligible subtotal if allowedTicketTypes is defined
+  const eligibleSubtotal = validTickets.reduce((total, ticket) => {
+    const ticketCost = ticket.discount
+      ? ticket.cost - (ticket.cost * (ticket?.discount_percent ?? 0)) / 100
+      : ticket.cost;
+
+    // Include only tickets that are eligible based on allowedTicketTypes if it's defined
+    return !coupon?.allowedTicketTypes ||
+      coupon.allowedTicketTypes.includes(ticket.name)
+      ? total + ticketCost * ticket.quantity
+      : total;
+  }, 0);
+
+  // Step 3: Apply the coupon-level discount only to the eligible subtotal
   const discountedSubtotal =
     coupon && coupon.discountPercentage
-      ? subtotal - (subtotal * coupon.discountPercentage) / 100
+      ? subtotal - (eligibleSubtotal * coupon.discountPercentage) / 100
       : subtotal;
 
   const fees = event_type === "Paid" ? calculateFees(discountedSubtotal) : 0;

@@ -5,6 +5,7 @@ export const couponSchema = z.object({
   couponcode: z.string(),
   discountPercentage: z.number(),
   remainingUses: z.number(),
+  allowedTicketTypes: z.array(z.string()).nullable(),
 });
 
 export const couponFormSchema = z.object({

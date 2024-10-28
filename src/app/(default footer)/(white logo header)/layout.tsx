@@ -1,5 +1,5 @@
 import { Header } from "@/components/navigation/header";
-import { AOSProvider } from "../../../../providers/aos";
+import { AOSProvider } from "@/providers/aos";
 
 export default function Layout({
   children,

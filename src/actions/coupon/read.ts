@@ -14,6 +14,8 @@ export async function getCouponCode(data: {
       data,
     });
 
+    console.log(res);
+
     return res;
   } catch (error) {
     console.error("Error creating ticket:", error);

@@ -53,7 +53,7 @@ import {
 } from "@/lib/utils";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRouter } from "next/navigation";
-import { createTicket } from "../../../../../actions/tickets";
+import { createTicket } from "../../../../actions/tickets";
 import { useCountDown } from "@/hooks/use-countdown";
 import { PhoneInput } from "@/components/ui/phone-number";
 import {
@@ -61,7 +61,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { getCouponCode } from "../../../../../actions/coupon";
+import { getCouponCode } from "../../../../actions/coupon";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
@@ -121,9 +121,17 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
       }
 
       toast.warning("Congrats", {
-        description:
-          res?.message ??
-          `${res?.data?.discountPercentage}% discount has been applied to your purchase`,
+        description: res?.data?.allowedTicketTypes
+          ? `${
+              res.data.discountPercentage
+            }% discount has been applied for ${res.data.allowedTicketTypes
+              .map((type, index) =>
+                index === (res?.data?.allowedTicketTypes?.length ?? 0) - 1
+                  ? `and ${type}`
+                  : type
+              )
+              .join(", ")} ticket purchase`
+          : `${res.data.discountPercentage}% discount has been applied to your purchase`,
         closeButton: true,
       });
       setCoupon(res?.data);
@@ -986,7 +994,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
             </div>
 
             <div className='flex items-center justify-between gap-4'>
-              <p>Coupon Applied</p>
+              <p>Discount Applied</p>
               <p>
                 {coupon && "-"} ₦
                 {coupon
@@ -1035,6 +1043,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                               {...field}
                               onChange={(e) => {
                                 couponForm.clearErrors();
+                                setCoupon(undefined);
                                 field.onChange(e);
                               }}
                             />
