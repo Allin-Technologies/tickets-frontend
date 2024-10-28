@@ -18,7 +18,7 @@ export default async function Page(props: { params: { id: string } }) {
     notFound();
   }
 
-  console.log(request?.data?.questions);
+  // console.log(request?.data?.questions);
 
   return (
     <main className='w-screen lg:min-h-dvh'>
