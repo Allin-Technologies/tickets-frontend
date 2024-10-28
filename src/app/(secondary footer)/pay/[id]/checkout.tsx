@@ -62,6 +62,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { getCouponCode } from "../../../../actions/coupon";
+import { MultiSelect } from "@/components/multi-select";
 
 export function Checkout(props: z.infer<typeof eventSchema>) {
   const [timeLeft, { start, format, reset, pause, resume }] = useCountDown(
@@ -882,17 +883,12 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                         answer: value,
                                         title: question.title,
                                       });
-
-                                      console.log(step2.formState.errors);
-                                      console.log(step2.getValues());
                                     }}
-                                    defaultValue={field?.value?.answer}
-                                    // defaultValue={
-                                    //   field?.value?.answer &&
-                                    //   typeof field.value.answer === "string"
-                                    //     ? field.value.answer
-                                    //     : undefined
-                                    // }
+                                    defaultValue={
+                                      typeof field.value.answer === "string"
+                                        ? field.value.answer
+                                        : undefined
+                                    }
                                   >
                                     <FormControl>
                                       <SelectTrigger>
@@ -910,6 +906,89 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                       ))}
                                     </SelectContent>
                                   </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          );
+                        }
+
+                        if (question.field === "multiSelectField") {
+                          return (
+                            <FormField
+                              key={k}
+                              control={step2.control}
+                              name={`attendees.${i}.questions.${k}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    {question.required && (
+                                      <span className='text-primary'>*</span>
+                                    )}
+                                    {question.title}
+                                  </FormLabel>
+                                  <FormControl>
+                                    <MultiSelect
+                                      options={question.options}
+                                      onValueChange={(value) => {
+                                        if (value?.length === 0) {
+                                          return field.onChange({
+                                            answer: question.required
+                                              ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                (undefined as unknown as any)
+                                              : [],
+                                            title: question.title,
+                                          });
+                                        }
+
+                                        field.onChange({
+                                          answer: value,
+                                          title: question.title,
+                                        });
+                                      }}
+                                      defaultValue={
+                                        typeof field.value.answer !== "string"
+                                          ? field.value.answer
+                                          : undefined
+                                      }
+                                      placeholder='Select'
+                                      // variant='inverted'
+                                      animation={2}
+                                      maxCount={3}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          );
+                        }
+
+                        if (question.field === "textField") {
+                          return (
+                            <FormField
+                              key={k}
+                              control={step2.control}
+                              name={`attendees.${i}.questions.${k}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>
+                                    {question.required && (
+                                      <span className='text-primary'>*</span>
+                                    )}
+                                    {question.title}
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      placeholder='Input'
+                                      {...field}
+                                      value={
+                                        typeof field.value.answer === "string"
+                                          ? field.value.answer
+                                          : undefined
+                                      }
+                                    />
+                                  </FormControl>
                                   <FormMessage />
                                 </FormItem>
                               )}

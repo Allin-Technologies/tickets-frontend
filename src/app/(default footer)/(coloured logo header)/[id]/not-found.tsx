@@ -21,9 +21,7 @@ export default function NotFound() {
           </h1>
 
           <div className='space-y-3 lg:space-y-5'>
-            <p className='text-lg xl:text-2xl 2xl:text-3xl'>
-              This page will be coming soon.
-            </p>
+            <p className='text-lg xl:text-2xl 2xl:text-3xl'>Event not found</p>
 
             <Button asChild>
               <Link href='/'>Go back homepage</Link>
