@@ -431,7 +431,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 <p>
                                   includes ₦
                                   {props.event_type === "Paid"
-                                    ? calculateFees(t.cost, t.discount_percent)
+                                    ? calculateFees(
+                                        t.cost,
+                                        1,
+                                        t.discount_percent
+                                      )
                                     : "0"}{" "}
                                   fee
                                 </p>
