@@ -4,6 +4,7 @@ export const ticket = z.object({
   name: z.string(),
   cost: z.number(),
   available_tickets: z.number(),
+  sold_tickets: z.number(),
   discount: z.boolean(),
   discount_name: z.string().optional(),
   discount_percent: z.number().optional(),

@@ -25,6 +25,7 @@ import {
   useQuery,
   QueryClient,
   QueryClientProvider,
+  keepPreviousData,
 } from "@tanstack/react-query";
 import { getAllEvents } from "@/actions/events";
 
@@ -54,6 +55,7 @@ function Events(_props: { initailData: Array<any> }) {
     queryFn: async () => {
       return await getAllEvents(category, price, date);
     },
+    placeholderData: keepPreviousData,
     // initialData: props.initailData,
   });
 
@@ -190,6 +192,7 @@ function Events(_props: { initailData: Array<any> }) {
                   href={`/${event?.slug}`}
                   key={index}
                   className='bg-white rounded-2xl overflow-clip'
+                  prefetch={true}
                 >
                   <Image
                     className='aspect-video w-full object-cover'

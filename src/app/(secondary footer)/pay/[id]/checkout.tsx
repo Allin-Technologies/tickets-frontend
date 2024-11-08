@@ -442,7 +442,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 <p className='capitalize'>{t.discount_name}</p>
                               </div>
 
-                              {t.available_tickets >= 1 ? (
+                              {t.sold_tickets < t.available_tickets ? (
                                 <FormControl>
                                   <NumberField
                                     className='w-40'
