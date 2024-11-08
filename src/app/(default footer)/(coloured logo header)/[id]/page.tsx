@@ -57,11 +57,10 @@ export default async function Page(props: Props) {
     method: "get",
     url: `/event/${props.params.id}`,
     headers: {
-      next: { revalidate: 60 },
+      // next: { revalidate: 60 },
+      cache: "no-store",
     },
   });
-
-  // console.log(request?.data);
 
   if (request.response_code !== 200 || !request.data) {
     notFound();

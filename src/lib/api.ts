@@ -52,6 +52,7 @@ export async function api<T>(
         data: validatedData.data,
       };
     } else {
+      console.log(validatedData.error);
       // If validation fails, return a validation error
       return {
         response_code: 400,

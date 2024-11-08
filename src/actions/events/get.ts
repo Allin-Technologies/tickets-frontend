@@ -19,6 +19,7 @@ export async function getAllEvents(
         cache: "no-store",
       },
     });
+
     return request?.data ?? [];
   }
 
