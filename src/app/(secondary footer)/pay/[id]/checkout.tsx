@@ -442,7 +442,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 <p className='capitalize'>{t.discount_name}</p>
                               </div>
 
-                              {t.sold_tickets < t.available_tickets ? (
+                              {t.tickets_remaining >= 1 ? (
                                 <FormControl>
                                   <NumberField
                                     className='w-40'
@@ -457,7 +457,11 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                         )
                                       );
                                     }}
-                                    max={props.event_type === "Free" ? 1 : 3}
+                                    max={
+                                      props.event_type === "Free"
+                                        ? Math.min(t.tickets_remaining, 1)
+                                        : Math.min(t.tickets_remaining, 3)
+                                    }
                                   >
                                     <NumberFieldDecrement />
                                     <NumberFieldInput placeholder='' />
