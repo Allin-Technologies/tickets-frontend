@@ -74,6 +74,12 @@ export default async function Page(props: Props) {
     },
   });
 
+  const currentDate = new Date();
+  const filteredData = (more_request?.data ?? []).filter((event) => {
+    const eventDate = new Date(event.date.replace(/(\d+)(th|st|nd|rd)/, "$1"));
+    return eventDate >= currentDate;
+  });
+
   if (request.response_code !== 200) {
     notFound();
   }
@@ -264,8 +270,8 @@ export default async function Page(props: Props) {
 
             <div className='flex flex-col items-center space-y-14 w-full'>
               <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                {more_request?.data &&
-                  _.shuffle(more_request?.data)
+                {filteredData &&
+                  _.shuffle(filteredData)
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ?.filter((event: any) => event._id !== request.data?._id) // Exclude the current event
                     // ?.sort(() => 0.5 - Math.random()) // Shuffle the array

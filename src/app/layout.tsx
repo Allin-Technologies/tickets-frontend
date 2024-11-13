@@ -40,7 +40,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          "font-plus-jakarta-sans antialiased",
+          "font-plus-jakarta-sans antialiased w-screen overflow-x-hidden",
           plusJakartaSans.variable
         )}
       >
