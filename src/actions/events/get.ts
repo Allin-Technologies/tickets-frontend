@@ -24,10 +24,13 @@ export async function getAllEvents(
     },
   });
 
-  const currentDate = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set to start of today
+
   const filteredData = (request?.data ?? []).filter((event) => {
     const eventDate = new Date(event.date.replace(/(\d+)(th|st|nd|rd)/, "$1"));
-    return eventDate >= currentDate;
+    eventDate.setHours(23, 59, 59, 999); // Set to end of event day
+    return eventDate >= today;
   });
 
   return filteredData;

@@ -8,10 +8,15 @@ export async function getCouponCode(data: {
   slug: string;
 }) {
   try {
+    console.log(data);
+
     const res = await api(couponSchema, {
       method: "post",
       url: `/coupon/validate`,
-      data,
+      data: {
+        couponcode: data.couponcode.trim(),
+        slug: data.slug,
+      },
     });
 
     console.log(res);
