@@ -28,6 +28,17 @@ import {
   keepPreviousData,
 } from "@tanstack/react-query";
 import { getAllEvents } from "@/actions/events";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -42,92 +53,145 @@ export function Discover(props: { initailData: Array<any> }) {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const columns: ColumnDef<any>[] = [];
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 function Events(_props: { initailData: Array<any> }) {
+  const isMobile = useIsMobile(1280);
   const [date, setDate] = React.useState<Date>();
-
   const [category, setCategory] = React.useState("all");
   const [price, setPrice] = React.useState("all");
+  const [state, setState] = React.useState("all");
 
   // Queries
-  const query = useQuery({
-    queryKey: ["events", category, price, date],
+  const dataQuery = useQuery({
+    queryKey: ["events", category, price, date, state],
     queryFn: async () => {
-      return await getAllEvents(category, price, date);
+      return await getAllEvents(category, price, date, state);
     },
-    placeholderData: keepPreviousData,
-    // initialData: props.initailData,
+    placeholderData: keepPreviousData, // don't have 0 rows flash while changing pages/loading next page
   });
 
-  if (query.error) {
+  const defaultData = React.useMemo(
+    () => _props.initailData,
+    [_props.initailData]
+  );
+
+  const table = useReactTable({
+    data: dataQuery.data ?? defaultData,
+    pageCount: 1,
+    manualPagination: true,
+    columns: columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  if (dataQuery.error) {
     return <div>Error fetching data</div>; // Display error state
   }
 
   return (
     <>
-      <div className='flex flex-col lg:flex-row justify-between items-start gap-4'>
-        <h2 className='text-[40px] font-semibold text-dark-blue'>
-          Upcoming Events
-        </h2>
-        <div className='grid grid-cols-2 sm:flex items-center gap-2'>
-          <Select onValueChange={setCategory} defaultValue={category}>
-            <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
-              <SelectValue placeholder='Select a Category' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value='all'>All Categories</SelectItem>
-                <SelectItem value='Conferences & Seminars'>
-                  Conferences & Seminars
-                </SelectItem>
-                <SelectItem value='Concerts & Music Festivals'>
-                  Concerts & Music Festivals
-                </SelectItem>
-                <SelectItem value='Sports Events'>⁠Sports Events</SelectItem>
-                <SelectItem value='Theatre & Performing Arts'>
-                  Theatre & Performing Arts
-                </SelectItem>
-                <SelectItem value='Parties & Social Events'>
-                  Parties & Social Events
-                </SelectItem>
-                <SelectItem value='Exhibitions & Trade Shows'>
-                  Exhibitions & Trade Shows
-                </SelectItem>
-                <SelectItem value='Cultural & Heritage Events'>
-                  Cultural & Heritage Events
-                </SelectItem>
-                <SelectItem value='Workshops & Training'>
-                  Workshops & Training
-                </SelectItem>
-                <SelectItem value='Charity & Fundraising Events'>
-                  Charity & Fundraising Events
-                </SelectItem>
-                <SelectItem value='Food & Drink Festivals'>
-                  Food & Drink Festivals
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Select onValueChange={setPrice} defaultValue={price}>
-            <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
-              <SelectValue placeholder='Price' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value='all'>All</SelectItem>
-                <SelectItem value='free'>Free</SelectItem>
-                <SelectItem value='paid'>Paid</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <div className='grid gap-2 col-span-2'>
+      <Collapsible defaultOpen={!isMobile}>
+        <div className='flex flex-col xl:flex-row justify-between items-start gap-4'>
+          <div className='flex justify-between items-center w-full gap-4'>
+            <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold text-dark-blue'>
+              Upcoming Events
+            </h2>
+
+            {isMobile && (
+              <CollapsibleTrigger asChild>
+                <Button variant='outline' size='icon' className=''>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='size-6'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
+                    />
+                  </svg>
+                </Button>
+              </CollapsibleTrigger>
+            )}
+          </div>
+
+          <CollapsibleContent className='grid grid-cols-2 sm:flex items-center gap-2 w-full'>
+            <Select onValueChange={setCategory} defaultValue={category}>
+              <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+                <SelectValue placeholder='Select a Category' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value='all'>All Categories</SelectItem>
+                  <SelectItem value='Conferences & Seminars'>
+                    Conferences & Seminars
+                  </SelectItem>
+                  <SelectItem value='Concerts & Music Festivals'>
+                    Concerts & Music Festivals
+                  </SelectItem>
+                  <SelectItem value='Sports Events'>⁠Sports Events</SelectItem>
+                  <SelectItem value='Theatre & Performing Arts'>
+                    Theatre & Performing Arts
+                  </SelectItem>
+                  <SelectItem value='Parties & Social Events'>
+                    Parties & Social Events
+                  </SelectItem>
+                  <SelectItem value='Exhibitions & Trade Shows'>
+                    Exhibitions & Trade Shows
+                  </SelectItem>
+                  <SelectItem value='Cultural & Heritage Events'>
+                    Cultural & Heritage Events
+                  </SelectItem>
+                  <SelectItem value='Workshops & Training'>
+                    Workshops & Training
+                  </SelectItem>
+                  <SelectItem value='Charity & Fundraising Events'>
+                    Charity & Fundraising Events
+                  </SelectItem>
+                  <SelectItem value='Food & Drink Festivals'>
+                    Food & Drink Festivals
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Select onValueChange={setPrice} defaultValue={price}>
+              <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+                <SelectValue placeholder='Price' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value='all'>All Prices</SelectItem>
+                  <SelectItem value='free'>Free</SelectItem>
+                  <SelectItem value='paid'>Paid</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Select onValueChange={setState} defaultValue={state}>
+              <SelectTrigger className='col-span-2 sm:col-span-1 sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+                <SelectValue placeholder='Location' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value='all'>All Location</SelectItem>
+                  <SelectItem value='Abuja'>Abuja</SelectItem>
+                  <SelectItem value='Lagos'>Lagos</SelectItem>
+                  <SelectItem value='Rivers'>Rivers</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   id='date'
                   variant='secondary'
                   className={cn(
-                    "sm:w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
+                    "col-span-2 sm:col-span-1 sm:w-[150px] lg:w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
                     !date && "text-dark-blue/50"
                   )}
                 >
@@ -142,13 +206,22 @@ function Events(_props: { initailData: Array<any> }) {
                   onSelect={setDate}
                   initialFocus
                 />
+                <div className='p-2'>
+                  <Button
+                    variant='secondary'
+                    className='w-full h-auto py-1'
+                    onClick={() => setDate(undefined)}
+                  >
+                    Clear
+                  </Button>
+                </div>
               </PopoverContent>
             </Popover>
-          </div>
+          </CollapsibleContent>
         </div>
-      </div>
+      </Collapsible>
 
-      {(query?.isFetching || query?.isLoading) && (
+      {(dataQuery?.isPending || dataQuery?.isLoading) && (
         <div className='flex flex-col items-center space-y-14 w-full flex-1'>
           <div className='h-full w-full grid place-content-center'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -161,14 +234,15 @@ function Events(_props: { initailData: Array<any> }) {
         </div>
       )}
 
-      {query?.data && !query?.isLoading && !query?.isFetching && (
+      {!dataQuery?.isLoading && !dataQuery?.isPending && (
         <div className='flex flex-col items-center space-y-14 w-full'>
           <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {query.data
-              ?.map((event) => {
+            {table
+              .getRowModel()
+              .rows.map((row) => {
                 // Parse the date string into a Date object
                 const date = parse(
-                  event?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+                  row.original?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
                   "d MMMM, yyyy",
                   new Date()
                 );
@@ -178,7 +252,7 @@ function Events(_props: { initailData: Array<any> }) {
                 const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
 
                 return {
-                  ...event,
+                  ...row.original,
                   month,
                   day,
                   parsedDate: date,
@@ -220,27 +294,6 @@ function Events(_props: { initailData: Array<any> }) {
                 </Link>
               ))}
           </div>
-
-          {/* <Button
-    className='border-primary focus-visible:ring-primary focus-visible:ring-2 ring-offset-2 ring-offset-background space-x-3'
-    variant='outline'
-  >
-    <span>Load more events</span>
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      fill='none'
-      viewBox='0 0 24 24'
-      strokeWidth={2.5}
-      stroke='currentColor'
-      className='size-4'
-    >
-      <path
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3'
-      />
-    </svg>
-  </Button> */}
         </div>
       )}
     </>

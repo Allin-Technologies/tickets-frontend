@@ -42,8 +42,6 @@ export async function api<T>(
     // Assuming the response is of the BaseResponse structure
     const baseResponse: BaseResponse<any> = response.data;
 
-    console.log("baseResponse:", baseResponse);
-
     // Validate the `data` field using the provided Zod schema
     const validatedData = validator.safeParse(baseResponse.data);
 
