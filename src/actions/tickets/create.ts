@@ -55,7 +55,8 @@ export async function createTicket(
             total_cost: calculateTotal(
               props.tickets,
               event.event_type,
-              discount
+              discount,
+              event.hide_charge
             ),
             trxRef: null,
             questions: userCred.questions.map((question) => ({
@@ -68,7 +69,8 @@ export async function createTicket(
             total_cost: calculateTotal(
               props.tickets,
               event.event_type,
-              discount
+              discount,
+              event.hide_charge
             ),
             event_info: props.attendees.map((attendee) => ({
               id: event._id,

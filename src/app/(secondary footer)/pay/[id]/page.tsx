@@ -3,8 +3,13 @@ import { notFound } from "next/navigation";
 import { api } from "@/lib/api";
 import { eventSchema } from "@/lib/zod";
 import { Checkout } from "./checkout";
+import { Metadata } from "next";
 
-export default async function Page(props: { params: { id: string } }) {
+type Props = {
+  params: { id: string };
+};
+
+export default async function Page(props: Props) {
   const request = await api(eventSchema, {
     method: "get",
     url: `/event/${props.params.id}`,
@@ -49,4 +54,34 @@ export default async function Page(props: { params: { id: string } }) {
       </section>
     </main>
   );
+}
+
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const request = await api(eventSchema, {
+    method: "get",
+    url: `/event/${props.params.id}`,
+    headers: {
+      next: { revalidate: 3600 },
+    },
+  });
+
+  return {
+    title: request?.data?.title,
+    description: request?.data?.about,
+    openGraph: {
+      title: "Get a ticket for " + request?.data?.title,
+      description: request?.data?.description,
+      url: `https://www.ticketsbyallin.com/${request?.data?.slug}`,
+      images: request?.data?.imgsrc
+        ? [
+            {
+              url: request?.data?.imgsrc,
+              width: 800,
+              height: 600,
+            },
+          ]
+        : undefined,
+      type: "website",
+    },
+  };
 }

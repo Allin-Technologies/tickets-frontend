@@ -15,6 +15,7 @@ const question = z.object({
 
 export const eventSchema = z.object({
   _id: z.string().length(24),
+  hide_charge: z.boolean().optional(),
   title: z.string(),
   slug: z.string(),
   date: z.string(),

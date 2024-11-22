@@ -428,17 +428,20 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                 )}
                               </div>
                               <div className='flex items-center justify-between gap-4 text-[hsla(236,_9%,_66%,_1)]'>
-                                <p>
-                                  includes ₦
-                                  {props.event_type === "Paid"
-                                    ? calculateFees(
-                                        t.cost,
-                                        1,
-                                        t.discount_percent
-                                      )
-                                    : "0"}{" "}
-                                  fee
-                                </p>
+                                {!props.hide_charge && (
+                                  <p>
+                                    includes ₦
+                                    {props.event_type === "Paid"
+                                      ? calculateFees(
+                                          t.cost,
+                                          1,
+                                          t.discount_percent,
+                                          props.hide_charge
+                                        )
+                                      : "0"}{" "}
+                                    fee
+                                  </p>
+                                )}
                                 <p className='capitalize'>{t.discount_name}</p>
                               </div>
 
@@ -1060,21 +1063,26 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                   ? "0.00"
                   : calculateSubtotal(
                       tickets,
-                      props.event_type
+                      props.event_type,
+                      props.hide_charge
                     )?.fees?.toLocaleString()}
               </p>
             </div>
 
             <div className='flex items-center justify-between gap-4'>
               <p>Subtotal</p>
-              {calculateSubtotal(tickets, props.event_type)?.subtotal === 0 ? (
-                <p className='text-primary'>Free</p>
+              {calculateSubtotal(tickets, props.event_type, props.hide_charge)
+                ?.subtotal === 0 ? (
+                <p className='text-primary'>
+                  {props.event_type === "Free" ? "Free" : "0.00"}
+                </p>
               ) : (
                 <p>
                   ₦
                   {calculateSubtotal(
                     tickets,
-                    props.event_type
+                    props.event_type,
+                    props.hide_charge
                   )?.subtotal?.toLocaleString()}
                 </p>
               )}
@@ -1086,8 +1094,18 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                 {coupon && "-"} ₦
                 {coupon
                   ? (
-                      calculateTotal(tickets, props.event_type) -
-                      calculateTotal(tickets, props.event_type, coupon)
+                      calculateTotal(
+                        tickets,
+                        props.event_type,
+                        undefined,
+                        props.hide_charge
+                      ) -
+                      calculateTotal(
+                        tickets,
+                        props.event_type,
+                        coupon,
+                        props.hide_charge
+                      )
                     )?.toLocaleString()
                   : "0.00"}
               </p>
@@ -1097,7 +1115,12 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
 
             <div className='flex items-center justify-between gap-4'>
               <p className='uppercase'>Total</p>
-              {calculateTotal(tickets, props.event_type, coupon) === 0 ? (
+              {calculateTotal(
+                tickets,
+                props.event_type,
+                coupon,
+                props.hide_charge
+              ) === 0 ? (
                 <p className='font-bold'>Free</p>
               ) : (
                 <p className='font-bold'>
@@ -1105,7 +1128,8 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                   {calculateTotal(
                     tickets,
                     props.event_type,
-                    coupon
+                    coupon,
+                    props.hide_charge
                   )?.toLocaleString()}
                 </p>
               )}

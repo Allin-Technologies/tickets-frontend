@@ -70,8 +70,10 @@ interface calculateSubtotalTicket extends z.infer<typeof ticket> {
 export function calculateFees(
   amount: number,
   number_of_tickets: number,
-  discount?: number
+  discount?: number,
+  hide_charge?: boolean
 ): number {
+  if (hide_charge) return 0;
   const cost = calculateDiscountedPrice(amount, discount ?? 0);
   const extra = cost * 0.05;
   const fixed = number_of_tickets * 100;
@@ -80,23 +82,27 @@ export function calculateFees(
 
 export function calculateSubtotal(
   tickets: calculateSubtotalTicket[],
-  event_type: "Free" | "Paid"
+  event_type: "Free" | "Paid",
+  hide_charge?: boolean
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
   const subtotal = validTickets.reduce((total, ticket) => {
-    // If the ticket has a discount, apply it to the cost
     const ticketCost = ticket.discount
       ? ticket.cost - (ticket.cost * (ticket?.discount_percent ?? 0)) / 100
       : ticket.cost;
 
-    // Multiply by the quantity of tickets and add to the running total
     return total + ticketCost * ticket.quantity;
   }, 0);
 
   const fees =
     event_type === "Paid"
-      ? calculateFees(subtotal, validTickets.length ?? 0)
+      ? calculateFees(
+          subtotal,
+          validTickets.length ?? 0,
+          undefined,
+          hide_charge
+        )
       : 0;
 
   return {
@@ -108,7 +114,8 @@ export function calculateSubtotal(
 export function calculateTotal(
   tickets: calculateSubtotalTicket[],
   event_type: "Free" | "Paid",
-  coupon?: z.infer<typeof couponSchema>
+  coupon?: z.infer<typeof couponSchema>,
+  hide_charge?: boolean
 ) {
   const validTickets = tickets.filter((ticket) => ticket.quantity >= 1);
 
@@ -142,7 +149,12 @@ export function calculateTotal(
 
   const fees =
     event_type === "Paid"
-      ? calculateFees(discountedSubtotal, validTickets.length ?? 0)
+      ? calculateFees(
+          discountedSubtotal,
+          validTickets.length ?? 0,
+          undefined,
+          hide_charge
+        )
       : 0;
   return Number((discountedSubtotal + fees).toFixed(2));
 }
