@@ -161,7 +161,12 @@ export default async function Page(props: Props) {
                       />
                     </svg>
 
-                    <p>{formatEventDate(request.data?.date)}</p>
+                    <p>
+                      {formatEventDate(
+                        request.data?.date,
+                        request?.data?.date_ended
+                      )}
+                    </p>
                   </div>
                 )}
 
@@ -225,7 +230,16 @@ export default async function Page(props: Props) {
                     className='block'
                     href={request.data?.location_url ?? "#"}
                   >
-                    {request.data?.location}
+                    {typeof request.data?.location === "string" ? (
+                      request.data?.location
+                    ) : (
+                      <>
+                        {request.data?.location?.address},{" "}
+                        {request.data?.location?.city},{" "}
+                        {request.data?.location?.state},{" "}
+                        {request.data?.location?.country}
+                      </>
+                    )}
                   </Link>
                 </div>
               </div>

@@ -24,7 +24,7 @@ const getOrdinalSuffix = (day: number) => {
 };
 
 // Function to format the date to "Wednesday, September 18th, 2024"
-export const formatEventDate = (dateString: string) => {
+export const formatSingleDate = (dateString: string) => {
   const cleanedDateString = dateString.replace(/(\d+)(th|st|nd|rd)/, "$1");
 
   const parsedDate = parse(cleanedDateString, "d MMMM, yyyy", new Date());
@@ -35,6 +35,47 @@ export const formatEventDate = (dateString: string) => {
   const year = format(parsedDate, "yyyy");
 
   return `${day_string}, ${month} ${getOrdinalSuffix(+day_int)}, ${year}`;
+};
+
+// Function to format a date range
+export const formatEventDate = (
+  dateString: string,
+  dateEnded?: string | null
+): string => {
+  if (!dateEnded) {
+    return formatSingleDate(dateString); // If no end date, format as a single date
+  }
+
+  const cleanedStartDateString = dateString.replace(/(\d+)(th|st|nd|rd)/, "$1");
+  const cleanedEndDateString = dateEnded.replace(/(\d+)(th|st|nd|rd)/, "$1");
+
+  const startDate = parse(cleanedStartDateString, "d MMMM, yyyy", new Date());
+  const endDate = parse(cleanedEndDateString, "d MMMM, yyyy", new Date());
+
+  // Format start and end dates
+  const startDayName = format(startDate, "EEE");
+  const startDayInt = format(startDate, "d");
+  const startMonth = format(startDate, "MMMM");
+
+  const endDayName = format(endDate, "EEE");
+  const endDayInt = format(endDate, "d");
+  const endMonth = format(endDate, "MMMM");
+
+  const year = format(startDate, "yyyy");
+
+  if (startMonth === endMonth) {
+    // Same month case: "Sun 14th - Wed 16th, December 2024"
+    return `${startDayName} ${getOrdinalSuffix(
+      +startDayInt
+    )} - ${endDayName} ${getOrdinalSuffix(+endDayInt)}, ${startMonth} ${year}`;
+  } else {
+    // Different months case: "Sun 28th November - Wed 1st December, 2024"
+    return `${startDayName} ${getOrdinalSuffix(
+      +startDayInt
+    )} ${startMonth} - ${endDayName} ${getOrdinalSuffix(
+      +endDayInt
+    )} ${endMonth}, ${year}`;
+  }
 };
 
 export const getEventTimeRange = (startTime: string, duration: number) => {

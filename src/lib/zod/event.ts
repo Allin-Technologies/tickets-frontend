@@ -19,9 +19,10 @@ export const eventSchema = z.object({
   title: z.string(),
   slug: z.string(),
   date: z.string(),
+  date_ended: z.string().nullable().optional(),
   duration: z.number(), // Duration in minutes
   time: z.string(), // Assuming time is a string, you can validate time format further if needed
-  location: z.string(),
+  location: z.any(),
   imgsrc: z.string().url(),
   event_type: z.enum(["Paid", "Free"]),
   description: z.string(),
