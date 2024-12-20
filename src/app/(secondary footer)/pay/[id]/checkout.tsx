@@ -463,7 +463,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                     max={
                                       props.event_type === "Free"
                                         ? Math.min(t.tickets_remaining, 1)
-                                        : Math.min(t.tickets_remaining, 3)
+                                        : Math.min(t.tickets_remaining, 6)
                                     }
                                   >
                                     <NumberFieldDecrement />
@@ -473,7 +473,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
                                         const prev =
                                           field.value[index].quantity;
                                         const limit =
-                                          props.event_type === "Free" ? 1 : 3;
+                                          props.event_type === "Free" ? 1 : 6;
 
                                         if (prev === limit) {
                                           toast.warning(
