@@ -215,9 +215,9 @@ export default function Home() {
           </Button>
         </div>
         <Image
-          src='/real-time.png'
+          src='/real-time.gif'
           alt=''
-          className='w-full '
+          className='w-full rounded-[10px]'
           width={800}
           height={900}
           data-aos='fade-left'
