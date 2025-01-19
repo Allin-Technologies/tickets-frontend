@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Tickets by All-in",
-    short_name: "Tickets by All-in",
+    name: "Straqa by All-in",
+    short_name: "Straqa by All-in",
     description: "Ticket experience made easy",
     start_url: "/",
     display: "standalone",

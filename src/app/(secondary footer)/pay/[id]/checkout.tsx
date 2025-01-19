@@ -1219,7 +1219,7 @@ export function Checkout(props: z.infer<typeof eventSchema>) {
               </form>
             </Form>
             <Button
-              className='w-full space-x-3'
+              className='w-full space-x-3 text-white'
               onClick={onSubmit}
               disabled={pending}
             >

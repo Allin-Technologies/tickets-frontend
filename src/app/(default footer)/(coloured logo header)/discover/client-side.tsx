@@ -226,9 +226,9 @@ function Events(_props: { initailData: Array<any> }) {
           <div className='h-full w-full grid place-content-center'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src='/loading.gif'
+              src='/Logos-06.svg'
               alt='loading gif'
-              className='size-28 rounded-full'
+              className='size-28 rounded-full animate-bounce duration-700'
             />
           </div>
         </div>

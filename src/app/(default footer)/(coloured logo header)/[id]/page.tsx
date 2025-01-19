@@ -124,7 +124,7 @@ export default async function Page(props: Props) {
                 />
               </div>
 
-              <Button className='hidden lg:block w-full sm:w-fit' asChild>
+              <Button className='hidden lg:block w-full sm:w-fit text-white' asChild>
                 <Link href={`/pay/${props.params.id}`}>Get Ticket now</Link>
               </Button>
             </div>
@@ -251,14 +251,14 @@ export default async function Page(props: Props) {
                   <p className='text-2xl font-semibold'>About this event</p>
                   {request.data.event_type === "Paid" && (
                     <Badge
-                      className='bg-secondary/20 text-dark-blue font-bold pointer-events-none'
+                      className='bg-primary text-white font-bold pointer-events-none'
                       variant='secondary'
                     >
                       PAID EVENT
                     </Badge>
                   )}
                   {request.data.event_type === "Free" && (
-                    <Badge className='bg-primary/20 text-dark-blue font-bold pointer-events-none'>
+                    <Badge className='bg-primary text-white font-bold pointer-events-none'>
                       FREE EVENT
                     </Badge>
                   )}
@@ -272,8 +272,8 @@ export default async function Page(props: Props) {
               </div>
             </div>
 
-            <Button className='lg:hidden w-full sm:w-auto' asChild>
-              <Link href={`/pay/${props.params.id}`}>Get Ticket now</Link>
+            <Button className='lg:hidden w-full sm:w-auto text-white' asChild>
+              <Link href={`/pay/${props.params.id}`} className="text-white">Get Ticket now</Link>
             </Button>
           </div>
 

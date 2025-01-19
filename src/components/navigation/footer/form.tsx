@@ -156,20 +156,11 @@ export function ContactForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value='Need ticketsbyallin for an event'>
-                      Need ticketsbyallin for an event
+                    <SelectItem value='Need straqabyallin for analysis'>
+                      Need straqabyallin for analysis
                     </SelectItem>
-                    <SelectItem value='Need ticketsbyallin for facility management'>
-                      Need ticketsbyallin for facility management
-                    </SelectItem>
-                    <SelectItem value='need ticket by allin for mobility'>
-                      need ticket by allin for mobility
-                    </SelectItem>
-                    <SelectItem value='need ticket by allin for Meals'>
-                      need ticket by allin for Meals
-                    </SelectItem>
-                    <SelectItem value='A complaint or dispute'>
-                      A complaint or dispute
+                    <SelectItem value='Need straqabyallin for payments'>
+                      Need straqabyallin for payments
                     </SelectItem>
                     <SelectItem value='A review'>A review</SelectItem>
                   </SelectContent>
@@ -200,7 +191,7 @@ export function ContactForm() {
           />
         </div>
         <Button
-          className='font-bold w-full space-x-3'
+          className='font-bold w-full space-x-3 text-white'
           type='submit'
           disabled={form.formState.isSubmitting}
         >

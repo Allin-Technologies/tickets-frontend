@@ -26,15 +26,14 @@ export function Header(props: HeaderProps) {
         <Link href='/'>
           <Image
             src={
-              props.variant === "white"
-                ? "/tickets-by-All-In-logo-white.png"
-                : "/tickets-by-All-In-logo.png"
+              
+                "/Logos-05.svg"
             }
             alt='logo'
             width={300}
             height={100}
             quality={100}
-            className='h-11 w-auto object-contain object-left'
+            className='h-16 w-auto object-contain object-left'
           />
         </Link>
 
@@ -47,11 +46,11 @@ export function Header(props: HeaderProps) {
                   ? "px-2 py-1 min-w-0 text-primary-foreground hover:no-underline"
                   : "ml-8",
                 link.display === "button" &&
-                  props.variant === "white" &&
-                  "text-white border-white bg-transparent",
+                  props.variant === "white" ?
+                  "text-straqa-primary border-straqa-primary bg-straqa-primary" : link.display !== "button" ? "text-straqa-primary" : 'text-white',
                 link.display !== "button" &&
                   props.variant === "white" &&
-                  "text-white"
+                  "text-straqa-primary"
               )}
               variant={
                 link.display === "button" && props.variant === "white"
@@ -73,12 +72,12 @@ export function Header(props: HeaderProps) {
               <Button
                 className={cn(
                   "text-primary-foreground",
-                  props.variant === "white" && "text-white"
+                  props.variant === "white" && "text-strqaq-primary"
                 )}
                 variant='link'
                 size='icon'
               >
-                <TextAlignJustifyIcon className='size-6' />
+                <TextAlignJustifyIcon className='size-10' />
               </Button>
             </SheetTrigger>
             <SheetContent side='top'>
@@ -92,8 +91,8 @@ export function Header(props: HeaderProps) {
                     <Button
                       key={index}
                       className={cn(
-                        link.display !== "button" &&
-                          "text-black text-2xl py-1 px-0 justify-start w-full font-normal"
+                        link.display !== "button" ?
+                          "text-black text-2xl py-1 px-0 justify-start w-full font-normal" : "text-white"
                       )}
                       variant={link.display === "link" ? "link" : "default"}
                       asChild

@@ -51,10 +51,10 @@ export function Footer() {
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
           <div>
             <Image
-              src='/tickets-by-All-In-icon-logo-white.png'
+              src='/Logos-07.png'
               alt='Icon logo'
-              width={40}
-              height={52}
+              width={100}
+              height={82}
               className='size-6'
             />
           </div>
@@ -96,11 +96,11 @@ export function SecondaryFooter() {
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
           <div>
             <Image
-              src='/tickets-by-All-In-icon-logo-white.png'
+              src='/Logos-07.png'
               alt='Icon logo'
-              width={40}
-              height={52}
-              className='size-6'
+              width={80}
+              height={82}
+              className='size-20'
             />
           </div>
           <div className='text-white grid lg:grid-cols-2 gap-8'>

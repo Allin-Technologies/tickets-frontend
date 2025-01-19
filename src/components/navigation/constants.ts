@@ -5,11 +5,11 @@ interface Link {
 }
 
 export const navLinks: Link[] = [
-  {
-    title: "Discover Events",
-    url: "/discover",
-    display: "link",
-  },
+  // {
+  //   title: "Discover Events",
+  //   url: "/discover",
+  //   display: "link",
+  // },
   {
     title: "Pricing",
     url: "/pricing",
@@ -72,8 +72,8 @@ export const footer: {
       icon: "/icons/Phone.svg",
     },
     {
-      title: "Tickets@lifewithallin.com",
-      url: "mailto:tickets@lifewithallin.com",
+      title: "Straqa@lifewithallin.com",
+      url: "mailto:straqa@lifewithallin.com",
       icon: "/icons/Email.svg",
     },
     {

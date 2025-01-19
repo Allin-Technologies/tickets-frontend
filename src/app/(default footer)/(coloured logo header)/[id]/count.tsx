@@ -35,7 +35,7 @@ export function Count({ date, time }: CountProps) {
 
   return (
     <div className='relative'>
-      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-6 md:px-8 py-4 md:py-6 rounded-xl bg-primary text-primary-foreground flex items-center space-x-4'>
+      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-6 md:px-8 py-4 md:py-6 rounded-xl bg-primary text-white flex items-center space-x-4'>
         <div className='flex flex-col items-center space-y-1'>
           <p
             className='text-[32px] font-medium leading-none'

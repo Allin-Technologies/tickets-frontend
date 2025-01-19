@@ -20,13 +20,15 @@ body {
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 180 69% 56%;
+    --primary: 210 90% 8%;
     --primary-foreground: 252 5% 18%;
+    --straqa-primary: 210 90% 8%;
     --secondary: 257 59% 78%;
     --secondary-foreground: 252, 5%, 18%, 0.7;
     --muted: 60 4.8% 95.9%;
     --muted-foreground: 25 5.3% 44.7%;
     --accent: 60 4.8% 95.9%;
+    --accent-wild:210 90% 8%;
     --accent-foreground: 24 9.8% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;

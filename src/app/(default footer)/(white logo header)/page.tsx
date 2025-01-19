@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import Typewriter from "typewriter-effect";
 import Balancer from "react-wrap-balancer";
-import bg from "../../../../public/hero-bg.png";
+// import bg from "../../../../public/hero-bg.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <main className='w-screen min-h-dvh bg-background text-[hsla(252,_5%,_18%,_1)]'>
       <section className='relative w-full min-h-dvh flex justify-center items-center'>
-        <Image
+        {/* <Image
           src={bg}
           alt=''
           placeholder='blur'
@@ -44,33 +44,34 @@ export default function Home() {
           fill
           sizes='100vw'
           className='z-[1] object-cover'
-        />
+        /> */}
 
-        <div className='absolute top-0 left-0 right-0 bottom-0 z-[2] bg-gradient-to-b from-[hsla(248,_76%,_49%,_1)] to-[40%] to-black/20'></div>
+        <div className='absolute top-0 left-0 right-0 bottom-0 z-[2]'></div>
 
-        <div className='z-[3] p-4 md:p-6 lg:p-8 xl:p-12 2xl:px-0 max-w-[970px] mx-auto text-white text-center space-y-4 2xl:space-y-10'>
+        <div className='z-[3] p-4 md:p-6 lg:p-8 xl:p-12 2xl:px-0 max-w-[970px] mx-auto text-gray-800 text-center space-y-4 2xl:space-y-10'>
           <Balancer
             id='typewriter'
-            className='text-4xl lg:text-5xl xl:text-6xl 2xl:text-8xl font-bold'
+            className='text-4xl lg:text-5xl xl:text-6xl 2xl:text-8xl font-bold text-gray-800'
           >
             <Typewriter
               options={{
                 strings: [
-                  "Ticket experience made easy",
-                  "Buy tickets with ease",
-                  "Sell tickets effortlessly",
+                  "Collect Data",
+                  "Analyze Data ",
+                  "Receive Payments",
                 ],
                 autoStart: true,
                 loop: true,
+                delay: 200
               }}
             />
           </Balancer>
           <div className='space-y-3 2xl:space-y-6'>
             <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
-              for Meals, Events, Mobility & Spaces
+             Data management, and payment processing into one platform, All powered by AI.
             </p>
 
-            <Button asChild>
+            <Button asChild className="text-white">
               <Link href='/discover'>Get Started</Link>
             </Button>
           </div>
@@ -107,10 +108,10 @@ export default function Home() {
             {features.map((feature, index) => (
               <CarouselItem
                 key={index}
-                className='basis-full md:basis-[33%] 2xl:basis-[23%]'
+                className='basis-full md:basis-[33%] 2xl:basis-[23%] h-full group-hover:bg-primary'
               >
                 <div className='p-1'>
-                  <div className='p-10 bg-secondary/10 hover:bg-primary transition ease-in duration-200 rounded-2xl group'>
+                  <div className='p-10 bg-secondary/10 hover:bg-primary hover:text-white transition ease-in duration-200 rounded-2xl group'>
                     <div className='flex flex-col aspect-square items-start justify-end gap-8'>
                       {feature.icon}
 
@@ -118,7 +119,7 @@ export default function Home() {
                         <p className='text-2xl font-extrabold'>
                           {feature.title}
                         </p>
-                        <p className='text-secondary-foreground'>
+                        <p className='text-secondary-foreground group-hover:text-white'>
                           {feature.desc}
                         </p>
                       </div>
@@ -245,7 +246,7 @@ export default function Home() {
         >
           <CarouselContent>
             {partners.map((partner, index) => (
-              <CarouselItem key={index} className='basis-[33%]'>
+              <CarouselItem key={index} className='basis-[33%] hover:text-white'>
                 <div className='p-1'>
                   <div className=''>
                     <div className='flex items-center justify-center'>
@@ -293,7 +294,7 @@ export default function Home() {
               {reviews.map((review, index) => (
                 <CarouselItem
                   key={index}
-                  className='basis-full lg:basis-[66%] xl:basis-[50%] flex-shrink-0'
+                  className='basis-full lg:basis-[66%] xl:basis-[50%] flex-shrink-0 hover:text-white'
                 >
                   <div className='p-1 h-full'>
                     <div

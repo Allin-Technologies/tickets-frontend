@@ -55,7 +55,7 @@ export default async function Page() {
             </p>
           </div>
 
-          <Button asChild>
+          <Button asChild className="text-white">
             <Link href='/discover'>Return to Events</Link>
           </Button>
         </div>

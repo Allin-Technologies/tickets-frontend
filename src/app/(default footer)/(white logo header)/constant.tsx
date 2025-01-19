@@ -1,7 +1,7 @@
 export const features = [
   {
-    title: "Events",
-    desc: "Sell and manage tickets for entertainment events, ensuring real-time tracking access for attendees.",
+    title: "AI-Driven Analytics",
+    desc: "Gain actionable insights with advanced AI-powered tools that turn raw data into meaningful results.",
     icon: (
       <svg
         viewBox='0 0 40 40'
@@ -26,8 +26,8 @@ export const features = [
     ),
   },
   {
-    title: "Meals",
-    desc: "Effortlessly handle meal vouchers and track meal purchases while every guest enjoys their dining experience.",
+    title: "Seamless Data Collection",
+    desc: "Simplify the process of gathering, organizing, and managing valuable data efficiently.",
     icon: (
       <svg
         viewBox='0 0 40 40'
@@ -43,8 +43,8 @@ export const features = [
     ),
   },
   {
-    title: "Mobility",
-    desc: "Provide and manage tickets for transportation, ensuring seamless and reliable travel experiences.",
+    title: "Integrated Payment Processing",
+    desc: "Handle multi-currency transactions effortlessly, all within a single platform.",
     icon: (
       <svg
         viewBox='0 0 40 40'
@@ -63,8 +63,8 @@ export const features = [
     ),
   },
   {
-    title: "Spaces",
-    desc: "Efficiently manage entry and control access to spaces, ensuring smooth operations with digital tickets.",
+    title: "Workflow Optimization",
+    desc: "Streamline operations with smart automation, saving time and improving productivity..",
     icon: (
       <svg
         viewBox='0 0 40 40'
@@ -95,34 +95,34 @@ export const partners = [
 export const reviews = [
   {
     name: "Stephen",
-    review: "The ticket purchase process is pretty seamless",
+    review: "Straqa streamlined our data and payment processes, saving us time and uncovering valuable insights!",
     img: "/reviews/1.png",
   },
   {
     name: "David",
     review:
-      "This is a really detailed system, particularly the analysis on the ticket details I must say it’s helping me know my target audience",
+      "Managing clients and payments is now effortless with Straqa’s all-in-one platform. A must-have for freelancers!",
     img: "/reviews/2.png",
   },
   {
     name: "Cynthia",
     review:
-      "Got my ticket fast and I was anticipating to see a long queue at the event but  surprisingly the check in process was fast kudos guys",
+      "Straqa simplified data collection and analysis, helping me complete research projects faster than ever.",
     img: "/reviews/3.png",
   },
   {
     name: "Howells",
-    review: "The user interface is clean and so easy to navigate",
+    review: "Straqa’s AI tools and payment integration are perfect for startups looking to optimize workflows effortlessly.",
     img: "/reviews/4.png",
   },
   {
     name: "Temi",
-    review: "This tool is a life saver for event organizers.",
+    review: "Straqa made tracking customer data and handling payments across currencies a breeze. It’s a lifesaver for our operations!.",
     img: "/reviews/5.png",
   },
   {
     name: "Ebube",
-    review: "This is a spot on process and I recommend",
+    review: "I rely on Straqa to gather and analyze client data quickly. The AI insights help me deliver better solutions every time.",
     img: "/reviews/6.png",
   },
   {
@@ -134,12 +134,12 @@ export const reviews = [
   {
     name: "Fure",
     review:
-      "As I scrolled I even saw events that I didn’t even know were coming sooner that I expected",
+      "Straqa’s automation features have saved me hours of manual work, letting me focus on growing my business.d",
     img: "/reviews/8.png",
   },
   {
     name: "Debby",
-    review: "This is really nice and easy to use.",
+    review: "I love how Straqa brings data management and payments together seamlessly. A truly innovative platform!",
     img: "/reviews/9.png",
   },
 ];
