@@ -25,7 +25,7 @@ export default function NotFound() {
               This page will be coming soon.
             </p>
 
-            <Button asChild>
+            <Button asChild className="text-white">
               <Link href='/'>Go back homepage</Link>
             </Button>
           </div>

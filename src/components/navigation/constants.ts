@@ -55,13 +55,13 @@ export const footer: {
     },
   ],
   socials: [
+    // {
+    //   url: "https://www.tiktok.com/@tickets.byallin?_t=8qahBvqiWEY&_r=1",
+    //   icon: "/icons/Tiktok.svg",
+    // },
+    { url: "https://x.com/straqahq?s=21", icon: "/icons/Twitter.svg" },
     {
-      url: "https://www.tiktok.com/@tickets.byallin?_t=8qahBvqiWEY&_r=1",
-      icon: "/icons/Tiktok.svg",
-    },
-    { url: "https://x.com/ticketsbyallin?s=21", icon: "/icons/Twitter.svg" },
-    {
-      url: "https://www.instagram.com/ticketsbyall.in?igsh=dDNzc3hhd3NhaGo5",
+      url: "https://www.instagram.com/straqahq?igsh=MXducGtkZXk1MjN6eA%3D%3D&utm_source=qr",
       icon: "/icons/Instagram.svg",
     },
   ],
