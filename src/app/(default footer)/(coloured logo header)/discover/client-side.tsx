@@ -95,7 +95,7 @@ function Events(_props: { initailData: Array<any> }) {
       <Collapsible defaultOpen={!isMobile}>
         <div className='flex flex-col xl:flex-row justify-between items-start gap-4'>
           <div className='flex justify-between items-center w-full gap-4'>
-            <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold text-dark-blue'>
+            <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold text-primary'>
               Upcoming Events
             </h2>
 
@@ -123,7 +123,7 @@ function Events(_props: { initailData: Array<any> }) {
 
           <CollapsibleContent className='grid grid-cols-2 sm:flex items-center gap-2 w-full'>
             <Select onValueChange={setCategory} defaultValue={category}>
-              <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+              <SelectTrigger className='sm:w-[168px] text-white py-3.5 bg-primary focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
                 <SelectValue placeholder='Select a Category' />
               </SelectTrigger>
               <SelectContent>
@@ -161,7 +161,7 @@ function Events(_props: { initailData: Array<any> }) {
               </SelectContent>
             </Select>
             <Select onValueChange={setPrice} defaultValue={price}>
-              <SelectTrigger className='sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+              <SelectTrigger className='sm:w-[168px] text-white py-3.5 bg-primary focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
                 <SelectValue placeholder='Price' />
               </SelectTrigger>
               <SelectContent>
@@ -173,7 +173,7 @@ function Events(_props: { initailData: Array<any> }) {
               </SelectContent>
             </Select>
             <Select onValueChange={setState} defaultValue={state}>
-              <SelectTrigger className='col-span-2 sm:col-span-1 sm:w-[168px] text-dark-blue py-3.5 bg-[hsla(257,59%,78%,0.2)] hover:bg-secondary/80 focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
+              <SelectTrigger className='col-span-2 sm:col-span-1 sm:w-[168px] text-white py-3.5 bg-primary focus:ring-[hsla(257,59%,78%,0.6)] font-medium shadow-none border-transparent'>
                 <SelectValue placeholder='Location' />
               </SelectTrigger>
               <SelectContent>
@@ -191,12 +191,12 @@ function Events(_props: { initailData: Array<any> }) {
                   id='date'
                   variant='secondary'
                   className={cn(
-                    "col-span-2 sm:col-span-1 sm:w-[150px] lg:w-[280px] justify-start text-left font-medium text-dark-blue bg-secondary/20",
-                    !date && "text-dark-blue/50"
+                    "col-span-2 sm:col-span-1 sm:w-[150px] lg:w-[280px] justify-start text-left font-medium text-white bg-primary",
+                    !date && "text-white/50"
                   )}
                 >
-                  <CalendarIcon className='mr-2 h-4 w-4' />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  <CalendarIcon className='mr-2 h-4 w-4 text-white' />
+                  {date ? format(date, "PPP") : <span className="text-white">Pick a date</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className='w-auto p-0' align='end'>
@@ -209,7 +209,7 @@ function Events(_props: { initailData: Array<any> }) {
                 <div className='p-2'>
                   <Button
                     variant='secondary'
-                    className='w-full h-auto py-1'
+                    className='w-full h-auto py-1 bg-primary text-white'
                     onClick={() => setDate(undefined)}
                   >
                     Clear

@@ -72,12 +72,12 @@ export const footer: {
       icon: "/icons/Phone.svg",
     },
     {
-      title: "Straqa@lifewithallin.com",
-      url: "mailto:straqa@lifewithallin.com",
+      title: "Support@straqa.com ",
+      url: "mailto:Support@straqa.com ",
       icon: "/icons/Email.svg",
     },
     {
-      title: "All-in Headquaters, GRA Port Harcourt, Nigeria",
+      title: "Straqa headquarters, 669 N Broad Street Middletown Delaware US",
       url: "#",
       icon: "/icons/Map Pin.svg",
     },

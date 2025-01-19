@@ -299,7 +299,7 @@ export default function Home() {
                   <div className='p-1 h-full'>
                     <div
                       data-select={current === index + 1}
-                      className='flex flex-col justify-between p-10 bg-secondary/10 hover:bg-primary transition ease-in duration-200 space-y-3 h-full'
+                      className='flex flex-col justify-between p-10 bg-primary hover:bg-secondary/10 transition ease-in duration-200 space-y-3 h-full hover:text-primary text-white'
                     >
                       <div className='flex flex-col items-center justify-center lg:p-6 space-y-3'>
                         <svg
