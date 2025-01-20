@@ -28,11 +28,11 @@ export default function Home() {
           <div className='p-12 space-y-16'>
             <div className='space-y-4 text-base lg:text-xl xl:text-2xl'>
               <h1 className='text-4xl 2xl:text-5xl font-bold'>
-                Why Staqa by All-In?
+                Why Staqa?
               </h1>
 
               <p>
-                We developed Straqa by All-In because we believe businesses and
+                We developed Straqa because we believe businesses and
                 users deserve better. Too many obstacles stand between you and
                 the experiences you cherish.
               </p>
