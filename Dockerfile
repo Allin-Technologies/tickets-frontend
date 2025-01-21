@@ -10,15 +10,8 @@ WORKDIR /app
 
 # Copy package.json and lock files for dependency installation
 COPY package.json pnpm-lock.yaml* .npmrc* ./
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+RUN corepack enable pnpm && pnpm install --no-frozen-lockfile --legacy-peer-deps
 
-# Install dependencies based on the lockfile
-RUN \
-  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f yarn.lock ]; then yarn install --frozen-lockfile; \
-  else echo "No lockfile found." && exit 1; \
-  fi
 
 # Build stage: Compile the source code (Only rebuild when the source code changes)
 FROM base AS builder
@@ -36,13 +29,8 @@ ARG API_BASE_URL
 # Set environment variables for the build stage
 ENV API_BASE_URL=$BASE_URL
 
-# Run the build command based on the lockfile
-RUN \
-  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f yarn.lock ]; then yarn run build; \
-  else echo "No lockfile found." && exit 1; \
-  fi
+# Enable pnpm and run build with legacy-peer-deps
+RUN corepack enable pnpm && pnpm run build --legacy-peer-deps
 
 # Production stage: Set up the production image with minimal size
 FROM node:20-alpine AS runner
