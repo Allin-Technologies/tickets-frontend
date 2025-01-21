@@ -46,7 +46,9 @@ RUN adduser --system --uid 1001 nextjs
 
 # Copy public and build artifacts from the builder stage
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Change to the non-root user
 USER nextjs
@@ -58,6 +60,6 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the Next.js application
-CMD ["pnpm", "next", "start"]
+# Start the Next.js server
+CMD ["node", "server.js"]
 
