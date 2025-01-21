@@ -9,7 +9,7 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy package.json and lock files for dependency installation
-COPY package.json pnpm-lock.yaml
+COPY package.json pnpm-lock.yaml ./
 RUN corepack enable pnpm && pnpm install --config.strict-peer-dependencies=false
 
 
