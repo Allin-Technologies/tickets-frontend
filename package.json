@@ -2,6 +2,11 @@
   "name": "Straqa-frontend",
   "version": "0.0.0-aplha",
   "private": true,
+  "pnpm": {
+    "overrides": {
+      "date-fns": "^3.0.0"
+    }
+  },
   "scripts": {
     "dev": "next dev",
     "devsafe": "rm -r .next && next dev",
@@ -34,7 +39,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.0.0",
     "dayjs": "^1.11.13",
     "embla-carousel-auto-scroll": "^8.3.0",
     "embla-carousel-autoplay": "^8.3.0",

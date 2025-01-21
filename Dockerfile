@@ -9,8 +9,8 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy package.json and lock files for dependency installation
-COPY package.json pnpm-lock.yaml* .npmrc* ./
-RUN corepack enable pnpm && pnpm install --shamefully-hoist
+COPY package.json pnpm-lock.yaml
+RUN corepack enable pnpm && pnpm install --legacy-peer-deps
 
 
 # Build stage: Compile the source code (Only rebuild when the source code changes)
@@ -30,7 +30,7 @@ ARG API_BASE_URL
 ENV API_BASE_URL=$BASE_URL
 
 # Enable pnpm and run build with legacy-peer-deps
-RUN corepack enable pnpm && pnpm run build 
+RUN corepack enable pnpm && pnpm run build --legacy-peer-deps
 
 # Production stage: Set up the production image with minimal size
 FROM node:20-alpine AS runner
