@@ -22,7 +22,7 @@ export const navLinks: Link[] = [
   },
   {
     title: "Book a demo",
-    url: "https://calendly.com/ticketsbyallin/demo",
+    url: "https://calendly.com/straqa/demo",
     display: "button",
   },
 ];

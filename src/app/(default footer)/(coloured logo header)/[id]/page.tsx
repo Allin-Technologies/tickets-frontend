@@ -37,7 +37,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     openGraph: {
       title: request?.data?.title,
       description: request?.data?.description,
-      url: `https://www.ticketsbyallin.com/${request?.data?.slug}`,
+      url: `https://www.straqa.com/${request?.data?.slug}`,
       images: request?.data?.imgsrc
         ? [
             {
@@ -90,12 +90,12 @@ export default async function Page(props: Props) {
     name: request?.data?.title,
     image: request.data?.imgsrc,
     description: request?.data?.description,
-    url: `https://https://www.ticketsbyallin.com/${request?.data?.slug}`,
+    url: `https://https://www.straqa.com/${request?.data?.slug}`,
     offers: request?.data?.ticket_type?.map((type) => ({
       "@type": "Offer",
       priceCurrency: "NGN",
       price: type?.cost ?? 0,
-      url: `https://www.ticketsbyallin.com/pay/${props.params.id}`,
+      url: `https://www.straqa.com/pay/${props.params.id}`,
       availability:
         type?.available_tickets >= 1
           ? "https://schema.org/InStock"
