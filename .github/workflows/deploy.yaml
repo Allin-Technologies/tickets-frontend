@@ -63,6 +63,7 @@ jobs:
             -e API_BASE_URL="${{ secrets.API_BASE_URL }}" \
             jdmghk/straqa-frontend:latest
 
+            
       - name: Check container logs 
         run: |
           sleep 10 # Wait for the container to start up
