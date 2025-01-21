@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copy package.json and lock files for dependency installation
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm install --config.strict-peer-dependencies=false
+RUN corepack enable pnpm && pnpm install 
 
 
 # Build stage: Compile the source code (Only rebuild when the source code changes)
@@ -27,10 +27,10 @@ COPY . .
 ARG API_BASE_URL
 
 # Set environment variables for the build stage
-ENV API_BASE_URL=$BASE_URL
+ENV API_BASE_URL=$API_BASE_URL
 
 # Enable pnpm and run build with legacy-peer-deps
-RUN corepack enable pnpm && pnpm run build --config.strict-peer-dependencies=false
+RUN corepack enable pnpm && pnpm run build 
 
 # Production stage: Set up the production image with minimal size
 FROM node:20-alpine AS runner
