@@ -130,18 +130,6 @@ export function SecondaryFooter() {
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-center p-8 xl:px-12 bg-black text-white'>
-        <span>Built with ❤️ by</span>
-        <Link href='https://www.lifewithallin.com'>
-          <Image
-            src='/all-in-logo.png'
-            alt=''
-            height={80}
-            width={252}
-            className='h-6 object-contain object-left'
-          />
-        </Link>
-      </div>
     </footer>
   );
 }

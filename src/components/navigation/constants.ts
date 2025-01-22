@@ -10,11 +10,11 @@ export const navLinks: Link[] = [
   //   url: "/discover",
   //   display: "link",
   // },
-  {
-    title: "Pricing",
-    url: "/pricing",
-    display: "link",
-  },
+  // {
+  //   title: "Pricing",
+  //   url: "/pricing",
+  //   display: "link",
+  // },
   {
     title: "About",
     url: "/about-us",
