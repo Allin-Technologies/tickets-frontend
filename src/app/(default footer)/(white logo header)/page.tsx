@@ -68,7 +68,7 @@ export default function Home() {
           </Balancer>
           <div className='space-y-3 2xl:space-y-6'>
             <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
-             Data management, and Payment Processing into one Platform All Powered by AI.
+             Data management and Payment Processing into one Platform All Powered by AI.
             </p>
 
             <Button asChild className="text-white">
