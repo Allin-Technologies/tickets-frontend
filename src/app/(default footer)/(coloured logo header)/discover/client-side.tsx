@@ -234,68 +234,75 @@ function Events(_props: { initailData: Array<any> }) {
         </div>
       )}
 
-      {!dataQuery?.isLoading && !dataQuery?.isPending && (
-        <div className='flex flex-col items-center space-y-14 w-full'>
-          <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {table
-              .getRowModel()
-              .rows.map((row) => {
-                // Parse the date string into a Date object
-                const date = parse(
-                  row.original?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
-                  "d MMMM, yyyy",
-                  new Date()
-                );
+{!dataQuery?.isLoading && !dataQuery?.isPending && (
+  <div className='flex flex-col items-center space-y-14 w-full'>
+    {table.getRowModel().rows.length === 0 ? (
+       <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-[40px] mt-10 font-semibold'>
+       Oops Nothings Here
+     </h2>
+    ) : (
+      <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+        {table
+          .getRowModel()
+          .rows.map((row) => {
+            // Parse the date string into a Date object
+            const date = parse(
+              row.original?.date?.replace(/(\d+)(th|st|nd|rd)/, "$1"),
+              "d MMMM, yyyy",
+              new Date()
+            );
 
-                // Get the abbreviated month and day
-                const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
-                const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
+            // Get the abbreviated month and day
+            const month = format(date, "MMM"); // 'MMM' gives the abbreviated month (e.g., 'Oct' for October)
+            const day = format(date, "dd"); // 'd' gives the day of the month without leading zeroes (e.g., '13')
 
-                return {
-                  ...row.original,
-                  month,
-                  day,
-                  parsedDate: date,
-                };
-              })
-              .sort((a, b) => {
-                return a.parsedDate - b.parsedDate;
-              })
-              .map((event, index) => (
-                <Link
-                  href={`/${event?.slug}`}
-                  key={index}
-                  className='bg-white rounded-2xl overflow-clip'
-                  prefetch={true}
-                >
-                  <Image
-                    className='aspect-video w-full object-cover'
-                    src={event?.imgsrc}
-                    alt={event?.title}
-                    width={800}
-                    height={450}
-                  />
-                  <div className='flex space-x-6 p-6'>
-                    <div className='flex flex-col items-center'>
-                      <p className='text-sm font-bold text-primary uppercase'>
-                        {event.month}
-                      </p>
-                      <p className='text-2xl font-bold'>{event.day}</p>
-                    </div>
-                    <div className='space-y-2'>
-                      <p className='font-bold line-clamp-2 text-ellipsis'>
-                        {event?.title}
-                      </p>
-                      <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
-                        {event?.description ?? ""}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
-      )}
+            return {
+              ...row.original,
+              month,
+              day,
+              parsedDate: date,
+            };
+          })
+          .sort((a, b) => {
+            return a.parsedDate - b.parsedDate;
+          })
+          .map((event, index) => (
+            <Link
+              href={`/${event?.slug}`}
+              key={index}
+              className='bg-white rounded-2xl overflow-clip'
+              prefetch={true}
+            >
+              <Image
+                className='aspect-video w-full object-cover'
+                src={event?.imgsrc}
+                alt={event?.title}
+                width={800}
+                height={450}
+              />
+              <div className='flex space-x-6 p-6'>
+                <div className='flex flex-col items-center'>
+                  <p className='text-sm font-bold text-primary uppercase'>
+                    {event.month}
+                  </p>
+                  <p className='text-2xl font-bold'>{event.day}</p>
+                </div>
+                <div className='space-y-2'>
+                  <p className='font-bold line-clamp-2 text-ellipsis'>
+                    {event?.title}
+                  </p>
+                  <p className='text-[hsla(0,_0%,_42%,_1)] line-clamp-2 text-ellipsis'>
+                    {event?.description ?? ""}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+      </div>
+    )}
+  </div>
+)}
+
     </>
   );
 }
