@@ -49,13 +49,13 @@ export function Footer() {
       </div>
       <div className='bg-primary-foreground'>
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
-          <div>
+          <div className="max-sm:flex max-sm:justify-center">
             <Image
               src='/Logos-07.png'
               alt='Icon logo'
               width={100}
               height={82}
-              className='size-6'
+              className='size-20'
             />
           </div>
           <div className='text-white grid lg:grid-cols-2 gap-8'>
@@ -94,13 +94,13 @@ export function SecondaryFooter() {
     <footer>
       <div className='bg-primary-foreground'>
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
-          <div>
+          <div className="w-full">
             <Image
               src='/Logos-07.png'
               alt='Icon logo'
-              width={80}
-              height={82}
-              className='size-20'
+              width={200}
+              height={200}
+              className='size-40'
             />
           </div>
           <div className='text-white grid lg:grid-cols-2 gap-8'>
