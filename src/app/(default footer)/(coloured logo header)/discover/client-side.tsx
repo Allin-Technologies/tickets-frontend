@@ -238,7 +238,7 @@ function Events(_props: { initailData: Array<any> }) {
   <div className='flex flex-col items-center space-y-14 w-full'>
     {table.getRowModel().rows.length === 0 ? (
        <h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-[40px] mt-10 font-semibold'>
-       Oops Nothings Here
+       Oops No Event Here
      </h2>
     ) : (
       <div className='w-full grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
