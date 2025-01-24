@@ -158,7 +158,7 @@ export default function Home() {
             asChild
           >
             <Link href='/discover'>
-              <span>See use cases</span>
+              <span>Discover events</span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -196,7 +196,7 @@ export default function Home() {
             asChild
           >
             <Link href='/discover'>
-              <span>See use cases</span>
+              <span>Discover events</span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'

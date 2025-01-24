@@ -341,7 +341,7 @@ export default async function Page(props: Props) {
                 asChild
               >
                 <Link href='/discover'>
-                  <span>See more use cases</span>
+                  <span>Discover events</span>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
