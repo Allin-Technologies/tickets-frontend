@@ -39,9 +39,9 @@ export default async function Page() {
         <Image
           src='/icons/success.png'
           alt=''
-          width={800}
-          height={300}
-          className='max-w-2xl w-full mx-auto'
+          width={300}
+          height={500}
+          className='max-sm:max-w-[200px] mx-auto'
         />
 
         <div className='flex flex-col items-center text-center space-y-6 lg:space-y-8'>
