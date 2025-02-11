@@ -156,11 +156,11 @@ export function ContactForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value='Need straqabyallin for analysis'>
-                      Need straqabyallin for analysis
+                    <SelectItem value='Need straqa for analysis'>
+                      Need straqa for analysis
                     </SelectItem>
-                    <SelectItem value='Need straqabyallin for payments'>
-                      Need straqabyallin for payments
+                    <SelectItem value='Need straqa for payments'>
+                      Need straqa for payments
                     </SelectItem>
                     <SelectItem value='A review'>A review</SelectItem>
                   </SelectContent>

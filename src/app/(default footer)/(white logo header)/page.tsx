@@ -68,7 +68,7 @@ export default function Home() {
           </Balancer>
           <div className='space-y-3 2xl:space-y-6'>
             <p className='lg:text-lg xl:text-xl 2xl:text-2xl'>
-             Data management, and payment processing into one platform, All powered by AI.
+             Data management and Payment Processing into one Platform All Powered by AI.
             </p>
 
             <Button asChild className="text-white">
@@ -104,14 +104,14 @@ export default function Home() {
           ]}
           className='w-full'
         >
-          <CarouselContent>
+          <CarouselContent containerClassName='overflow-visible'>
             {features.map((feature, index) => (
               <CarouselItem
                 key={index}
-                className='basis-full md:basis-[33%] 2xl:basis-[23%] h-full group-hover:bg-primary'
+                className='basis-full md:basis-[33%] 2xl:basis-[23%] h-full'
               >
                 <div className='p-1'>
-                  <div className='p-10 bg-secondary/10 hover:bg-primary hover:text-white transition ease-in duration-200 rounded-2xl group'>
+                  <div className='p-10 bg-primary hover:bg-secondary/10 hover:text-primary text-white transition ease-in duration-200 rounded-2xl group'>
                     <div className='flex flex-col aspect-square items-start justify-end gap-8'>
                       {feature.icon}
 
@@ -119,7 +119,7 @@ export default function Home() {
                         <p className='text-2xl font-extrabold'>
                           {feature.title}
                         </p>
-                        <p className='text-secondary-foreground group-hover:text-white'>
+                        <p className='group-hover:text-primary text-white'>
                           {feature.desc}
                         </p>
                       </div>
@@ -132,13 +132,13 @@ export default function Home() {
         </Carousel>
       </section>
 
-      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-3 lg:gap-6'>
+      <section className='max-w-screen-2xl mx-auto w-full px-4 md:px-6 lg:px-16 xl:px-20 grid lg:grid-cols-2 gap-3 lg:gap-6 mb-10'>
         <Image
-          src='/unique-operation.png'
+          src='/Straqa Login Interface.gif'
           alt=''
-          className='w-full'
-          width={800}
-          height={900}
+          className='w-full rounded-[10px]'
+          width={650}
+          height={600}
           data-aos='fade-right'
         />
         <div className='my-auto space-y-8 lg:space-y-16'>
@@ -158,7 +158,7 @@ export default function Home() {
             asChild
           >
             <Link href='/discover'>
-              <span>Load more events</span>
+              <span>See use cases</span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -196,7 +196,7 @@ export default function Home() {
             asChild
           >
             <Link href='/discover'>
-              <span>Load more events</span>
+              <span>See use cases</span>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'

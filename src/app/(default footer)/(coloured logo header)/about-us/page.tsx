@@ -28,7 +28,7 @@ export default function Home() {
           <div className='p-12 space-y-16'>
             <div className='space-y-4 text-base lg:text-xl xl:text-2xl'>
               <h1 className='text-4xl 2xl:text-5xl font-bold'>
-                Why Staqa?
+                Why Straqa?
               </h1>
 
               <p>
@@ -49,7 +49,7 @@ export default function Home() {
             </div>
 
             <Button asChild className="text-white">
-              <Link href='https://calendly.com/ticketsbyallin/demo'>
+              <Link href='https://calendly.com/straqa/demo'>
                 Book a demo
               </Link>
             </Button>

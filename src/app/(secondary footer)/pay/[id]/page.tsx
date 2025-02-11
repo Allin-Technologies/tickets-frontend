@@ -71,7 +71,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     openGraph: {
       title: "Get a ticket for " + request?.data?.title,
       description: request?.data?.description,
-      url: `https://www.ticketsbyallin.com/${request?.data?.slug}`,
+      url: `https://www.straqa.com/${request?.data?.slug}`,
       images: request?.data?.imgsrc
         ? [
             {

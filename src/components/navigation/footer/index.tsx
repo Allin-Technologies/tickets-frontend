@@ -49,13 +49,13 @@ export function Footer() {
       </div>
       <div className='bg-primary-foreground'>
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
-          <div>
+          <div className="max-sm:flex max-sm:justify-center">
             <Image
               src='/Logos-07.png'
               alt='Icon logo'
               width={100}
               height={82}
-              className='size-6'
+              className='size-20'
             />
           </div>
           <div className='text-white grid lg:grid-cols-2 gap-8'>
@@ -94,13 +94,13 @@ export function SecondaryFooter() {
     <footer>
       <div className='bg-primary-foreground'>
         <div className='grid w-full max-w-screen-2xl mx-auto gap-6 p-8 xl:px-12 2xl:px-0'>
-          <div>
+          <div className="w-full">
             <Image
               src='/Logos-07.png'
               alt='Icon logo'
-              width={80}
-              height={82}
-              className='size-20'
+              width={200}
+              height={200}
+              className='size-40'
             />
           </div>
           <div className='text-white grid lg:grid-cols-2 gap-8'>
@@ -129,18 +129,6 @@ export function SecondaryFooter() {
             </div>
           </div>
         </div>
-      </div>
-      <div className='flex items-center justify-center p-8 xl:px-12 bg-black text-white'>
-        <span>Built with ❤️ by</span>
-        <Link href='https://www.lifewithallin.com'>
-          <Image
-            src='/all-in-logo.png'
-            alt=''
-            height={80}
-            width={252}
-            className='h-6 object-contain object-left'
-          />
-        </Link>
       </div>
     </footer>
   );

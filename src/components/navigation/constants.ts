@@ -10,11 +10,11 @@ export const navLinks: Link[] = [
   //   url: "/discover",
   //   display: "link",
   // },
-  {
-    title: "Pricing",
-    url: "/pricing",
-    display: "link",
-  },
+  // {
+  //   title: "Pricing",
+  //   url: "/pricing",
+  //   display: "link",
+  // },
   {
     title: "About",
     url: "/about-us",
@@ -22,7 +22,7 @@ export const navLinks: Link[] = [
   },
   {
     title: "Book a demo",
-    url: "https://calendly.com/ticketsbyallin/demo",
+    url: "https://calendly.com/straqa/demo",
     display: "button",
   },
 ];
