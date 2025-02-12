@@ -4,14 +4,18 @@ FROM node:20-alpine AS base
 # Install libc6-compat for compatibility
 RUN apk add --no-cache libc6-compat
 
+# Ensure Corepack is enabled properly
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 # Install dependencies in a separate stage (only when needed)
 FROM base AS deps
 WORKDIR /app
 
 # Copy package.json and lock files for dependency installation
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm install 
 
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
 # Build stage: Compile the source code (Only rebuild when the source code changes)
 FROM base AS builder
@@ -29,8 +33,8 @@ ARG API_BASE_URL
 # Set environment variables for the build stage
 ENV API_BASE_URL=$API_BASE_URL
 
-# Enable pnpm and run build with legacy-peer-deps
-RUN corepack enable pnpm && pnpm run build 
+# Run the build step
+RUN pnpm run build 
 
 # Production stage: Set up the production image with minimal size
 FROM node:20-alpine AS runner
@@ -48,7 +52,6 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Change to the non-root user
 USER nextjs
@@ -62,4 +65,3 @@ ENV HOSTNAME="0.0.0.0"
 
 # Start the Next.js server
 CMD ["node", "server.js"]
-
