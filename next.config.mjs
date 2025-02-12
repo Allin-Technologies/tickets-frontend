@@ -8,11 +8,12 @@ const nextConfig = {
       },
     ],
   },
-  async rewrites() {
+  async redirects() {
     return [
       {
         source: "/",
         destination: "/discover",
+        permanent: true,
       },
     ];
   },
